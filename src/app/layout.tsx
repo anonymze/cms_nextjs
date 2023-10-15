@@ -1,8 +1,13 @@
-import './globals.css'
+import '@/styles/globals.css'
+import { cn } from '@/utils/libs/utils'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter as FontSans } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const fontSans = FontSans(
+  { 
+    subsets: ['latin'],
+  }
+)
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,8 +20,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="fr" suppressHydrationWarning>
+      <body 
+      className={cn(
+        "min-h-screen",
+        fontSans.className
+      )}
+      
+      >{children}</body>
     </html>
   )
 }
