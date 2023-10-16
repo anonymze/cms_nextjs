@@ -1,8 +1,8 @@
 import Layout from '@/components/layout/Layout'
-import '@/styles/globals.css'
 import { cn } from '@/utils/libs/utils'
-import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import type { Metadata } from 'next'
+import '@/styles/globals.css'
 
 const fontSans = Inter(
   { 

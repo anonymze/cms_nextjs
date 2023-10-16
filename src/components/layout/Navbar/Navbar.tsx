@@ -1,21 +1,8 @@
-import { Smile } from "lucide-react"
 import { cn } from '@/utils/libs/utils'
+import Link from "next/link"
+import { mainNavigation, optionsNavigation } from './navLinks';
 
-const navigation = [
-  { name: 'Dashboard', href: '#', icon: Smile, count: '5', current: true },
-  { name: 'Team', href: '#', icon: Smile, current: false },
-  { name: 'Projects', href: '#', icon: Smile, count: '12', current: false },
-  { name: 'Calendar', href: '#', icon: Smile, count: '20+', current: false },
-  { name: 'Documents', href: '#', icon: Smile, current: false },
-  { name: 'Reports', href: '#', icon: Smile, current: false },
-]
-const teams = [
-  { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-  { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-  { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-]
-
-const Menu: React.FC = () => {
+const Navbar: React.FC = () => {
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto">
       <div className="flex h-16 shrink-0 items-center">
@@ -30,9 +17,9 @@ const Menu: React.FC = () => {
           <li>
             <div className="text-xs font-semibold leading-6 text-gray-400">Contenu</div>
             <ul role="list" className="mt-2 space-y-1">
-              {navigation.map((item) => (
+              {mainNavigation.map((item) => (
                 <li key={item.name}>
-                  <a
+                  <Link
                     href={item.href}
                     className={cn(
                       item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800',
@@ -49,17 +36,17 @@ const Menu: React.FC = () => {
                         {item.count}
                       </span>
                     ) : null}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </li>
           <li>
-            <div className="text-xs font-semibold leading-6 text-gray-400">Paramètres</div>
+            <div className="text-xs font-semibold leading-6 text-gray-400">Avancées</div>
             <ul role="list" className="mt-2 space-y-1">
-              {teams.map((team) => (
+              {optionsNavigation.map((team) => (
                 <li key={team.name}>
-                  <a
+                  <Link
                     href={team.href}
                     className={cn(
                       team.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800',
@@ -70,7 +57,7 @@ const Menu: React.FC = () => {
                       {team.initial}
                     </span>
                     <span className="truncate">{team.name}</span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -78,7 +65,8 @@ const Menu: React.FC = () => {
           <li className="mt-auto">
             <a
               href="#"
-              className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white"
+              className="flex items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-white"
+
             >
               <img
                 className="h-8 w-8 rounded-full bg-gray-800"
@@ -95,4 +83,4 @@ const Menu: React.FC = () => {
   )
 }
 
-export default Menu;
+export default Navbar;
