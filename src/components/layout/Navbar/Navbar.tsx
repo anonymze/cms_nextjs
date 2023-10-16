@@ -4,7 +4,7 @@ import { mainNavigation, optionsNavigation } from './navLinks';
 
 const Navbar: React.FC = () => {
   return (
-    <div className="flex grow flex-col gap-y-5 overflow-y-auto">
+    <div className="flex grow flex-col gap-y-5 h-full overflow-y-auto">
       <div className="flex h-16 shrink-0 items-center">
         <img
           className="h-8 w-auto"
@@ -62,9 +62,9 @@ const Navbar: React.FC = () => {
               ))}
             </ul>
           </li>
-          <li className="mt-auto">
-            <a
-              href="#"
+          <li className='margin-top: auto;'>
+            <Link
+              href="/dashboard"
               className="flex items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-white"
 
             >
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
               />
               <span className="sr-only">Your profile</span>
               <span aria-hidden="true">Tom Cook</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
