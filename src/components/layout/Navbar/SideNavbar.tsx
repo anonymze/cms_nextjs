@@ -2,7 +2,7 @@ import { cn } from '@/utils/libs/utils'
 import Link from "next/link"
 import { mainNavigation, optionsNavigation } from './navLinks';
 
-const Navbar: React.FC = () => {
+const SideNavbar: React.FC = () => {
   return (
     <div className="flex grow flex-col gap-y-5 h-full overflow-y-auto">
       <div className="flex h-16 shrink-0 items-center">
@@ -83,4 +83,4 @@ const Navbar: React.FC = () => {
   )
 }
 
-export default Navbar;
+export default SideNavbar;
