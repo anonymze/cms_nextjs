@@ -8,7 +8,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
         <aside className="container col-span-3 row-span-12 bg-gray-900 xl:col-span-2">
             <SideNavbar />
         </aside>
-        <main className="container col-span-9 row-span-11 mt-6 overflow-y-scroll xl:col-span-10">
+        <main className="container col-span-9 row-span-11 py-8 overflow-y-scroll xl:col-span-10">
             <TopNavbar />
             {children}
         </main>
