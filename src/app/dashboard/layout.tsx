@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -11,10 +10,5 @@ export default function Layout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-      <>
-        <Header title="Gestion utilisateur" />
-        {children}
-      </>
-  )
+  return {children}
 }
