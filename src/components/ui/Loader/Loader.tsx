@@ -1,10 +1,10 @@
 import type { PropsWithChildren } from 'react';
-import './SpinnerLoader.css';
+import './Loader.css';
 
 const SpinnerLoader: React.FC<PropsWithChildren> = () => {
   return (
-    <div className='w-full mx-auto relative'>
-      <div className='loader-disney' role='status' aria-live="assertive"></div>
+    <div className='relative w-full mx-auto'>
+      <div className="loader-disney" role='status' aria-live="assertive"></div>
     </div>
   )
 }

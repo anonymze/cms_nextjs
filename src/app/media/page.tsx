@@ -1,8 +1,5 @@
-"use client"
-
-import { Button } from "@/components/ui/Button";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import { PlusCircleIcon } from "lucide-react";
+import ContentMedia from "./ContentMedia";
 
 const COUNT_CARD_SKELETONS = 6;
 
@@ -13,7 +10,7 @@ export default async function page() {
           <SkeletonCard key={i} />
         )}
         <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col">
-          <Button className="py-8 px-6" onClick={() => {}}><PlusCircleIcon className="h-6 w-6 mr-2"/> Ajouter votre premier média</Button>
+          <ContentMedia />
         </div>
     </section>
   )

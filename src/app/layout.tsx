@@ -1,5 +1,7 @@
 import App from '@/App'
 import { Inter } from 'next/font/google'
+import { cn } from '@/utils/libs/utils'
+import Layout from '@/components/layout/Layout'
 
 const fontSans = Inter(
   { 
@@ -13,9 +15,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      // it seems i have to pass the font in the props, because there is a difference between ssr and client classname
-      <App fontSans={fontSans}>
-        {children}
+      <App>
+        <body 
+            className={cn(
+                "h-screen",
+                fontSans.className
+            )}      
+            >
+                <Layout>
+                    {children}
+                </Layout>
+            </body>
       </App>
   )
 }
