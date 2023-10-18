@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import { fontFamily } from "tailwindcss/defaultTheme"
 
 const config: Config = {
   darkMode: ["class"],
@@ -9,15 +8,26 @@ const config: Config = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
 	],
+  breakpoints: {
+
+  },
   theme: {
     container: {
       center: true,
       padding: "1rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      // screens: {
+      //   "2xl": "1400px",
+      // },
     },
     extend: {
+      screens: {
+        xs: "391px",
+        sm: "720px",
+        md: "920px",
+        lg: "1200px",
+        xl: "1500px",
+        "2xl": "1920px",
+      },
       colors: {
         /* custom */
         border: "hsl(var(--border))",
