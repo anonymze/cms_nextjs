@@ -10,4 +10,4 @@ const SpinnerLoader: React.FC<Props> = () => {
   )
 }
 
-export default SpinnerLoader
+export { SpinnerLoader }

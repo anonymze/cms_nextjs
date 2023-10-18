@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description: 'Créé par Yann M.',
 }
 
-const App: React.FC<AppProps> = ({ children, fontSans }) => {
+export default function App({ children, fontSans }: AppProps) {
     const theme = useThemeStore((state) => state.theme);
 
     return (
@@ -36,5 +36,3 @@ const App: React.FC<AppProps> = ({ children, fontSans }) => {
         </html>
     )
 }
-
-export default App

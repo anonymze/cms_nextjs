@@ -1,6 +1,6 @@
-import BackNavigation from "../BackNavigation"
 import Footer from "./Footer"
-import Navbar from "./Navbar/Navbar"
+import Navbar from "./Navbar/SideNavbar"
+import TopNavbar from "./Navbar/TopNavbar"
 
 const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
   return (
@@ -9,7 +9,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
             <Navbar />
         </aside>
         <main className="container col-span-9 row-span-11 mt-6 overflow-y-scroll">
-            <BackNavigation />
+            <TopNavbar />
             {children}
         </main>
         <footer className="container col-span-9 row-span-1">

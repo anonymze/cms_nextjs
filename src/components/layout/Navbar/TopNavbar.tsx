@@ -3,13 +3,13 @@
 
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from 'next/navigation'
-import Button from "./ui/Button";
-import { Switch } from "./ui/switch";
+import { Button } from "../../ui/Button";
 import { useThemeStore } from "@/contexts/StoreUIContext";
+import { Switch } from "../../ui/Switch";
 
 interface Props {}
 
-const BackNavigation: React.FC<Props> = () => {
+const TopNavbar: React.FC<Props> = () => {
   const setTheme = useThemeStore((theme) => theme.setTheme)
     const router = useRouter();
 
@@ -34,4 +34,4 @@ const BackNavigation: React.FC<Props> = () => {
   )
 }
 
-export default BackNavigation
+export default TopNavbar
