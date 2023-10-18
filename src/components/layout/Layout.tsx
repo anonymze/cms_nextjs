@@ -1,6 +1,7 @@
 import Footer from "./Footer"
+import Header from "./Header"
 import SideNavbar from "./Navbar/SideNavbar"
-import TopNavbar from "./Navbar/TopNavbar"
+// import TopNavbar from "./Navbar/TopNavbar"
 
 const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
   return (
@@ -8,8 +9,8 @@ const Layout: React.FC<React.PropsWithChildren> = ({children}) => {
         <aside className="container col-span-3 row-span-12 bg-gray-900 xl:col-span-2">
             <SideNavbar />
         </aside>
-        <main className="container col-span-9 row-span-11 py-8 overflow-y-scroll xl:col-span-10">
-            <TopNavbar />
+        <main className="container col-span-9 row-span-11 py-md overflow-y-scroll xl:col-span-10">
+            <Header title="Médiathèque" />
             {children}
         </main>
         <footer className="container col-span-9 row-span-1 xl:col-span-10">

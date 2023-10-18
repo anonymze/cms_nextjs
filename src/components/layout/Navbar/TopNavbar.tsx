@@ -28,7 +28,7 @@ const TopNavbar: React.FC<Props> = () => {
     }
   return (
     <nav className="flex justify-between items-center pb-8">
-        <Button actionClick={goBack}><ArrowLeft className="h-5 w-5 mr-2" /> Retour</Button>
+        <Button actionClick={goBack}><ArrowLeft className="h-5 w-5 mr-1" /> Retour</Button>
         <Switch onCheckedChange={changeTheme} />
     </nav>
   )

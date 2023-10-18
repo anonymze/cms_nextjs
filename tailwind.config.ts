@@ -21,12 +21,18 @@ const config: Config = {
     },
     extend: {
       screens: {
-        xs: "391px",
+        xs: "392px",
         sm: "720px",
-        md: "920px",
+        md: "960px",
         lg: "1200px",
         xl: "1500px",
         "2xl": "1920px",
+      },
+      spacing: {
+        sm: '0.8rem',
+        md: "1.8rem",
+        lg: "3rem",
+        xl: "6rem"
       },
       colors: {
         /* custom */

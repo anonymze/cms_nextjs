@@ -1,11 +1,13 @@
-interface Props {}
-
-const page: React.FC<Props> = () => {
+export default async function page() {
   return (
-    <>
-        <h1>media</h1>
-    </>
+    <section>
+      <article className="grid grid-flow-col">
+        <div className="max-w-[20px]">1</div>
+        <div className="max-w-[20px]">1</div>
+        <div className="max-w-[20px]">1</div>
+        <div className="max-w-[20px]">1</div>
+        <div className="max-w-[20px]">1</div>
+      </article>
+    </section>
   )
 }
-
-export default page
