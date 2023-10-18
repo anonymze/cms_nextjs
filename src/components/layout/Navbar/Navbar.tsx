@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
               ))}
             </ul>
           </li>
-          <li className='margin-top: auto;'>
+          <li className='mt-auto'>
             <Link
               href="/dashboard"
               className="flex items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-white"

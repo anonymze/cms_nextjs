@@ -19,11 +19,13 @@ const config: Config = {
     },
     extend: {
       colors: {
+        /* custom */
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        /* exists */
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -52,6 +54,15 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      gridRow: {
+        "span-11": "span 11 / span 11",
+        "span-12": "span 12 / span 12",
+      },
+      gridTemplateRows: {
+        '8': 'repeat(8, minmax(0, 1fr))',
+        '10': 'repeat(10, minmax(0, 1fr))',
+        '12': 'repeat(12, minmax(0, 1fr))',
       },
       borderRadius: {
         lg: "var(--radius)",
