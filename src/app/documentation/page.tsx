@@ -1,3 +1,5 @@
+import Header from "@/components/layout/Header"
+
 interface Props {}
 
 const page: React.FC<Props> = () => {

@@ -3,7 +3,7 @@ import { Smile } from "lucide-react"
 export const mainNavigation = [
     { name: 'Contenu', href: '/contenu', icon: Smile, count: '5', current: false },
     { name: 'Gestion des contenus', href: '/gestion-contenu', icon: Smile, count: '5', current: false },
-    { name: 'Média', href: '/media', icon: Smile, count: '5', current: false },
+    { name: 'Médiatheque', href: '/media', icon: Smile, count: '5', current: false },
   ] satisfies Array<{ name: string; href: __next_route_internal_types__.RouteImpl<string>; icon: any; count: string; current: boolean }>
   
 export const optionsNavigation = [

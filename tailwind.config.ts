@@ -35,13 +35,11 @@ const config: Config = {
         xl: "6rem"
       },
       colors: {
-        /* custom */
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        /* exists */
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -79,6 +77,12 @@ const config: Config = {
         '8': 'repeat(8, minmax(0, 1fr))',
         '10': 'repeat(10, minmax(0, 1fr))',
         '12': 'repeat(12, minmax(0, 1fr))',
+      },
+      gridTemplateColumns: {
+        'wrap-sm': "repeat(auto-fit, minmax(5rem, 1fr))",
+        'wrap-md': "repeat(auto-fit, minmax(10rem, 1fr))",
+        'wrap-lg': "repeat(auto-fit, minmax(15rem, 1fr))",
+        'wrap-xl': "repeat(auto-fit, minmax(20rem, 1fr))",
       },
       borderRadius: {
         lg: "var(--radius)",
