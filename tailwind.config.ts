@@ -81,8 +81,8 @@ const config: Config = {
       gridTemplateColumns: {
         'wrap-sm': "repeat(auto-fit, minmax(5rem, 1fr))",
         'wrap-md': "repeat(auto-fit, minmax(10rem, 1fr))",
-        'wrap-lg': "repeat(auto-fit, minmax(15rem, 1fr))",
-        'wrap-xl': "repeat(auto-fit, minmax(20rem, 1fr))",
+        'wrap-lg': "repeat(auto-fit, minmax(14rem, 1fr))",
+        'wrap-xl': "repeat(auto-fit, minmax(18rem, 1fr))",
       },
       borderRadius: {
         lg: "var(--radius)",
