@@ -19,9 +19,8 @@ const ContentMedia: React.FC<PropsWithChildren> = () => {
             }}>Enregistrer</Button>
         </DialogFooter>
       </Dialog>
-      <Button large={true} onClick={() => dialogRef.current?.show()}><PlusCircleIcon className="h-6 w-6 mr-2" /> Ajouter un média</Button>
+      <Button large={true} onClick={() => dialogRef.current?.show()}><PlusCircleIcon className="h-6 w-6 mr-2" /> Ajouter votre premier média</Button>
     </>
-
   )
 }
 

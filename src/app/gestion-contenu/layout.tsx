@@ -14,6 +14,7 @@ export default function Layout({
   return (
       <>
         <Header title="Gestion de contenu" />
+        {children}
       </>
   )
 }
