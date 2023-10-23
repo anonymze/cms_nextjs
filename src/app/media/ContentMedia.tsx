@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "@/components/ui/Dialog"
-import DragAndDrop from "@/components/ui/DragAndDrop";
-import { Input } from "@/components/ui/Input";
+import DropZone from "@/components/ui/DropZone";
 import { PlusCircleIcon } from "lucide-react";
 import { useRef, type PropsWithChildren } from "react"
 
@@ -15,7 +14,7 @@ const ContentMedia: React.FC<PropsWithChildren> = () => {
       <Dialog ref={dialogRef}>
         <DialogHeader title="Ajouter un média" />
         <DialogBody>
-          <DragAndDrop />
+          <DropZone />
         </DialogBody>
         <DialogFooter>
           <Button type="submit" onClick={(e) => {

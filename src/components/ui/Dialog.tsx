@@ -1,4 +1,4 @@
-import  React, { useEffect } from "react"
+import  React from "react"
 import { cn } from "@/utils/libs/utils"
 import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./Separator"
