@@ -1,6 +1,6 @@
 import { useEffect, useRef, type PropsWithChildren, type DragEvent } from "react"
 import { Button } from "./Button"
-import { convertFileToBaseType } from "@/utils/file";
+import { convertFileToBaseType } from "@/utils/file_resolving";
 
 const DropZone: React.FC<PropsWithChildren> = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -17,7 +17,7 @@ const DropZone: React.FC<PropsWithChildren> = () => {
   }, [inputRef])
 
   return (
-    <div onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}  className="grid items-center h-full py-8 text-center rounded-md border-[1px] border-dashed hover:border-white">
+    <div onDrop={handleFileDrop} onDragOver={(e) => e.preventDefault()}  className="grid items-center h-full py-8 text-center rounded-md border-[1px] border-dashed">
         <p>
             Déposer un fichier
             <br/>
@@ -39,8 +39,20 @@ async function handleFileUpload(this: HTMLInputElement) {
   if (!file) return;
 
   const base64File = await convertFileToBaseType(file, "base64");
+  // console.log(base64File);
 
-  console.log(base64File);
+  const ok =  new FormData();
+  ok.append("file", file);
+  ok.append("name", file.name);
+
+  fetch("/api/uploads", {
+    method: "POST",
+    // headers: {
+    //   "Content-Type": "multipart/form-data"
+    // },
+    body: ok
+  })
+
 }
 
 async function handleFileDrop(ev: DragEvent<HTMLDivElement>) {
@@ -51,8 +63,7 @@ async function handleFileDrop(ev: DragEvent<HTMLDivElement>) {
   if (!file) return;
 
   const base64File = await convertFileToBaseType(file, "base64");
-
-  console.log(base64File);
+  // console.log(base64File);
 }
 
 export default DropZone

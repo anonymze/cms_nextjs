@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { jsonResponseUnauthorized } from './utils/response_API'
 
 type TokenInfo = {
   validToken: true,
@@ -8,29 +9,28 @@ type TokenInfo = {
   validToken: false,
   token: null
 }
+
+export const config = {
+  matcher: ['/', '/api/:path*'],
+}
  
 // This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
    // on redirige / vers /dashboard
   if (request.nextUrl.pathname === '/') return NextResponse.redirect(new URL('/dashboard', request.url));
 
   if (request.nextUrl.pathname.startsWith('/api')) {
     const { validToken, token } = tokenInfo(request);
 
-    // si token pas valide on redirige vers une route qui indique erreur d'autorisation
-    if (!validToken) {
-      return NextResponse.redirect(new URL('/401', request.url));
-    }
+    // si token pas valide on indique une 401
+    if (!validToken) return jsonResponseUnauthorized;
 
     console.log(token);
     // TODO: vérifier que le token lié à un utilisateur est autorisé à faire cette action
   }
 
+  // on passe le middleware de base
   return NextResponse.next();
-}
- 
-export const config = {
-  matcher: ['/', '/api/:path*'],
 }
 
 const tokenInfo = (request: NextRequest): TokenInfo => {
