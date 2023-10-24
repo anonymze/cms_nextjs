@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { jsonResponseUnauthorized } from './utils/response_API'
+import { jsonResponseUnauthorized } from './utils/responses/response_post_api'
 
 type TokenInfo = {
   validToken: true,

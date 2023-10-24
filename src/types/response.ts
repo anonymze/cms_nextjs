@@ -1,20 +1,9 @@
-type CompositionResponse = {
-    headerResponse: ResponseInit,
-    bodyResponse: unknown,
+interface JsonResponseCore {
+    status: number,
+    statusText: string,
+    headers?: HeadersInit
 }
 
-type  CompositionResponseNoError = CompositionResponse &  {
-    error: false,
-}
-
-type  CompositionResponseError = CompositionResponse &  {
-    error: true,
-}
-
-export type PostCompositionResponse = CompositionResponseNoError & {
-    contentRequest: Promise<unknown>
-} | CompositionResponseError & {
-    contentRequest: null,
-}
-
-export type GetCompositionresponse = CompositionResponseNoError;
+export interface JsonResponse extends JsonResponseCore {
+    body: unknown,
+} 
