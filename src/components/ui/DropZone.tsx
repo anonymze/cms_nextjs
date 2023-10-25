@@ -1,6 +1,5 @@
 import { useEffect, useRef, type PropsWithChildren, type DragEvent } from "react"
 import { Button } from "./Button"
-import { convertFileToBaseType } from "@/utils/file_resolving";
 
 const DropZone: React.FC<PropsWithChildren> = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,21 +37,7 @@ async function handleFileUpload(this: HTMLInputElement) {
   const file = this.files?.[0];
   if (!file) return;
 
-  const base64File = await convertFileToBaseType(file, "base64");
-  // console.log(base64File);
-
-  const ok =  new FormData();
-  ok.append("file", file);
-  ok.append("name", file.name);
-
-  fetch("/api/uploads", {
-    method: "POST",
-    // headers: {
-    //   "Content-Type": "multipart/form-data"
-    // },
-    body: ok
-  })
-
+  sendFileToServer(file);
 }
 
 async function handleFileDrop(ev: DragEvent<HTMLDivElement>) {
@@ -62,8 +47,17 @@ async function handleFileDrop(ev: DragEvent<HTMLDivElement>) {
   const file = ev.dataTransfer?.files?.[0];
   if (!file) return;
 
-  const base64File = await convertFileToBaseType(file, "base64");
-  // console.log(base64File);
+  sendFileToServer(file);
 }
+
+const sendFileToServer =(file: File) => {
+  const formData =  new FormData();
+  formData.append("file", file);
+
+  fetch("/api/uploads", {
+    method: "POST",
+    body: formData
+  })
+};
 
 export default DropZone

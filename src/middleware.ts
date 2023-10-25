@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { jsonResponseUnauthorized } from './utils/responses/response_post_api'
+import { jsonResponseUnauthorized } from './utils/responses/response_error'
 
 type TokenInfo = {
   validToken: true,
@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
     const { validToken, token } = tokenInfo(request);
 
     // si token pas valide on indique une 401
-    if (!validToken) return jsonResponseUnauthorized;
+    if (!validToken) return jsonResponseUnauthorized();
 
     console.log(token);
     // TODO: vérifier que le token lié à un utilisateur est autorisé à faire cette action

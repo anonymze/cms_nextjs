@@ -1,3 +1,14 @@
+export const MAX_FILE_SIZE = 5000000;
+
+export function isValidFileType(file: File) {
+    if (file?.name) {
+        const fileType = file.name.split(".").pop();
+        if (fileType === "jpeg" || fileType === "jpg") return true;
+    }
+    return false;
+}
+
+
 export function convertFileToBaseType<T = string | ArrayBuffer>(file: File, type: "binary" | "base64" | "arrayBuffer"): Promise<T> {
     const fileReader = new FileReader();
 
