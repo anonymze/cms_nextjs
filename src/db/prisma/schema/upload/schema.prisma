@@ -1,5 +1,8 @@
 model Upload {
     id        Int     @id @default(autoincrement())
-    filepath  String
+    uuid      String  @unique @default(uuid())
+    filepath_public  String
     filetype  String
+
+    @@index(fields: [uuid])
 }

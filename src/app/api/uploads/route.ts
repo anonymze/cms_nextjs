@@ -5,7 +5,8 @@ import { jsonResponsePost } from "@/utils/api/responses/response_success";
 import { manageFile } from "@/utils/file_resolving";
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prismaClient = new PrismaClient();
+
 const ACCEPTED_CONTENT_TYPE = 'multipart/form-data';
 
 export async function GET(req: Request) {
@@ -32,11 +33,20 @@ export async function POST(req: Request) {
     return jsonResponseBadRequest(messageErrorVerification);
   }
 
-  const { error: errorFile, filepath, filetype } = manageFile(dataVerified.file);
+  const { error: errorFile, filepathPublic, filetype } = await manageFile(dataVerified.file);
 
-  console.log(filepath, filetype);
+  if (errorFile) {
+    return jsonResponseBadRequest("Le fichier n'a pas pu être créé");
+  }
 
-  return jsonResponsePost({ filepath, filetype });
+  const upload = await prismaClient.upload.create({
+    data: {
+      filepath_public: filepathPublic,
+      filetype: filetype,
+    },
+  })
+
+  return jsonResponsePost({ id: upload.uuid, filetype });
 }
 
 

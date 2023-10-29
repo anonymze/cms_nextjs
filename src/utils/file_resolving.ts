@@ -1,15 +1,14 @@
-import type { Upload } from "@/types/upload";
 import fs from "fs";
 
-export const MAX_FILE_SIZE = 5_000_000; // 5mb
+const FOLDER_UPLOADS = "uploads";  
 const TYPE_FILES_ACCEPTED = ["image/jpeg", "image/jpg"]; 
-const FOLDER_BASE = process.cwd();
-const FOLDER_UPLOADS = "public/uploads";  
+export const MAX_FILE_SIZE = 5_000_000; // 5mb
 
 export function isValidFileType(file: File) {
     return TYPE_FILES_ACCEPTED.includes(file.type);
 }
 
+// TODO typing match type
 export function convertFileToBaseType<T = string | ArrayBuffer>(file: File, type: "binary" | "base64" | "arrayBuffer"): Promise<T> {
     const fileReader = new FileReader();
 
@@ -32,14 +31,23 @@ export function convertFileToBaseType<T = string | ArrayBuffer>(file: File, type
     });
 }
 
-export async function manageFile(file: File): Omit<Upload, "id"> & { error: boolean } {
-    const uniqueHash = 'fiherifg';
-    try {   
-        const writeStream = fs.createWriteStream(`${FOLDER_BASE}/${FOLDER_UPLOADS}/${uniqueHash}.${getExtensionFile(file.type)}`);
-        writeStream.write(file);
-        writeStream.end();
-    } catch(err) {
+type ManagedFile = 
+    | { error: false, filepathPublic: string, filetype: string } 
+    | { error: true };
 
+export async function manageFile(file: File)  {
+    // TODO: generate unique hash
+    const hash = 'oki'
+    const fileExtension = getExtensionFile(file.type);
+    const filepathPublic = `${FOLDER_UPLOADS}/${hash}.${fileExtension}`;
+
+    try {   
+        // Uint8Array or Buffer is accepted
+        fs.appendFileSync(`public/${filepathPublic}`, Buffer.from(await file.arrayBuffer()));
+
+        return { error: false, filepathPublic: filepathPublic, filetype: file.type} satisfies ManagedFile;
+    } catch(err) {
+        return { error: true } satisfies ManagedFile;
     }
 }
 

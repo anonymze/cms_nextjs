@@ -29,15 +29,12 @@ function validContentType(headers: Headers, acceptedContentType: ContentTypeAcce
 }
 
 function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchema: z.ZodType<T>)  {
-    console.log(data instanceof FormData);
     try {
         if (contentType === 'multipart/form-data') {
             // transform formdata to object if formData
             data = Object.fromEntries(data as FormData);  
         }
 
-        console.log(data);
-        
         // parse throw an error if data does not match schema
         return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequest<T>;
     } catch (err) {
