@@ -4,7 +4,7 @@
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from 'next/navigation'
 import { Button } from "../../ui/Button";
-import { useThemeStore } from "@/contexts/StoreUIContext";
+import { useThemeStore } from "@/contexts/store_ui_context";
 import { Switch } from "../../ui/Switch";
 
 interface Props {}
