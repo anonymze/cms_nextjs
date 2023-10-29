@@ -21,7 +21,7 @@ type ParserRequest<T = undefined> = { error: true, messageError: string } | { er
 type ContentTypeAccepted = 'multipart/form-data' | 'application/json';
 
 function validContentType(headers: Headers, acceptedContentType: ContentTypeAccepted) {
-    if (headers.get('content-type') === acceptedContentType) {
+    if (headers.get('content-type')?.startsWith(acceptedContentType)) {
         return { error: false, contentType: acceptedContentType } satisfies ParserRequest<ContentTypeAccepted>;
     }
     
@@ -29,15 +29,22 @@ function validContentType(headers: Headers, acceptedContentType: ContentTypeAcce
 }
 
 function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchema: z.ZodType<T>)  {
+    console.log(data instanceof FormData);
     try {
         if (contentType === 'multipart/form-data') {
-            // transform formdata to object
-            data = Object.fromEntries(data as FormData);        
+            // transform formdata to object if formData
+            data = Object.fromEntries(data as FormData);  
         }
+
+        console.log(data);
         
-        // parse throw error if data does not match schema
+        // parse throw an error if data does not match schema
         return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequest<T>;
     } catch (err) {
+        if (err instanceof z.ZodError) {
+            return { error: true, messageError: err.message } satisfies ParserRequest;
+        }
+
         return { error: true, messageError: 'Les données sont invalides' } satisfies ParserRequest;
     }
 }

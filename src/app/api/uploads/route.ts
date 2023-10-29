@@ -2,7 +2,10 @@ import { uploadSchema } from "@/types/upload";
 import { parserRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
+import { manageFile } from "@/utils/file_resolving";
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient();
 const ACCEPTED_CONTENT_TYPE = 'multipart/form-data';
 
 export async function GET(req: Request) {
@@ -29,7 +32,12 @@ export async function POST(req: Request) {
     return jsonResponseBadRequest(messageErrorVerification);
   }
 
-  return jsonResponsePost(dataVerified);
+  const { error: errorFile, filepath, filetype } = manageFile(dataVerified.file);
+
+  console.log(filepath, filetype);
+
+  return jsonResponsePost({ filepath, filetype });
 }
+
 
 

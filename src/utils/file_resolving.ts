@@ -1,13 +1,14 @@
+import type { Upload } from "@/types/upload";
+import fs from "fs";
+
 export const MAX_FILE_SIZE = 5_000_000; // 5mb
+const TYPE_FILES_ACCEPTED = ["image/jpeg", "image/jpg"]; 
+const FOLDER_BASE = process.cwd();
+const FOLDER_UPLOADS = "public/uploads";  
 
 export function isValidFileType(file: File) {
-    if (file?.name) {
-        const fileType = file.name.split(".").pop();
-        if (fileType === "jpeg" || fileType === "jpg") return true;
-    }
-    return false;
+    return TYPE_FILES_ACCEPTED.includes(file.type);
 }
-
 
 export function convertFileToBaseType<T = string | ArrayBuffer>(file: File, type: "binary" | "base64" | "arrayBuffer"): Promise<T> {
     const fileReader = new FileReader();
@@ -29,4 +30,22 @@ export function convertFileToBaseType<T = string | ArrayBuffer>(file: File, type
             return;
         }
     });
+}
+
+export async function manageFile(file: File): Omit<Upload, "id"> & { error: boolean } {
+    const uniqueHash = 'fiherifg';
+    try {   
+        const writeStream = fs.createWriteStream(`${FOLDER_BASE}/${FOLDER_UPLOADS}/${uniqueHash}.${getExtensionFile(file.type)}`);
+        writeStream.write(file);
+        writeStream.end();
+    } catch(err) {
+
+    }
+}
+
+const getUniqueHash = () => {
+}
+
+const getExtensionFile = (filetype: File["type"]) => {
+    return filetype.split("/")[1];
 }

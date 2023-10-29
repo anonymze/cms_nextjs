@@ -1,14 +1,15 @@
-import { isValidFileType } from "@/utils/file_resolving";
+import { MAX_FILE_SIZE, isValidFileType } from "@/utils/file_resolving";
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 5000000;
-
+// TS type
 export type Upload = {
     readonly id: string,
-    file: File,
+    filepath: string,
+    filetype: string,
 }
 
-export const uploadSchema: z.ZodType<Omit<Upload, 'id'>> = z.object({
+// Zod schema
+export const uploadSchema: z.ZodType<{ file: File }> = z.object({
     file: z.custom<File>()
     .refine((file: File) => file.size < MAX_FILE_SIZE, "Taille maximum 5mo")
     .refine((file: File) => isValidFileType(file), "Type de fichier non supporté")    
