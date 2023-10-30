@@ -1,24 +1,26 @@
 import  React from "react"
 import { cn } from "@/utils/libs/utils"
 import { X } from "lucide-react";
-import { SeparatorHorizontal } from "./Separator"
-import { Button } from "./Button";
+import { SeparatorHorizontal } from "./ui/Separator"
+import { Button } from "./ui/Button";
 
 import type { PropsWithChildren } from "react"
 
 export interface DialogProps
-  extends React.DialogHTMLAttributes<HTMLDialogElement> {}
+  extends React.DialogHTMLAttributes<HTMLDialogElement> {
+    onSubmitForm?: (ev: React.FormEvent<HTMLFormElement>) => void;
+  }
 
 const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
-    ({ children, className, ...props }, ref) => {
+    ({ children, className, onSubmitForm, ...props }, ref) => {
 
       return (
-        <dialog className={cn("fixed block left-1/2 top-1/2 w-[50vh] p-4",
+        <dialog className={cn("fixed block left-1/2 top-1/2 w-[65vh] p-4",
         "translate-x-[-50%] translate-y-[-40%]",
          "bg-popover text-popover-foreground rounded-md border-[1px]",
          "opacity-0 invisible transition-fade open:opacity-100 open:translate-y-[-50%] open:visible"
          , className)} {...props} ref={ref}>
-            <form className="flex flex-col h-full" method="dialog">
+            <form onSubmit={onSubmitForm} className="flex flex-col h-full" method="dialog" noValidate>
                 {children}
             </form>
         </dialog>
