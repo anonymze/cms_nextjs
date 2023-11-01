@@ -2,7 +2,7 @@
 
 import { useRef, type ChangeEvent, useState, useCallback } from "react";
 import { Button } from "./ui/Button"
-import MediaOperation from "./MediaOperation";
+import MediaOperation from "./MediaOperation/MediaOperation";
 import { type PropsWithChildren, type DragEvent} from "react"
 import { convertFileToBaseType } from "@/utils/file_resolving";
 
@@ -42,10 +42,9 @@ const DropZone: React.FC<PropsWithChildren> = () => {
           </p> 
       </div>)
       : (
-        <div className="flex gap-4">
-          {files.map((base64, idx) => (<MediaOperation key={idx} >
-              <img className="w-20 h-20 object-cover" src={base64} alt="" />
-          </MediaOperation>)
+        <div className="flex flex-wrap gap-4">
+          {files.map((base64, idx) => (<MediaOperation key={idx} base64={base64} />
+          )
           )}
           </div>
       )
