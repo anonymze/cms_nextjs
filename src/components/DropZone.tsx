@@ -1,4 +1,4 @@
-import { useRef, useCallback, type ChangeEventHandler } from "react";
+import { useRef, useCallback } from "react";
 import { Button } from "./ui/Button"
 import MediaOperation from "./MediaOperation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
@@ -17,6 +17,7 @@ const DropZone: React.FC<PropsWithChildren> = () => {
     switch(type) {
       case "drop":
         fileList = (ev as DragEvent).dataTransfer.files;
+        ev.preventDefault();
         break;
       case "upload":
         fileList = (ev as ChangeEvent<HTMLInputElement>).currentTarget.files;
@@ -41,7 +42,7 @@ const DropZone: React.FC<PropsWithChildren> = () => {
   
   return (
     <>
-    {files.length < 1 ? (<div onDrop={(ev) => handleFiles(ev, "drop")} onDragOver={(ev) => ev.preventDefault()}  className="grid items-center h-full py-14 text-center rounded-md border-[1px] border-dashed">
+    {files.length <= 0 ? (<div onDrop={(ev) => handleFiles(ev, "drop")} onDragOver={(ev) => ev.preventDefault()}  className="grid items-center h-full py-14 text-center rounded-md border-[1px] border-dashed">
           <p>
               Déposer un fichier
               <br/>

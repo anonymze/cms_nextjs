@@ -21,7 +21,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       large ? "px-5 py-3 text-base" : "px-4 py-2 text-sm",
       fill ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-transparent text-secondary-foreground hover:bg-primary/10",
       !fill && outline && "border-[1px]",
-    className)}>
+      className,
+    )}>
         {children}
     </button>
   )
