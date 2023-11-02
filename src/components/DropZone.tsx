@@ -2,12 +2,13 @@ import { useRef, useCallback, type ChangeEventHandler } from "react";
 import { Button } from "./ui/Button"
 import MediaOperation from "./MediaOperation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
-import { convertFileToBaseType } from "@/utils/file_resolving";
+import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/file_resolving";
 import { type PropsWithChildren, type DragEvent, type ChangeEvent} from "react"
 
 const DropZone: React.FC<PropsWithChildren> = () => {
-  const setFiles = useFilesStore((state) => state.setFiles);
+  // files from context
   const files = useFilesStore((state) => state.files);
+  const setFiles = useFilesStore((state) => state.setFiles);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback(async(ev: React.SyntheticEvent, type: "drop" | "upload") => {
@@ -18,13 +19,13 @@ const DropZone: React.FC<PropsWithChildren> = () => {
         fileList = (ev as DragEvent).dataTransfer.files;
         break;
       case "upload":
-        fileList = (ev as ChangeEvent<HTMLInputElement>) .currentTarget.files;
+        fileList = (ev as ChangeEvent<HTMLInputElement>).currentTarget.files;
         break;
       default:
         return;
     }
   
-    if (!fileList) return;   
+    if (!fileList || fileList.length === 0) return;   
   
     let setupFiles = [];
   
@@ -52,7 +53,6 @@ const DropZone: React.FC<PropsWithChildren> = () => {
                   className="mt-1" 
                   aria-label="Bouton utilisé pour ajouter un fichier local"
               >Cliquer ici pour sélectionner un fichier</Button>
-              <input hidden onChange={(ev) => handleFiles(ev, "upload")} ref={inputRef} name="file" type="file" multiple formNoValidate />
           </p> 
       </div>)
       : (
@@ -63,7 +63,8 @@ const DropZone: React.FC<PropsWithChildren> = () => {
           </div>
       )
       }
-
+    {/* we need to put input outside of the logic to access it all the time */}
+    <input hidden onChange={(ev) => handleFiles(ev, "upload")} ref={inputRef} name="file" type="file" accept={TYPE_FILES_ACCEPTED.join(',')} multiple formNoValidate />
           </>
   )
 }

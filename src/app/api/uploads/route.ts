@@ -1,8 +1,8 @@
 import { uploadSchema } from "@/types/upload";
+import { manageFile } from "@/utils/api/file_resolving";
 import { parserRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
-import { manageFile } from "@/utils/file_resolving";
 import { PrismaClient } from '@prisma/client'
 
 const prismaClient = new PrismaClient();

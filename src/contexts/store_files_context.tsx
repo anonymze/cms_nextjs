@@ -11,14 +11,11 @@ type StateFiles = {
   
 type ActionFiles = {
     setFiles: (files: FileTypeStore[]) => void,
-    // removeSingleFile: (file: File) => void
+    removeFile: (file: File) => void
 }
 
 export const useFilesStore = create<StateFiles & ActionFiles>()((set) => ({
   files: [],
-  setFiles: (files) => set((filesStore) => {
-    if (files.length === 0) return { files: [] };
-    return ({ files: [...filesStore.files, ...files] })
-  }),
-  // removeSingleFile: (file) => set((filesStore) => ({ files: filesStore.files })),
+  setFiles: (files) => set((filesStore) => ({ files: files.length === 0 ? [] : [...filesStore.files, ...files] })),
+  removeFile: (file) => set((filesStore) => ({ files: filesStore.files.filter((fileStore) => fileStore.file !== file )})),
 }))

@@ -1,4 +1,4 @@
-const TYPE_FILES_ACCEPTED = ["image/jpeg", "image/jpg"]; 
+export const TYPE_FILES_ACCEPTED = ["image/jpeg", "image/jpg"]; 
 export const MAX_FILE_SIZE = 5_000_000; // 5mb
 
 export function isValidFileType(file: File) {

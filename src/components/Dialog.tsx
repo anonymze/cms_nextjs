@@ -4,7 +4,6 @@ import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./ui/Separator"
 import { Button } from "./ui/Button";
 import type { PropsWithChildren } from "react";
-import { useFilesStore } from "@/contexts/store_files_context";
 
 export interface DialogProps
   extends React.DialogHTMLAttributes<HTMLDialogElement> {
@@ -13,11 +12,9 @@ export interface DialogProps
 
 const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
     ({ children, className, onSubmitForm, ...props }, ref) => {
-        const setFiles = useFilesStore((state) => state.setFiles);
 
         return (
-            // on close we reset the UI after the transition time
-            <dialog onClose={() => setTimeout(() => setFiles([]) , 150)} className={cn("fixed block left-1/2 top-1/2 w-[65vh] p-4",
+            <dialog className={cn("fixed block left-1/2 top-1/2 w-[65vh] p-4",
             "translate-x-[-50%] translate-y-[-40%]",
             "bg-popover text-popover-foreground rounded-md border-[1px]",
             "opacity-0 invisible transition-fade open:opacity-100 open:translate-y-[-50%] open:visible"
@@ -54,9 +51,10 @@ const DialogBody: React.FC<PropsWithChildren> = ({ children }) => {
 
 const DialogFooter: React.FC<PropsWithChildren> = ({children}) => {
     return (
-        <div className="flex items-center gap-2 [&>button:first-of-type]:ml-auto">
-            <Button type="submit" role="cancel" aria-label="Fermer la popup" fill={false}>Annuler</Button>
+        <div className="flex items-center gap-2">
             {children}
+            <Button className="ml-auto" type="submit" role="cancel" fill={false} aria-label="Fermer la popup">Annuler</Button>
+            <Button type="submit">Enregistrer</Button>
         </div>
     )
 }
