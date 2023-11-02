@@ -15,7 +15,7 @@
 
 .media-operation:hover figcaption {
     opacity: 1;
-    transform: translateY(0rem);
+    transform: translate(-50%, -50%);
 }
 
 .media-operation img {
@@ -31,11 +31,11 @@
 
 .media-operation figcaption {
     position: absolute;
-    inset: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% + 1rem));
     display: grid;
     place-items: center;
     opacity: 0;
-    line-height: var(--size);
     transition: opacity var(--transition), transform var(--transition);
-    transform: translateY(1rem);
 }

@@ -3,8 +3,8 @@ import { cn } from "@/utils/libs/utils"
 import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./ui/Separator"
 import { Button } from "./ui/Button";
-
-import type { PropsWithChildren } from "react"
+import type { PropsWithChildren } from "react";
+import { useFilesStore } from "@/contexts/store_files_context";
 
 export interface DialogProps
   extends React.DialogHTMLAttributes<HTMLDialogElement> {
@@ -13,18 +13,20 @@ export interface DialogProps
 
 const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
     ({ children, className, onSubmitForm, ...props }, ref) => {
+        const setFiles = useFilesStore((state) => state.setFiles);
 
-      return (
-        <dialog className={cn("fixed block left-1/2 top-1/2 w-[65vh] p-4",
-        "translate-x-[-50%] translate-y-[-40%]",
-         "bg-popover text-popover-foreground rounded-md border-[1px]",
-         "opacity-0 invisible transition-fade open:opacity-100 open:translate-y-[-50%] open:visible"
-         , className)} {...props} ref={ref}>
-            <form onSubmit={onSubmitForm} className="flex flex-col h-full" method="dialog" noValidate>
-                {children}
-            </form>
-        </dialog>
-      )
+        return (
+            // on close we reset the UI after the transition time
+            <dialog onClose={() => setTimeout(() => setFiles([]) , 150)} className={cn("fixed block left-1/2 top-1/2 w-[65vh] p-4",
+            "translate-x-[-50%] translate-y-[-40%]",
+            "bg-popover text-popover-foreground rounded-md border-[1px]",
+            "opacity-0 invisible transition-fade open:opacity-100 open:translate-y-[-50%] open:visible"
+            , className)} ref={ref} {...props}>
+                <form onSubmit={onSubmitForm} className="flex flex-col h-full" method="dialog" noValidate>
+                    {children}
+                </form>
+            </dialog>
+        )
     }
   )
 
@@ -35,7 +37,7 @@ const DialogHeader: React.FC<{ title: string }> = ({title}) => {
         <>
             <div className="flex items-center justify-between pb-2">
                 <h3>{title}</h3>               
-                <Button outline={false} fill={false} type="submit" aria-label="close" autoFocus formNoValidate><X className="w-5 h-5 cursor-pointer" /></Button>
+                <Button outline={false} fill={false} type="submit" role="cancel" aria-label="Fermer la popup" autoFocus><X className="w-5 h-5 cursor-pointer" /></Button>
             </div>
             <SeparatorHorizontal />
         </>
@@ -53,7 +55,7 @@ const DialogBody: React.FC<PropsWithChildren> = ({ children }) => {
 const DialogFooter: React.FC<PropsWithChildren> = ({children}) => {
     return (
         <div className="flex items-center gap-2 [&>button:first-of-type]:ml-auto">
-            <Button type="submit" fill={false} aria-label="close" formNoValidate>Annuler</Button>
+            <Button type="submit" role="cancel" aria-label="Fermer la popup" fill={false}>Annuler</Button>
             {children}
         </div>
     )
