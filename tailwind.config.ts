@@ -1,16 +1,14 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
-  breakpoints: {
-
-  },
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  breakpoints: {},
   theme: {
     container: {
       center: true,
@@ -29,10 +27,10 @@ const config: Config = {
         "2xl": "1920px",
       },
       spacing: {
-        sm: '0.8rem',
+        sm: "0.8rem",
         md: "1.8rem",
         lg: "3rem",
-        xl: "6rem"
+        xl: "6rem",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -74,15 +72,15 @@ const config: Config = {
         "span-12": "span 12 / span 12",
       },
       gridTemplateRows: {
-        '8': 'repeat(8, minmax(0, 1fr))',
-        '10': 'repeat(10, minmax(0, 1fr))',
-        '12': 'repeat(12, minmax(0, 1fr))',
+        "8": "repeat(8, minmax(0, 1fr))",
+        "10": "repeat(10, minmax(0, 1fr))",
+        "12": "repeat(12, minmax(0, 1fr))",
       },
       gridTemplateColumns: {
-        'wrap-sm': "repeat(auto-fit, minmax(5rem, 1fr))",
-        'wrap-md': "repeat(auto-fit, minmax(10rem, 1fr))",
-        'wrap-lg': "repeat(auto-fit, minmax(14rem, 1fr))",
-        'wrap-xl': "repeat(auto-fit, minmax(18rem, 1fr))",
+        "wrap-sm": "repeat(auto-fit, minmax(5rem, 1fr))",
+        "wrap-md": "repeat(auto-fit, minmax(10rem, 1fr))",
+        "wrap-lg": "repeat(auto-fit, minmax(14rem, 1fr))",
+        "wrap-xl": "repeat(auto-fit, minmax(18rem, 1fr))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -90,7 +88,7 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       transitionProperty: {
-        'fade': 'transform, opacity, visibility',
+        fade: "transform, opacity, visibility",
       },
       keyframes: {
         "accordion-down": {
@@ -101,14 +99,14 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-          fadeIn: {
-            '0%': { opacity: "0" },
-            '100%': { opacity: "1" },
-          },
-          fadeOut: {
-            '0%': { opacity: "1" },
-            '100%': { opacity: "0" },
-          },     
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -119,6 +117,6 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
 
-export default config
+export default config;

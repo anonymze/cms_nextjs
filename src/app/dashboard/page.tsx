@@ -1,9 +1,7 @@
 interface Props {}
 
 const page: React.FC<Props> = () => {
-  return (
-    <h1>Salut</h1>
-  )
-}
+  return <h1>Salut</h1>;
+};
 
-export default page
+export default page;

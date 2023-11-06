@@ -9,9 +9,7 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "allowImportingTsExtensions": false,
     "plugins": [
@@ -34,20 +32,15 @@
     "module": "ESNext",
     "noEmit": true,
     /* If your code runs in the DOM: */
-    "lib": [
-      "es2022",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "src/components/ui/Skeleton/Skeleton.tsx"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    ".next/types/**/*.ts",
+    "src/components/ui/Skeleton/Skeleton.tsx"
+  ],
+  "exclude": ["node_modules"]
 }

@@ -1,10 +1,8 @@
 interface Props {}
 
 const SeparatorHorizontal: React.FC<Props> = () => {
-  return (
-    <hr />
-  )
-}
+  return <hr />;
+};
 
 // const SeparatorVertical: React.FC<Props> = () => {
 //     return (
@@ -14,6 +12,4 @@ const SeparatorHorizontal: React.FC<Props> = () => {
 //     )
 //   }
 
-export {
-    SeparatorHorizontal
-}
+export { SeparatorHorizontal };

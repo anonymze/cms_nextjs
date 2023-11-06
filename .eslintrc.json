@@ -1,6 +1,6 @@
 {
   "extends": "next/core-web-vitals"
-  
+
   // "rules": {
   //   "no-var": "error",
   //   "prefer-const": "warn",

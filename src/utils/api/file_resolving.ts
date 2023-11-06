@@ -1,60 +1,59 @@
 import fs from "fs";
-import { v4 as uuidv4 } from 'uuid';
-import type { Upload, UploadZodType } from '@/types/upload';
+import { v4 as uuidv4 } from "uuid";
+import type { Upload, UploadZodType } from "@/types/upload";
 import { prismaClient } from "@/app/api/uploads/route";
 
-const FOLDER_UPLOADS = "uploads";  
+const FOLDER_UPLOADS = "uploads";
 
-type ManagedFiles = 
-	| { error: false, filesEntity: Upload[] } 
-	| { error: true };
+type ManagedFiles = { error: false; filesEntity: Upload[] } | { error: true };
 
-export async function manageFiles(data: UploadZodType | UploadZodType[])  {
-	try {
-		if (!Array.isArray(data)) {
-			const createdFile = await createFileLocally(data.file);
+export async function manageFiles(data: UploadZodType | UploadZodType[]) {
+  try {
+    if (!Array.isArray(data)) {
+      const createdFile = await createFileLocally(data);
 
-			const uploadedFile = await prismaClient.upload.create({
-				data: {
-				  filepath_public: createdFile.filepathPublic,
-				  filetype: createdFile.filetype,
-				},
-			  })
-			return { error: false, filesEntity: [uploadedFile] } satisfies ManagedFiles;
-		}
+      const uploadedFile = await prismaClient.upload.create({
+        data: {
+          filepath_public: createdFile.filepathPublic,
+          filetype: createdFile.filetype,
+        },
+      });
+      return { error: false, filesEntity: [uploadedFile] } satisfies ManagedFiles;
+    }
 
-		const uploadedFiles = [];
+    const uploadedFiles = [];
 
-		for await (let fileZod of data) {
-			const createdFile = await createFileLocally(fileZod.file);
+    for await (let file of data) {
+      const createdFile = await createFileLocally(file);
 
-			uploadedFiles.push(await prismaClient.upload.create({
-				data: {
-				  filepath_public: createdFile.filepathPublic,
-				  filetype: createdFile.filetype,
-				},
-			  })
-			);
-		}
+      uploadedFiles.push(
+        await prismaClient.upload.create({
+          data: {
+            filepath_public: createdFile.filepathPublic,
+            filetype: createdFile.filetype,
+          },
+        }),
+      );
+    }
 
-		return { error: false, filesEntity: uploadedFiles } satisfies ManagedFiles;
-	} catch (err) {
-		return { error: true } satisfies ManagedFiles;
-	}
+    return { error: false, filesEntity: uploadedFiles } satisfies ManagedFiles;
+  } catch (err) {
+    return { error: true } satisfies ManagedFiles;
+  }
 }
 
 const createFileLocally = async (file: File) => {
-	// unique hash for the name of the file
-	const hash = uuidv4();
-	const fileExtension = getExtensionFile(file.type);
-	const filepathPublic = `/${FOLDER_UPLOADS}/${hash}.${fileExtension}`;
+  // unique hash for the name of the file
+  const hash = uuidv4();
+  const fileExtension = getExtensionFile(file.type);
+  const filepathPublic = `/${FOLDER_UPLOADS}/${hash}.${fileExtension}`;
 
-	// Uint8Array or Buffer is accepted
-	fs.appendFileSync(`public${filepathPublic}`, Buffer.from(await file.arrayBuffer()));
+  // Uint8Array or Buffer is accepted
+  fs.appendFileSync(`public${filepathPublic}`, Buffer.from(await file.arrayBuffer()));
 
-	return { filepathPublic: filepathPublic, filetype: file.type};	
-}
+  return { filepathPublic: filepathPublic, filetype: file.type };
+};
 
 const getExtensionFile = (filetype: File["type"]) => {
-	return filetype.split("/")[1];
-}
+  return filetype.split("/")[1];
+};

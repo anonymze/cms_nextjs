@@ -14,11 +14,13 @@ export async function createUploadQuery(filesTypeStore: FileTypeStore[]) {
     formData.append("files[]", fileTypeStore.file);
   }
 
-  const result = await api.post("uploads", formData, { headers: { "Content-Type": "multipart/form-data" } });
+  const result = await api.post("uploads", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return result.data;
 }
 
 export async function deleteUploadQuery(uploadId: Upload["uuid"]) {
-    const result = await api.delete(`uploads/${uploadId}`);
-    return result.data;   
+  const result = await api.delete(`uploads/${uploadId}`);
+  return result.data;
 }

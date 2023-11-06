@@ -1,11 +1,7 @@
 interface Props {}
 
 const Footer: React.FC<Props> = () => {
-  return (
-   <>
-    footer
-   </>
-  )
-}
+  return <>footer</>;
+};
 
-export default Footer
+export default Footer;
