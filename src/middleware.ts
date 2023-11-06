@@ -16,20 +16,19 @@ export const config = {
  
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-   // on redirige / vers /dashboard
+   // we redirect / to /dashboard
   if (request.nextUrl.pathname === '/') return NextResponse.redirect(new URL('/dashboard', request.url));
 
   if (request.nextUrl.pathname.startsWith('/api')) {
     const { validToken, token } = tokenInfo(request);
 
-    // si token pas valide on indique une 401
+    // token no valid = 401
     if (!validToken) return jsonResponseUnauthorized();
 
     console.log(token);
-    // TODO: vérifier que le token lié à un utilisateur est autorisé à faire cette action
+    // TODO
   }
 
-  // on passe le middleware de base
   return NextResponse.next();
 }
 

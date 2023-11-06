@@ -1,25 +1,33 @@
-import { useRef } from 'react';
-import { Trash2Icon } from 'lucide-react';
-import { useFilesStore } from '@/contexts/store_files_context';
-import { type FileTypeStore } from '@/contexts/store_files_context';
-import './MediaOperation.css'
+"use client"
 
-type Props = {
-  fileTypeStore: FileTypeStore
+import { Trash2Icon } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteUploadQuery } from '@/api/uploadQueries';
+import './MediaOperation.css'
+import type { Upload } from '@/types/upload';
+import { type HTMLAttributes } from 'react';
+
+interface Props extends HTMLAttributes<HTMLElement> {
+	removeFileFromApi: Upload["uuid"] | false
 }
 
-const MediaOperation: React.FC<Props> = ({ fileTypeStore }) => {
-  // remove file from context
-  const removeFile = useFilesStore((state) => state.removeFile);
-  const figureRef = useRef<HTMLElement>(null);
+const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props }) => {
+	const queryClient = useQueryClient();
 
-  return (
-    <figure onClick={() => removeFile(fileTypeStore.file)} ref={figureRef} className='media-operation'>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={fileTypeStore.base64} alt="" />
-        <figcaption><Trash2Icon className='w-8 h-8' /></figcaption>
-    </figure>
-  )
+	const mutationDelete = useMutation({
+		mutationFn: deleteUploadQuery,
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['uploads'] })
+	})
+
+	return (
+		<figure onClick={() => {
+			if (!removeFileFromApi) return;
+			mutationDelete.mutate(removeFileFromApi)					
+		}} className='media-operation' {...props}>
+				{children}
+				<figcaption><Trash2Icon className='w-8 h-8' /></figcaption>
+		</figure>
+	)
 }
 
 export default MediaOperation 

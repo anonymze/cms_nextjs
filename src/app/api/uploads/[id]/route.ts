@@ -1,24 +1,20 @@
-import { cookies } from 'next/headers'
- 
+import { prismaClient } from '../route';
+
 export async function GET(
   req: Request,
   res: any
 ) {
-  const test = await fetch(new URL('/api/uploads', req.url), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: '1234' }),  
-  })
+
   return Response.json('id !!!!');
 }
 
-export async function DELETE(request: Request) {
-    const cookieStore = cookies()
-    const token = cookieStore.get('token');
+export async function DELETE(req: Request) {
+  // get id form url
+  const uuid = req.url.split('/').at(-1);
+
+  await prismaClient.upload.delete({
+    where: { uuid },
+  });
   
-  
-    return new Response('Hello, Next.js!', {
-      status: 200,
-      headers: { 'Set-Cookie': `token=${token?.value}` },
-    })
-  }
+  return Response.json('Ok', { status: 200});
+}

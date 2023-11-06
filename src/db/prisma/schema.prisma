@@ -1,17 +1,17 @@
 generator client {
-  provider = "prisma-client-js"
+	provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:../__db__/sqlite.db"
+	provider = "sqlite"
+	url      = "file:../__db__/sqlite.db"
 }
 
 model Upload {
-    id        Int     @id @default(autoincrement())
-    uuid      String  @unique @default(uuid())
-    filepath_public  String
-    filetype  String
+		id        Int     @id @default(autoincrement())
+		uuid      String  @unique @default(uuid())
+		filepath_public  String
+		filetype  String
 
-    @@index(fields: [uuid])
+		@@index(fields: [uuid])
 }

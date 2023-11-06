@@ -13,7 +13,9 @@ export default function Layout({
 }) {
   return (
       <>
-        <Header title="Gestion utilisateur" />
+        <Header>
+          <h1>GESTIO</h1>
+        </Header>
         {children}
       </>
   )

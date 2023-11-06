@@ -1,14 +1,9 @@
-import ActionsButtons from "../ActionsButtons"
+import type { PropsWithChildren } from "react"
 
-interface Props {
-    title: string
-}
-
-const Header: React.FC<Props> = ({ title }) => {
+const Header: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <header className="flex justify-between items-center pb-lg">
-        <h1>{ title }</h1>
-        <ActionsButtons />
+      {children}
     </header>
   )
 }

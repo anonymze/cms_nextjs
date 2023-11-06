@@ -1,17 +1,9 @@
-import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import ContentMedia from "./ContentMedia";
+import { getUploadsQuery } from "@/api/uploadQueries";
+import Uploads from "./components/Uploads";
 
-const COUNT_CARD_SKELETONS = 6;
-
-export default async function page() {
-  return (
-    <section className="relative grid grid-cols-wrap-lg gap-x-5 gap-y-10">
-        {[...Array(COUNT_CARD_SKELETONS)].map((_, i) =>
-          <SkeletonCard key={i} />
-        )}
-        <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col">
-          <ContentMedia />
-        </div>
-    </section>
-  )
+// get the data from the server and pass it with props drilling
+export default async function Page() {
+	const initialData = await getUploadsQuery();
+	return <Uploads initialData={initialData} />
+	
 }

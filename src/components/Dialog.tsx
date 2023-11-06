@@ -29,7 +29,7 @@ const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
 
 Dialog.displayName = "Dialog";
 
-const DialogHeader: React.FC<{ title: string }> = ({title}) => {
+const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
     return (
         <>
             <div className="flex items-center justify-between pb-2">
@@ -49,7 +49,7 @@ const DialogBody: React.FC<PropsWithChildren> = ({ children }) => {
     )
 }
 
-const DialogFooter: React.FC<PropsWithChildren> = ({children}) => {
+const DialogFooter: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <div className="flex items-center gap-2">
             {children}

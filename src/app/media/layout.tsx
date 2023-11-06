@@ -1,3 +1,4 @@
+import ActionsButtons from "@/components/ActionsButtons"
 import Header from "@/components/layout/Header"
 import type { Metadata } from "next"
 
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
   description: 'Créé par Yann M.',
 }
 
+
 export default function Layout({
   children,
 }: {
@@ -14,7 +16,10 @@ export default function Layout({
 }) {
   return (
       <>
-        <Header title="Médiathèque" />
+        <Header>
+          <h1>Médiathèque</h1>
+          <ActionsButtons actionPopup={{label: "Ajouter"}} />
+        </Header>
         {children}
       </>
   )
