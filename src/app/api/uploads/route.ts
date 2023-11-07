@@ -3,14 +3,12 @@ import { manageFiles } from "@/utils/api/file_resolving";
 import { parserRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
-import { PrismaClient } from "@prisma/client";
-
-export const prismaClient = new PrismaClient();
+import prisma from "@/utils/libs/prisma";
 
 const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
 
 export async function GET() {
-  return jsonResponsePost(await new PrismaClient().upload.findMany());
+  return jsonResponsePost(await prisma.upload.findMany());
 }
 
 export async function POST(req: Request) {

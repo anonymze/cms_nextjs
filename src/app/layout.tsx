@@ -1,7 +1,7 @@
 import App from "@/App";
 import Layout from "@/components/layout/Layout";
 import { Inter } from "next/font/google";
-import { cn } from "@/utils/libs/utils";
+import { cn } from "@/utils/libs/tailwind";
 import type { Metadata } from "next";
 import { Providers } from "@/providers";
 

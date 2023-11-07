@@ -4,25 +4,21 @@ import Image from "next/image";
 import MediaOperation from "@/components/MediaOperation/MediaOperation";
 import ContentMedia from "./ContentMedia";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/uploadQueries";
 import type { Upload } from "@/types/upload";
-import { cn } from "@/utils/libs/utils";
+import { cn } from "@/utils/libs/tailwind";
 
 const COUNT_CARD_SKELETONS = 6;
 
 const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
   const {
-    data: uploads,
-    isLoading,
-    isFetching,
-  } = useQuery({
+    data: uploads
+  } = useSuspenseQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,
     initialData,
   });
-
-  console.log('ici');
 
   return (
     <section
@@ -40,7 +36,7 @@ const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
             <MediaOperation removeFileFromApi={upload.uuid} key={upload.id}>
               <Image
                 placeholder="blur"
-                blurDataURL={"/placeholder-img-150x150.jpg"}
+                blurDataURL={"/placeholder-150x150.jpg"}
                 width={150}
                 height={150}
                 priority

@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/utils/libs/utils";
+import { cn } from "@/utils/libs/tailwind";
 import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./ui/Separator";
 import { Button } from "./ui/Button";

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/utils/libs/utils";
+import { cn } from "@/utils/libs/tailwind";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 
 const Switch = React.forwardRef<

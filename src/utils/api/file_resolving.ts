@@ -1,7 +1,7 @@
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import type { Upload, UploadZodType } from "@/types/upload";
-import { prismaClient } from "@/app/api/uploads/route";
+import prisma from "../libs/prisma";
 
 const FOLDER_UPLOADS = "uploads";
 
@@ -12,7 +12,7 @@ export async function manageFiles(data: UploadZodType | UploadZodType[]) {
     if (!Array.isArray(data)) {
       const createdFile = await createFileLocally(data);
 
-      const uploadedFile = await prismaClient.upload.create({
+      const uploadedFile = await prisma.upload.create({
         data: {
           filepath_public: createdFile.filepathPublic,
           filetype: createdFile.filetype,
@@ -27,7 +27,7 @@ export async function manageFiles(data: UploadZodType | UploadZodType[]) {
       const createdFile = await createFileLocally(file);
 
       uploadedFiles.push(
-        await prismaClient.upload.create({
+        await prisma.upload.create({
           data: {
             filepath_public: createdFile.filepathPublic,
             filetype: createdFile.filetype,
