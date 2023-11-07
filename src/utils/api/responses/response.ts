@@ -54,7 +54,6 @@ function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchem
 
     for (let file of files) {
       // parse throw an error if data does not match schema
-      console.log(file);
       filesParsed.push(dataSchema.parse(file));
     }
 

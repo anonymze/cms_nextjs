@@ -2,7 +2,15 @@
   --size: 7rem;
   --transition: 0.2s ease-in-out;
   position: relative;
-  height: 100%;
+  padding-inline: 2rem;
+  background: repeating-conic-gradient(
+    rgb(24, 24, 38) 0%,
+    rgb(24, 24, 38) 25%,
+    transparent 0%,
+    transparent 50%
+  )
+  50% center / 20px 20px;
+object-fit: cover;
   box-shadow: 1px 1px 10px rgba(3, 3, 5, 0.2);
   border-radius: var(--radius);
   border: 1px solid rgb(50, 50, 77);
@@ -22,17 +30,7 @@
 .media-operation img {
   width: var(--size);
   height: var(--size);
-  padding-inline: 2rem;
-  background: repeating-conic-gradient(
-      rgb(24, 24, 38) 0%,
-      rgb(24, 24, 38) 25%,
-      transparent 0%,
-      transparent 50%
-    )
-    50% center / 20px 20px;
   object-fit: cover;
-  border-radius: var(--radius);
-  box-sizing: content-box;
   transition: filter var(--transition);
 }
 

@@ -1,17 +1,17 @@
 "use client";
 
+import DropZone from "@/components/DropZone";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogBody, DialogFooter, DialogHeader } from "@/components/Dialog";
 import { PlusCircleIcon } from "lucide-react";
 import { useRef } from "react";
-import DropZone from "@/components/DropZone";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUploadQuery } from "@/api/uploadQueries";
 import { type PropsWithChildren, type FormEvent } from "react";
 
-const DialogMedia: React.FC<PropsWithChildren & { showActionButton: boolean }> = ({
-	showActionButton = false,
+const ContentMedia: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({
+	hideActionButton,
 }) => {
 	const queryClient = useQueryClient();
 	// files from context
@@ -56,7 +56,7 @@ const DialogMedia: React.FC<PropsWithChildren & { showActionButton: boolean }> =
 					)}
 				</DialogFooter>
 			</Dialog>
-			{showActionButton && (
+			{!hideActionButton && (
 				<Button large onClick={() => dialogRef.current?.show()}>
 					<PlusCircleIcon className="h-6 w-6 mr-2" /> Ajouter votre premier média
 				</Button>
@@ -65,4 +65,4 @@ const DialogMedia: React.FC<PropsWithChildren & { showActionButton: boolean }> =
 	);
 };
 
-export default DialogMedia;
+export default ContentMedia;
