@@ -4,17 +4,17 @@ import Image from "next/image";
 import MediaOperation from "@/components/MediaOperation/MediaOperation";
 import ContentMedia from "./ContentMedia";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/uploadQueries";
-import type { Upload } from "@/types/upload";
 import { cn } from "@/utils/libs/tailwind";
+import type { Upload } from "@/types/upload";
 
 const COUNT_CARD_SKELETONS = 6;
 
 const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
   const {
     data: uploads
-  } = useSuspenseQuery({
+  } = useQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,
     initialData,
@@ -24,12 +24,12 @@ const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
     <section
       className={cn(
         "relative min-h-[50vh]",
-        uploads && uploads.length > 0
+        uploads.length > 0
           ? "flex flex-wrap gap-4 content-baseline"
           : "grid grid-cols-wrap-lg gap-x-5 gap-y-10",
       )}
     >
-      {uploads && uploads.length > 0 ? (
+      {uploads.length > 0 ? (
         <>
           {/* if data we show the medias */}
           {uploads.map((upload) => (
@@ -57,7 +57,7 @@ const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
       )}
       <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col">
         {/* if data we hide the action button */}
-        <ContentMedia hideActionButton={uploads && uploads.length > 0} />
+        <ContentMedia hideActionButton={uploads.length > 0} />
       </div>
     </section>
   );

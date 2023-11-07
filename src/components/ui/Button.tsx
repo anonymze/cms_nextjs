@@ -8,10 +8,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   fill?: boolean;
   outline?: boolean;
   large?: boolean;
+  secondary?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, large, className, fill = true, outline = true, ...props }, ref) => {
+  ({ children, large, secondary, className, fill = true, outline = true, ...props }, ref) => {
     return (
       <button
         ref={ref}
@@ -25,6 +26,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             ? "bg-primary text-primary-foreground hover:bg-primary/90"
             : "bg-transparent text-secondary-foreground hover:bg-primary/10",
           !fill && outline && "border-[1px]",
+          secondary ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "",
           className,
         )}
       >

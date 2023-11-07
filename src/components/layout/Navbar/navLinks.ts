@@ -4,7 +4,7 @@ export const mainNavigation = [
   { name: "Contenu", href: "/contenu", icon: Smile, count: "5", current: false },
   {
     name: "Gestion des contenus",
-    href: "/gestion-contenu",
+    href: "/creation-contenu",
     icon: Smile,
     count: "5",
     current: false,

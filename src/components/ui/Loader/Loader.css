@@ -1,29 +1,33 @@
 :root {
-  --loader-primary: 210;
-  --loader-secondary: 220;
   --loader-size: 3rem;
   --loader-speed: 1s;
 }
 
+/* --background: 0 0% 100%;
+--foreground: 224 71.4% 4.1%;
+
+--background: 224 71.4% 4.1%;
+--foreground: 210 20% 98%; */
+
 /* SPINNER */
 .spinner {
   position: relative;
+  display: inline-block;
   width: var(--loader-size);
   height: var(--loader-size);
-  margin-inline: auto;
   border-radius: 999px;
   /* TODO */
-  border: 2px solid #FF3D00;
+  border: 2px solid hsl(var(--foreground));
   animation: rotation var(--loader-speed) linear infinite;
 }
 .spinner::after {
   content: '';  
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 5px;
+  top: 5px;
   width: calc(var(--loader-size) / 4);
   height: calc(var(--loader-size) / 4);
-  border: 2px solid #FFF;
+  border: 2px solid hsl(var(--foreground));
   border-radius: 999px;
 }
     

@@ -46,6 +46,7 @@ const ContentMedia: React.FC<PropsWithChildren & { hideActionButton: boolean }> 
 					{/* if files already there we show the button and onclick we launch the input file */}
 					{files.length >= 1 && (
 						<Button
+							secondary
 							type="button"
 							onClick={({ target }) =>
 								(target as HTMLButtonElement).closest("dialog")?.querySelector("input")?.click()

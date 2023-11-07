@@ -3,7 +3,9 @@ import "./Loader.css";
 
 const SpinnerLoader: React.FC<PropsWithChildren> = () => {
   return (
-      <div className="spinner" role="status" aria-live="assertive"></div>
+    <div className="text-center" role="status" aria-live="assertive">
+      <span className="spinner"></span>
+    </div>
   );
 };
 
