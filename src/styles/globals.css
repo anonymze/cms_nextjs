@@ -23,6 +23,10 @@
     font-size: 20px;
     font-weight: 500;
   }
+
+  a {
+    text-underline-offset: 3px;
+  }
 }
 
 @layer base {
