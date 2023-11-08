@@ -22,7 +22,7 @@ const Breadcrump: React.FC = () => {
   const pathnames = usePathname().split("/").filter(Boolean);
 
   //  if pathnames has less than 2 entry, we don't show the breadcrump
-  if (pathnames.length <= 1) {
+  if (pathnames.length < 2) {
     return null;
   }
 
@@ -30,7 +30,7 @@ const Breadcrump: React.FC = () => {
     <div className="mb-3 text-sm italic" role="breadcrump">
       {pathnames.map((pathname, idx) => (
         <React.Fragment key={idx}>
-          {" / "}
+          {" - "}
           <Link className="underline" href={constructURL(pathnames, idx)}>
             {convertPathnameToReadableString(pathname)}
           </Link>

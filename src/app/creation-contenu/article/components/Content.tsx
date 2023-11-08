@@ -45,7 +45,7 @@ const Content: React.FC<Props> = () => {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Titre</FormLabel>
+              <FormLabel>Titre *</FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
@@ -77,11 +77,11 @@ const Content: React.FC<Props> = () => {
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contenu</FormLabel>
+              <FormLabel>Contenu *</FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
-              <FormDescription>Le contenu da l&apos;article</FormDescription>
+              <FormDescription>Le contenu de l&apos;article</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -102,6 +102,8 @@ const Content: React.FC<Props> = () => {
             </FormItem>
           )}
         />
+
+        <p className="text-xs">* champs obligatoires</p>
 
         <Button type="submit">Enregistrer</Button>
       </form>

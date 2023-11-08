@@ -12,7 +12,7 @@ import {
   Form,
 } from "@/components/Form/form";
 import { Textarea } from "@/components/Form/textarea";
-import { formCreateArticleSchema, formCreatePageSchema } from "@/types/form";
+import { formCreatePageSchema } from "@/types/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -44,7 +44,7 @@ const Content: React.FC<Props> = () => {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Titre</FormLabel>
+              <FormLabel>Titre *</FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
@@ -76,7 +76,7 @@ const Content: React.FC<Props> = () => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Description *</FormLabel>
               <FormControl>
                 <Textarea placeholder="" {...field} />
               </FormControl>
@@ -85,6 +85,8 @@ const Content: React.FC<Props> = () => {
             </FormItem>
           )}
         />
+
+        <p className="text-xs">* champs obligatoires</p>
 
         <Button type="submit">Enregistrer</Button>
       </form>
