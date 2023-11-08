@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import MediaOperation from "@/components/MediaOperation/MediaOperation";
-import ContentMedia from "./ContentMedia";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/uploadQueries";
-import { cn } from "@/utils/libs/tailwind";
+import { cn } from "@/utils/libs/shadcn";
+import Content from "./Content";
 import type { Upload } from "@/types/upload";
 
 const COUNT_CARD_SKELETONS = 6;
@@ -57,7 +57,7 @@ const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
       )}
       <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col">
         {/* if data we hide the action button */}
-        <ContentMedia hideActionButton={uploads.length > 0} />
+        <Content hideActionButton={uploads.length > 0} />
       </div>
     </section>
   );

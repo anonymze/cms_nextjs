@@ -1,4 +1,4 @@
-import { cn } from "@/utils/libs/tailwind";
+import { cn } from "@/utils/libs/shadcn";
 import Link from "next/link";
 import { mainNavigation, optionsNavigation } from "./navLinks";
 

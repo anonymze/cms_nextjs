@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import "./Skeleton.css";
-import { cn } from "@/utils/libs/tailwind";
+import { cn } from "@/utils/libs/shadcn";
 
 type PropsSkeleton = PropsWithChildren & { animated?: boolean };
 

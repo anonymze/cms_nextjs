@@ -10,7 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUploadQuery } from "@/api/uploadQueries";
 import { type PropsWithChildren, type FormEvent } from "react";
 
-const ContentMedia: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({
+const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({
 	hideActionButton,
 }) => {
 	const queryClient = useQueryClient();
@@ -66,4 +66,4 @@ const ContentMedia: React.FC<PropsWithChildren & { hideActionButton: boolean }> 
 	);
 };
 
-export default ContentMedia;
+export default Content;
