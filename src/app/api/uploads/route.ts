@@ -18,9 +18,7 @@ export async function POST(req: Request) {
     contentType,
   } = parserRequest.validContentType(req.headers, ACCEPTED_CONTENT_TYPE);
 
-  if (errorContentType) {
-    return jsonResponseBadRequest(messageErrorContentType);
-  }
+  if (errorContentType) return jsonResponseBadRequest(messageErrorContentType);
 
   const {
     error: errorParsing,
@@ -28,9 +26,7 @@ export async function POST(req: Request) {
     dataParsed,
   } = await parserRequest.parseBody(req, contentType);
 
-  if (errorParsing) {
-    return jsonResponseBadRequest(messageErrorParsing);
-  }
+  if (errorParsing) return jsonResponseBadRequest(messageErrorParsing);
 
   const {
     error: errorVerification,
@@ -38,15 +34,11 @@ export async function POST(req: Request) {
     dataVerified,
   } = parserRequest.validData(dataParsed, contentType, uploadSchema);
 
-  if (errorVerification) {
-    return jsonResponseBadRequest(messageErrorVerification);
-  }
+  if (errorVerification) return jsonResponseBadRequest(messageErrorVerification);
 
   const { error: errorFile, filesEntity } = await manageFiles(dataVerified);
 
-  if (errorFile) {
-    return jsonResponseBadRequest("Le fichier n'a pas pu être créé");
-  }
+  if (errorFile) return jsonResponseBadRequest("Le fichier n'a pas pu être créé");
 
   return jsonResponsePost(filesEntity);
 }

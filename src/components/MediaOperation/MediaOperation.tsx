@@ -16,14 +16,14 @@ const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props
 
   const deleteMutation = useMutation({
     mutationFn: deleteUploadQuery,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["uploads"] }),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ["uploads"]}),
   });
 
   return (
     <figure
-      onClick={() => {
+      onClick={async () => {
         if (!removeFileFromApi) return;
-        deleteMutation.mutate(removeFileFromApi);
+        deleteMutation.mutate(removeFileFromApi);        
       }}
       className="media-operation"
       {...props}

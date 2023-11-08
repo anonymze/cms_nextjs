@@ -22,9 +22,7 @@ const Breadcrump: React.FC = () => {
   const pathnames = usePathname().split("/").filter(Boolean);
 
   //  if pathnames has less than 2 entry, we don't show the breadcrump
-  if (pathnames.length < 2) {
-    return null;
-  }
+  if (pathnames.length < 2) return null;
 
   return (
     <div className="mb-3 text-sm italic" role="breadcrump">

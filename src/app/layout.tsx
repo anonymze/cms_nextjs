@@ -2,7 +2,7 @@ import App from "@/App";
 import Layout from "@/components/layout/Layout";
 import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/shadcn";
-import { Providers } from "@/providers";
+import { Providers } from "@/utils/libs/providers_react_query";
 import type { Metadata } from "next";
 
 const fontSans = Inter({

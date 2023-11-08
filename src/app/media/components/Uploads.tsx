@@ -7,17 +7,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/uploadQueries";
 import { cn } from "@/utils/libs/shadcn";
 import Content from "./Content";
-import type { Upload } from "@/types/upload";
+import type { Upload } from "@prisma/client";
 
 const COUNT_CARD_SKELETONS = 6;
 
-const Uploads: React.FC<{ initialData: Upload[] }> = ({ initialData }) => {
+const Uploads: React.FC<{initialData: Upload[]}> = ({initialData}) => {
   const {
-    data: uploads
+    data: uploads,
   } = useQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,
-    initialData,
+    // initial data prevent loading state, so uploads is always defined
+    initialData
   });
 
   return (

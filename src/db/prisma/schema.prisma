@@ -1,17 +1,34 @@
 generator client {
-	provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-	provider = "sqlite"
-	url      = "file:../__db__/sqlite.db"
+  provider = "sqlite"
+  url      = "file:../__db__/sqlite.db"
 }
 
-model Upload {
-		id        Int     @id @default(autoincrement())
-		uuid      String  @unique @default(uuid())
-		filepath_public  String
-		filetype  String
+model Article {
+    id        Int     @id @default(autoincrement())
+    uuid      String  @unique @default(uuid())
+    title  String
+    content  String
+    description  String? 
+    conclusion  String?
 
-		@@index(fields: [uuid])
+    @@index(fields: [uuid])
+} model Page {
+    id        Int     @id @default(autoincrement())
+    uuid      String  @unique @default(uuid())
+    title  String
+    subtitle  String?
+    description  String
+
+    @@index(fields: [uuid])
+} model Upload {
+    id        Int     @id @default(autoincrement())
+    uuid      String  @unique @default(uuid())
+    filepath_public  String
+    filetype  String
+
+    @@index(fields: [uuid])
 }

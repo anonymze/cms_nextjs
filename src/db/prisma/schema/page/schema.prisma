@@ -1,0 +1,9 @@
+model Page {
+    id        Int     @id @default(autoincrement())
+    uuid      String  @unique @default(uuid())
+    title  String
+    subtitle  String?
+    description  String
+
+    @@index(fields: [uuid])
+} 
