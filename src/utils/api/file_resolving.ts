@@ -1,7 +1,7 @@
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
-import type { Upload, UploadZodType } from "@/types/upload";
 import prisma from "../libs/prisma";
+import type { Upload, UploadZodType } from "@/types/upload";
 
 const FOLDER_UPLOADS = "uploads";
 

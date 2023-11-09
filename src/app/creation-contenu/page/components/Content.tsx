@@ -10,18 +10,19 @@ import {
   FormDescription,
   FormMessage,
   Form,
-} from "@/components/Form/form";
-import { Textarea } from "@/components/Form/textarea";
-import { formCreatePageSchema } from "@/types/form";
+} from "@/components/Form/Form";
+import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
+import { formCreatePageSchema } from "@/types/page";
 
 interface Props {}
 
 const Content: React.FC<Props> = () => {
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
     resolver: zodResolver(formCreatePageSchema),
+    mode: "onChange",
     // default values is needed if controller used
     defaultValues: {
       title: "",

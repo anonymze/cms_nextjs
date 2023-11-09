@@ -10,18 +10,20 @@ import {
   FormDescription,
   FormMessage,
   Form,
-} from "@/components/Form/form";
-import { Textarea } from "@/components/Form/textarea";
-import { formCreateArticleSchema } from "@/types/form";
+} from "@/components/Form/Form";
+import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
+import { formCreateArticleSchema } from "@/types/article";
+import Tiptap from "@/components/RichText/Tiptap";
 
 interface Props {}
 
 const Content: React.FC<Props> = () => {
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
+    mode: "onChange",
     // default values is needed if controller used
     defaultValues: {
       title: "",
@@ -79,7 +81,7 @@ const Content: React.FC<Props> = () => {
             <FormItem>
               <FormLabel>Contenu *</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Tiptap description={field.name} onChange={field.onChange} />
               </FormControl>
               <FormDescription>Le contenu de l&apos;article</FormDescription>
               <FormMessage />
