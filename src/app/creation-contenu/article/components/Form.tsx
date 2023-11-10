@@ -22,6 +22,7 @@ interface Props {
   lang: typeof Language[number];
 }
 
+// TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({lang}) => {
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
     resolver: zodResolver(formCreatePageSchema),

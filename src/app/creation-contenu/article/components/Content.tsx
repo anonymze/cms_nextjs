@@ -1,8 +1,8 @@
 "use client";
 
+import React from "react";
 import { Language } from "@/utils/language";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-import React, { Suspense } from "react";
 import FormArticle from "./Form";
 import IconDynamic from "@/components/ui/IconDynamic";
 import { cn } from "@/utils/libs/shadcn";
@@ -24,7 +24,7 @@ const Content: React.FC = () => {
               )}
               value={lang}
             >
-                <IconDynamic name={"heading"} size={20} />
+                <IconDynamic name={"Heading"} size={20} />
             </TabsTrigger>
           </React.Fragment>
         ))}

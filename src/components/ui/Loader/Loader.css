@@ -16,7 +16,6 @@
   width: var(--loader-size);
   height: var(--loader-size);
   border-radius: 999px;
-  /* TODO */
   border: 2px solid hsl(var(--foreground));
   animation: rotation var(--loader-speed) linear infinite;
 }

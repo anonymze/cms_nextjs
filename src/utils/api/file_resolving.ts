@@ -25,15 +25,15 @@ export async function manageFiles(data: UploadZodType | UploadZodType[]) {
 
     for await (let file of data) {
       const createdFile = await createFileLocally(file);
+      const uploadedFile = await prisma.upload.create({
+        data: {
+          filepath_public: createdFile.filepathPublic,
+          filetype: createdFile.filetype,
+        },
+      });
+      
 
-      uploadedFiles.push(
-        await prisma.upload.create({
-          data: {
-            filepath_public: createdFile.filepathPublic,
-            filetype: createdFile.filetype,
-          },
-        }),
-      );
+      uploadedFiles.push(uploadedFile);
     }
 
     return { error: false, filesEntity: uploadedFiles } satisfies ManagedFiles;
@@ -41,6 +41,7 @@ export async function manageFiles(data: UploadZodType | UploadZodType[]) {
     return { error: true } satisfies ManagedFiles;
   }
 }
+
 
 const createFileLocally = async (file: File) => {
   // unique hash for the name of the file

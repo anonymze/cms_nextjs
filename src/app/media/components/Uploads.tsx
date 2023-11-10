@@ -3,25 +3,25 @@
 import Image from "next/image";
 import MediaOperation from "@/components/MediaOperation/MediaOperation";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/uploadQueries";
 import { cn } from "@/utils/libs/shadcn";
 import Content from "./Content";
-import type { Upload } from "@prisma/client";
 
 const COUNT_CARD_SKELETONS = 6;
 
-const Uploads: React.FC<{initialData: Upload[]}> = ({initialData}) => {
+const Uploads: React.FC<{}> = ({}) => {
   const {
     data: uploads,
-  } = useQuery({
+    isFetching
+  } = useSuspenseQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,
-    // initial data prevent loading state, so uploads is always defined
-    initialData
   });
 
-  return (
+  // TODO IF IS FETCHING WE SHOW AN INDICATOR (loader ?)
+
+  return (    
     <section
       className={cn(
         "relative min-h-[50vh]",

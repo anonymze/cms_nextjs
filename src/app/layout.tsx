@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/shadcn";
 import { Providers } from "@/utils/libs/providers_react_query";
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/Toaster/Toaster";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Layout>
           <Providers>{children}</Providers>
         </Layout>
+        <Toaster />
       </body>
     </App>
   );

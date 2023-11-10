@@ -4,6 +4,7 @@ const SeparatorHorizontal: React.FC<Props> = () => {
   return <hr />;
 };
 
+// TODO
 // const SeparatorVertical: React.FC<Props> = () => {
 //     return (
 //       <>
