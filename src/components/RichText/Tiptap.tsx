@@ -2,6 +2,8 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
+import { Loader, Loader2, Loader2Icon, LucideLoader2 } from "lucide-react";
+import { SpinnerLoader } from "../ui/Loader/Loader";
 
 interface Props {
   description: string;
@@ -11,6 +13,7 @@ interface Props {
 const Tiptap: React.FC<Props> = ({ description, onChange }) => {
   const editor = useEditor({
     extensions: [
+      // maybe change this, granularity needed
       StarterKit.configure({
         heading: {
           HTMLAttributes: {
@@ -23,7 +26,7 @@ const Tiptap: React.FC<Props> = ({ description, onChange }) => {
     content: description,
     editorProps: {
       attributes: {
-        class: "rounded-md border min-h-[9rem] border-input",
+        class: "py-2 px-3 rounded-md border min-h-[9rem] border-input",
       },
     },
     onUpdate: ({ editor }) => {
@@ -31,6 +34,10 @@ const Tiptap: React.FC<Props> = ({ description, onChange }) => {
       console.log(editor.getHTML());
     },
   });
+
+  // TODO rotation
+  if (!editor) return <SpinnerLoader />;
+
   return (
     <div role="textbox" className="flex flex-col justify-stretch">
       <Toolbar editor={editor} />

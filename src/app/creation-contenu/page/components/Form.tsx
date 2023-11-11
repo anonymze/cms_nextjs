@@ -1,6 +1,4 @@
-"use client";
-
-import { Suspense } from "react";
+"use client";;
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/Form/Input";
 import {
@@ -15,20 +13,18 @@ import {
 import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreateArticleSchema } from "@/types/article";
-import type { Language } from "@/utils/language";
-import Tiptap from "@/components/RichText/Tiptap";
-import dynamic from "next/dynamic";
 import type { z } from "zod";
+import { formCreatePageSchema } from "@/types/page";
+import type { Language } from "@/utils/language";
 
 interface Props {
   lang: (typeof Language)[number];
 }
 
 // TODO dunno yet but i have to do a correct translation system
-const FormArticle: React.FC<Props> = ({ lang }) => {
-  const form = useForm<z.infer<typeof formCreateArticleSchema>>({
-    resolver: zodResolver(formCreateArticleSchema),
+const FormPage: React.FC<Props> = ({ lang }) => {
+  const form = useForm<z.infer<typeof formCreatePageSchema>>({
+    resolver: zodResolver(formCreatePageSchema),
     mode: "onChange",
     // default values is needed if controller used
     defaultValues: {
@@ -39,7 +35,7 @@ const FormArticle: React.FC<Props> = ({ lang }) => {
   });
 
   // values is typesafe
-  function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
+  function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
     console.log(values);
   }
 
@@ -56,55 +52,39 @@ const FormArticle: React.FC<Props> = ({ lang }) => {
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
-              <FormDescription>Le titre de l&apos;article</FormDescription>
+              <FormDescription>Le titre de la page</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* PRESENTATION */}
+        {/* SUBTITLE */}
+        <FormField
+          control={form.control}
+          name="subtitle"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sous-titre</FormLabel>
+              <FormControl>
+                <Input placeholder="" {...field} />
+              </FormControl>
+              <FormDescription>Le sous-titre de la page</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* DESCRIPTION */}
         <FormField
           control={form.control}
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Présentation</FormLabel>
+              <FormLabel>Description *</FormLabel>
               <FormControl>
                 <Textarea placeholder="" {...field} />
               </FormControl>
-              <FormDescription>Une brève description de l&apos;article</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* CONTENT */}
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contenu *</FormLabel>
-              <FormControl>
-                  <Tiptap description={field.name} onChange={field.onChange} />
-              </FormControl>
-              <FormDescription>Le contenu de l&apos;article</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* CONCLUSION */}
-        <FormField
-          control={form.control}
-          name="conclusion"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Conclusion</FormLabel>
-              <FormControl>
-                <Textarea placeholder="" {...field} />
-              </FormControl>
-              <FormDescription>Une brève conclusion de l&apos;article</FormDescription>
+              <FormDescription>Une brève description de la page</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -118,4 +98,4 @@ const FormArticle: React.FC<Props> = ({ lang }) => {
   );
 };
 
-export default FormArticle;
+export default FormPage;

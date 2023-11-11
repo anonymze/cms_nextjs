@@ -2,12 +2,11 @@
 import { icons } from "lucide-react";
 import { type LucideProps } from "lucide-react";
 
-
 interface Props extends LucideProps {
-name: keyof typeof icons
+  name: keyof typeof icons;
 }
 
-export default async function IconDynamic({ name, ...props }: Props) {
+export default function IconDynamic({ name, ...props }: Props) {
   const LucideIcon = icons[name];
   return <LucideIcon {...props} />;
-};
+}
