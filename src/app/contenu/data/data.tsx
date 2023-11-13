@@ -1,4 +1,13 @@
-import { ArrowDown, ArrowRight, ArrowUp, CheckCheck, Circle, CrossIcon, FileQuestion, StopCircle } from "lucide-react"
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUp,
+  CheckCheck,
+  Circle,
+  CrossIcon,
+  FileQuestion,
+  StopCircle,
+} from "lucide-react";
 
 export const labels = [
   {
@@ -13,7 +22,7 @@ export const labels = [
     value: "documentation",
     label: "Documentation",
   },
-]
+];
 
 export const statuses = [
   {
@@ -41,7 +50,7 @@ export const statuses = [
     label: "Canceled",
     icon: CrossIcon,
   },
-]
+];
 
 export const priorities = [
   {
@@ -59,4 +68,4 @@ export const priorities = [
     value: "high",
     icon: ArrowUp,
   },
-]
+];

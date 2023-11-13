@@ -19,7 +19,7 @@ import {
 
 import { labels } from "../data/data"
 import { taskSchema } from "../data/schema"
-import { DotIcon } from "lucide-react"
+import { MoreHorizontal } from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -36,7 +36,7 @@ export function DataTableRowActions<TData>({
         <Button
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
-          <DotIcon className="h-4 w-4" />
+          <MoreHorizontal className="h-4 w-4" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
