@@ -1,12 +1,11 @@
 import type { PropsWithChildren } from "react";
 import "./Loader.css";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/utils/libs/shadcn";
 
-const SpinnerLoader: React.FC<PropsWithChildren> = () => {
+const SpinnerLoader: React.FC<PropsWithChildren & { large?: boolean }> = ({ large = false }) => {
   return (
     <div className="text-center" role="status" aria-live="assertive">
-      {/* rotate animation */}
-      <Loader2 className="mx-auto animate-rotate" />
+      <span className={cn("spinner", large ? "large" : "")}></span>
     </div>
   );
 };

@@ -1,21 +1,55 @@
-const getData = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+import { promises as fs } from "fs"
+import path from "path"
+import Image from "next/image"
+import { z } from "zod"
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch");
-  }
+import { columns } from "./components/columns"
+import { DataTable } from "./components/data-table"
+import { taskSchema } from "./data/schema"
 
-  return res.json();
-};
+// Simulate a database read for tasks.
+async function getTasks() {
+  const data = await fs.readFile(
+    path.join(process.cwd(), "app/examples/tasks/data/tasks.json")
+  )
 
-export default async function Page() {
-  const todos = await getData();
+  const tasks = JSON.parse(data.toString())
+
+  return z.array(taskSchema).parse(tasks)
+}
+
+export default async function TaskPage() {
+  const tasks = await getTasks()
 
   return (
-    <div>
-      {todos.map((todo: any) => {
-        return <li key={todo.id}>{todo.title}</li>;
-      })}
-    </div>
-  );
+    <>
+      <div className="md:hidden">
+        <Image
+          src="/examples/tasks-light.png"
+          width={1280}
+          height={998}
+          alt="Playground"
+          className="block dark:hidden"
+        />
+        <Image
+          src="/examples/tasks-dark.png"
+          width={1280}
+          height={998}
+          alt="Playground"
+          className="hidden dark:block"
+        />
+      </div>
+      <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+        <div className="flex items-center justify-between space-y-2">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
+            <p className="text-muted-foreground">
+              Here&apos;s a list of your tasks for this month!
+            </p>
+          </div>
+        </div>
+        <DataTable data={tasks} columns={columns} />
+      </div>
+    </>
+  )
 }

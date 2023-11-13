@@ -4,13 +4,12 @@ const SeparatorHorizontal: React.FC<Props> = () => {
   return <hr />;
 };
 
-// TODO
-// const SeparatorVertical: React.FC<Props> = () => {
-//     return (
-//       <>
-//           <h1>Separator</h1>
-//       </>
-//     )
-//   }
+const SeparatorVertical: React.FC<Props> = () => {
+    return (
+      <>
+          |
+      </>
+    )
+  }
 
-export { SeparatorHorizontal };
+export { SeparatorHorizontal, SeparatorVertical };
