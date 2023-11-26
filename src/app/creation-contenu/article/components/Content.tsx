@@ -1,18 +1,18 @@
-"use client";
-
+"use client";;
 import React from "react";
 import { Language } from "@/utils/language";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import FormArticle from "./Form";
 import { cn } from "@/utils/libs/shadcn";
 import dynamic from "next/dynamic";
+import type { Article } from "@/types/article";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {
   loading: () => <span>...</span>,
 });
 
-const Content: React.FC = () => {
+const Content: React.FC<{ uuid?: Article["uuid"] }> = ({ uuid }) => {
   return (
     <Tabs defaultValue={Language[0]}>
       <TabsList className="h-10 p-1 w-fit mb-8 rounded-md bg-muted text-muted-foreground">
@@ -37,7 +37,7 @@ const Content: React.FC = () => {
       {Language.map((lang) => (
         <React.Fragment key={lang + "2"}>
           <TabsContent value={lang}>
-            <FormArticle lang={lang} />
+            <FormArticle uuid={uuid} lang={lang} />
           </TabsContent>
         </React.Fragment>
       ))}

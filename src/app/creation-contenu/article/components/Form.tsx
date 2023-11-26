@@ -1,6 +1,4 @@
-"use client";
-
-import { Suspense } from "react";
+"use client";;
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/Form/Input";
 import {
@@ -15,26 +13,27 @@ import {
 import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreateArticleSchema } from "@/types/article";
+import { formCreateArticleSchema, type Article } from "@/types/article";
 import type { Language } from "@/utils/language";
 import Tiptap from "@/components/RichText/Tiptap";
-import dynamic from "next/dynamic";
 import type { z } from "zod";
 
 interface Props {
   lang: (typeof Language)[number];
+  uuid?: Article["uuid"];
 }
 
 // TODO dunno yet but i have to do a correct translation system
-const FormArticle: React.FC<Props> = ({ lang }) => {
+const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
     mode: "onChange",
     // default values is needed if controller used
     defaultValues: {
       title: "",
-      subtitle: "",
+      content: "",
       description: "",
+      conclusion: "",
     },
   });
 

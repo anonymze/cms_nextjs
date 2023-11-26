@@ -14,15 +14,16 @@ import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { formCreatePageSchema } from "@/types/page";
+import { formCreatePageSchema, type Page } from "@/types/page";
 import type { Language } from "@/utils/language";
 
 interface Props {
   lang: (typeof Language)[number];
+  uuid?: Page["uuid"];
 }
 
 // TODO dunno yet but i have to do a correct translation system
-const FormPage: React.FC<Props> = ({ lang }) => {
+const FormPage: React.FC<Props> = ({ lang, uuid }) => {
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
     resolver: zodResolver(formCreatePageSchema),
     mode: "onChange",

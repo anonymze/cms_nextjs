@@ -1,37 +1,18 @@
 "use client";;
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { formCreatePageSchema } from "@/types/page";
-import type { z } from "zod";
+import { type Page } from "@/types/page";
 import { Language } from "@/utils/language";
 import { cn } from "@/utils/libs/shadcn";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import React from "react";
-import FormArticle from "./Form";
 import dynamic from "next/dynamic";
+import FormPage from "./Form";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {
   loading: () => <span>...</span>,
 });
 
-const Content: React.FC = () => {
-  const form = useForm<z.infer<typeof formCreatePageSchema>>({
-    resolver: zodResolver(formCreatePageSchema),
-    mode: "onChange",
-    // default values is needed if controller used
-    defaultValues: {
-      title: "",
-      subtitle: "",
-      description: "",
-    },
-  });
-
-  // values is typesafe
-  function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
-    console.log(values);
-  }
-
+const Content: React.FC<{uuid?: Page["uuid"]}> = ({uuid}) => {
   return (
     <Tabs defaultValue={Language[0]}>
       <TabsList className="h-10 p-1 w-fit mb-8 rounded-md bg-muted text-muted-foreground">
@@ -56,7 +37,7 @@ const Content: React.FC = () => {
       {Language.map((lang) => (
         <React.Fragment key={lang + "2"}>
           <TabsContent value={lang}>
-            <FormArticle lang={lang} />
+            <FormPage uuid={uuid} lang={lang} />
           </TabsContent>
         </React.Fragment>
       ))}
