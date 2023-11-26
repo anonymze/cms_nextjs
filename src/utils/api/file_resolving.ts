@@ -1,29 +1,34 @@
 import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
 import prisma from "../libs/prisma";
-import type { Upload, UploadZodType } from "@/types/upload";
+import { v4 as uuidv4 } from "uuid";
+import { z } from "zod";
+import { MAX_FILE_SIZE, isValidFileType } from "../file_resolving";
+import type { Upload } from "@/types/upload";
 
 const FOLDER_UPLOADS = "uploads";
 
+export const FileSchema = z
+  .custom<File>()
+  .refine(
+    (file) => {
+      return file.size < MAX_FILE_SIZE;
+    },
+    { message: "Le fichier est trop volumineux" },
+  )
+  .refine(
+    (file) => {
+      return isValidFileType(file);
+    },
+    { message: "Le type de fichier n'est pas valide" },
+  );
+
 type ManagedFiles = { error: false; filesEntity: Upload[] } | { error: true };
 
-export async function manageFiles(data: UploadZodType | UploadZodType[]) {
+export async function manageFiles(files: File[]) {
   try {
-    if (!Array.isArray(data)) {
-      const createdFile = await createFileLocally(data);
-
-      const uploadedFile = await prisma.upload.create({
-        data: {
-          filepath_public: createdFile.filepathPublic,
-          filetype: createdFile.filetype,
-        },
-      });
-      return { error: false, filesEntity: [uploadedFile] } satisfies ManagedFiles;
-    }
-
     const uploadedFiles = [];
 
-    for await (let file of data) {
+    for await (let file of files) {
       const createdFile = await createFileLocally(file);
       const uploadedFile = await prisma.upload.create({
         data: {
@@ -31,7 +36,6 @@ export async function manageFiles(data: UploadZodType | UploadZodType[]) {
           filetype: createdFile.filetype,
         },
       });
-      
 
       uploadedFiles.push(uploadedFile);
     }
@@ -41,7 +45,6 @@ export async function manageFiles(data: UploadZodType | UploadZodType[]) {
     return { error: true } satisfies ManagedFiles;
   }
 }
-
 
 const createFileLocally = async (file: File) => {
   // unique hash for the name of the file

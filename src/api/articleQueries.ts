@@ -7,7 +7,7 @@ export async function getArticlesQuery() {
 }
 
 export async function createArticleQuery(article: Omit<Article, "uuid" | "id">) {
-  const result = await api.post("articles", { article });
+  const result = await api.post("articles", article);
   return result.data;
 }
 

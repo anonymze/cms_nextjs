@@ -1,11 +1,10 @@
-import { uploadSchema } from "@/types/upload";
-import { manageFiles } from "@/utils/api/file_resolving";
+import { articleSchema } from "@/types/article";
 import { parserRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
 import prisma from "@/utils/libs/prisma";
 
-const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
+const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET() {
   return jsonResponsePost(await prisma.upload.findMany());
@@ -32,13 +31,14 @@ export async function POST(req: Request) {
     error: errorVerification,
     messageError: messageErrorVerification,
     dataVerified,
-  } = parserRequest.validData(dataParsed, contentType, uploadSchema);
+  } = parserRequest.validData(dataParsed, contentType, articleSchema);
 
   if (errorVerification) return jsonResponseBadRequest(messageErrorVerification);
 
-  const { error: errorFile, filesEntity } = await manageFiles(dataVerified.files);
+  const article = await prisma.article.create({
+    data: dataVerified
+  });
 
-  if (errorFile) return jsonResponseBadRequest("Le fichier n'a pas pu être créé");
 
-  return jsonResponsePost(filesEntity);
+  return jsonResponsePost(article);
 }

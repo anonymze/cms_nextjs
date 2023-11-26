@@ -29,6 +29,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           secondary ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "",
           className,
         )}
+        disabled={disabled}
       >
         {disabled && (
           <svg

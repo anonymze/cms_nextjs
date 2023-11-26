@@ -20,7 +20,7 @@ export function jsonResponse({ body, status, statusText, headers }: JsonResponse
 /** PARSER REQUEST */
 type ParserRequest<T = undefined> =
   | { error: true; messageError: string }
-  | { error: false; [key: string]: T | T[] | boolean };
+  | { error: false; [key: string]: T | boolean };
 type ContentTypeAccepted = "multipart/form-data" | "application/json";
 
 function validContentType(headers: Headers, acceptedContentType: ContentTypeAccepted) {
@@ -39,25 +39,23 @@ function validContentType(headers: Headers, acceptedContentType: ContentTypeAcce
 
 function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchema: z.ZodType<T>) {
   try {
-    if (contentType !== "multipart/form-data") {
-      // parse throw an error if data does not match schema
-      return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequest<T>;
+    if (contentType === "multipart/form-data") {
+      let newData: Record<string, unknown> = {};
+      const files = (data as FormData).getAll("files[]");
+
+      newData["files"] = files;
+
+      for (let [key, value] of (data as FormData).entries()) {
+        if (key === "files[]") continue;
+        newData[key] = value;
+      }
+
+      data = newData;
     }
 
-    const files = (data as FormData).getAll("files[]");
+    console.log(data);
 
-    if (!files || files.length === 0) {
-      throw new Error();
-    }
-
-    const filesParsed = [];
-
-    for (let file of files) {
-      // parse throw an error if data does not match schema
-      filesParsed.push(dataSchema.parse(file));
-    }
-
-    return { error: false, dataVerified: filesParsed } satisfies ParserRequest<T>;
+    return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequest<T>;
   } catch (err) {
     if (err instanceof Error) {
       return { error: true, messageError: err.message } satisfies ParserRequest;
