@@ -12,7 +12,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, large, secondary, className, fill = true, outline = true, ...props }, ref) => {
+  ({ children, large, secondary, className, disabled, fill = true, outline = true, ...props }, ref) => {
     return (
       <button
         ref={ref}
@@ -30,6 +30,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className,
         )}
       >
+        {disabled && (
+          <svg
+            className="absolute w-6 h-6 text-primary-foreground animate-spin"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M12 2a10 10 0 00-7.64 16.36L12 22l7.64-3.64A10 10 0 0012 2z"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
         {children}
       </button>
     );

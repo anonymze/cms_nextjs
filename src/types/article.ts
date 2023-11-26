@@ -25,7 +25,7 @@ export const formCreateArticleSchema = z.object({
       divElement.remove();
 
       // editor tiptap return <p></p> if empty
-      return isNodePopulate;
+      return !!isNodePopulate;
     },
     { message: "Le contenu est requis" },
   ),
