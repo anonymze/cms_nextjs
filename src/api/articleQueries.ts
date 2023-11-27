@@ -11,12 +11,12 @@ export async function createArticleQuery(article: Omit<Article, "uuid" | "id">) 
   return result.data;
 }
 
-export async function deleteArticleQuery(uploadId: Article["uuid"]) {
-  const result = await api.delete(`articles/${uploadId}`);
+export async function deleteArticleQuery(articleId: Article["uuid"]) {
+  const result = await api.delete(`articles/${articleId}`);
   return result.data;
 }
 
-export async function updateArticleQuery(uploadId: Article["uuid"]) {
-  const result = await api.patch(`articles/${uploadId}`);
+export async function updateArticleQuery(articleId: Article["uuid"]) {
+  const result = await api.patch(`articles/${articleId}`);
   return result.data;
 }

@@ -1,6 +1,6 @@
 import { uploadSchema } from "@/types/upload";
 import { manageFiles } from "@/utils/api/file_resolving";
-import { parserRequest } from "@/utils/api/responses/response";
+import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
 import prisma from "@/utils/libs/prisma";
@@ -12,33 +12,13 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const {
-    error: errorContentType,
-    messageError: messageErrorContentType,
-    contentType,
-  } = parserRequest.validContentType(req.headers, ACCEPTED_CONTENT_TYPE);
+  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, uploadSchema);
 
-  if (errorContentType) return jsonResponseBadRequest(messageErrorContentType);
+  if (error) return jsonResponseBadRequest(messageError);
 
-  const {
-    error: errorParsing,
-    messageError: messageErrorParsing,
-    dataParsed,
-  } = await parserRequest.parseBody(req, contentType);
+  const { error: errorFile, filesEntity } = await manageFiles(data.files);
 
-  if (errorParsing) return jsonResponseBadRequest(messageErrorParsing);
-
-  const {
-    error: errorVerification,
-    messageError: messageErrorVerification,
-    dataVerified,
-  } = parserRequest.validData(dataParsed, contentType, uploadSchema);
-
-  if (errorVerification) return jsonResponseBadRequest(messageErrorVerification);
-
-  const { error: errorFile, filesEntity } = await manageFiles(dataVerified.files);
-
-  if (errorFile) return jsonResponseBadRequest("Le fichier n'a pas pu être créé");
+  if (errorFile) return jsonResponseBadRequest("Un des fichiers n'a pas pu être créé");
 
   return jsonResponsePost(filesEntity);
 }

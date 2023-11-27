@@ -1,4 +1,4 @@
-import { articleSchema } from "@/types/article";
+import { pageSchema } from "@/types/page";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
@@ -11,13 +11,13 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, articleSchema);
+    const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, pageSchema);
 
-  if (error) return jsonResponseBadRequest(messageError);
-
-  const article = await prisma.article.create({
-    data
-  });
-
-  return jsonResponsePost(article);
+    if (error) return jsonResponseBadRequest(messageError);
+  
+    const page = await prisma.page.create({
+      data
+    });
+  
+    return jsonResponsePost(page);
 }

@@ -1,4 +1,4 @@
-import { jsonResponse } from "./response";
+import { jsonResponse } from "./core_logic";
 
 export function jsonResponseUnauthorized(message = "Non autorisé") {
   jsonResponse({ body: message, status: 401, statusText: "Unauthorized" });

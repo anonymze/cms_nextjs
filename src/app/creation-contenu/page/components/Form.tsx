@@ -16,6 +16,9 @@ import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { formCreatePageSchema, type Page } from "@/types/page";
 import type { Language } from "@/utils/language";
+import { useMutation } from "@tanstack/react-query";
+import { createPageQuery } from "@/api/pageQueries";
+import { useToast } from "@/hooks/use_toast";
 
 interface Props {
   lang: (typeof Language)[number];
@@ -25,6 +28,12 @@ interface Props {
 // TODO dunno yet but i have to do a correct translation system
 const FormPage: React.FC<Props> = ({ lang, uuid }) => {
   console.log(lang, uuid);
+  const { toast } = useToast();
+
+  const mutation = useMutation({
+    mutationFn: createPageQuery,
+  });
+
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
     resolver: zodResolver(formCreatePageSchema),
     mode: "onChange",
@@ -37,8 +46,13 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
   });
 
   // values is typesafe
-  function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
+    await mutation.mutateAsync(values);
+    toast({
+      title: "Page créée",
+      variant: "success",
+      duration: 2500,
+    })
   }
 
   return (

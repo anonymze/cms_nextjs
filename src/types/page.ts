@@ -10,9 +10,13 @@ export type Page = {
 };
 
 // Zod schema
-export const formCreatePageSchema = z.object({
-    title: z.string().min(2).max(30).trim(),
-    subtitle: z.string().min(2).max(30).trim().optional(),
-    description: z.string().min(2).max(100).trim(),
-  });
+export type PageZodType = z.infer<typeof pageSchema>;
+
+export const pageSchema = z.object({
+  description: z.string().min(2).max(100).trim(),
+  subtitle: z.string().min(2).max(30).trim().optional(),
+  title: z.string().min(2).max(30).trim(),
+});
+
+export const formCreatePageSchema = pageSchema;
 

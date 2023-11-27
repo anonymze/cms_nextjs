@@ -1,4 +1,4 @@
-import { jsonResponse } from "./response";
+import { jsonResponse } from "./core_logic";
 import { getResponseHeader } from "./response_header";
 
 export function jsonResponsePost(body: unknown, withCookieApiToken = true) {
