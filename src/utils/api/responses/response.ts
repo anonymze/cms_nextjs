@@ -53,8 +53,6 @@ function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchem
       data = newData;
     }
 
-    console.log(data);
-
     return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequest<T>;
   } catch (err) {
     if (err instanceof Error) {
@@ -65,7 +63,7 @@ function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchem
   }
 }
 
-export async function parseBody(req: Request, contentType: ContentTypeAccepted) {
+async function parseBody(req: Request, contentType: ContentTypeAccepted) {
   try {
     if (contentType === "multipart/form-data") {
       return { error: false, dataParsed: await req.formData() } satisfies ParserRequest<FormData>;

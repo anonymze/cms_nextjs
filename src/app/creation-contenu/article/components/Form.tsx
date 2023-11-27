@@ -19,6 +19,7 @@ import Tiptap from "@/components/RichText/Tiptap";
 import type { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery } from "@/api/articleQueries";
+import { useToast } from "@/hooks/use_toast";
 
 interface Props {
   lang: (typeof Language)[number];
@@ -28,12 +29,11 @@ interface Props {
 // TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
   console.log(lang, uuid);
+  const { toast } = useToast();
 
   const mutation = useMutation({
     mutationFn: createArticleQuery,
   });
-
-  console.log(mutation);
 
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
@@ -48,9 +48,13 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
   });
 
   // values is typesafe
-  function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
-    console.log(values);
-    mutation.mutate(values);
+  async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
+    await mutation.mutateAsync(values);
+    toast({
+      title: "Article créé",
+      variant: "success",
+      duration: 2500,
+    })
   }
 
   return (
@@ -136,7 +140,7 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

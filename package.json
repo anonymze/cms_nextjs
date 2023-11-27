@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "knip": "knip",
     "format": "prettier --write .",
     "db-status": "prisma migrate status --schema=./src/db/prisma/schema.prisma",
     "db-migrate": " cat ./src/db/prisma/schema/**/*.prisma > ./src/db/prisma/schema.prisma && prisma migrate dev --schema=./src/db/prisma/schema.prisma",
@@ -62,10 +63,11 @@
     "eslint": "^8",
     "eslint-config-next": "^14.0.3",
     "eslint-config-prettier": "9.0.0",
+    "knip": "^3.0.2",
     "postcss": "^8",
     "prettier": "3.0.3",
     "prisma": "^5.5.2",
     "tailwindcss": "^3",
-    "typescript": "^5"
+    "typescript": "^5.3.2"
   }
 }

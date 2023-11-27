@@ -1,7 +1,7 @@
 "use client"; // Error components must be Client Components
 
 import { ToastAction } from "@/components/ui/Toaster/Toast";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use_toast";
 import { useEffect } from "react";
 
 export default function Error({

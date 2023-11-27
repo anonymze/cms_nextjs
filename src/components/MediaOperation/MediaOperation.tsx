@@ -3,9 +3,9 @@
 import { Trash2Icon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteUploadQuery } from "@/api/uploadQueries";
-import "./MediaOperation.css";
 import type { Upload } from "@/types/upload";
-import { type HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
+import "./MediaOperation.css";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   removeFileFromApi: Upload["uuid"] | false;

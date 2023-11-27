@@ -13,7 +13,6 @@ const COUNT_CARD_SKELETONS = 6;
 const Uploads: React.FC<{}> = ({}) => {
   const {
     data: uploads,
-    isFetching
   } = useSuspenseQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,

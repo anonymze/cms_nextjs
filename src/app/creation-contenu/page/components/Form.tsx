@@ -24,6 +24,7 @@ interface Props {
 
 // TODO dunno yet but i have to do a correct translation system
 const FormPage: React.FC<Props> = ({ lang, uuid }) => {
+  console.log(lang, uuid);
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
     resolver: zodResolver(formCreatePageSchema),
     mode: "onChange",
