@@ -2,7 +2,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import { Loader, Loader2, Loader2Icon, LucideLoader2 } from "lucide-react";
 import { SpinnerLoader } from "../ui/Loader/Loader";
 
 interface Props {

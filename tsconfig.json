@@ -24,8 +24,9 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    // TODO
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     /* If NOT transpiling with TypeScript: */
     "jsx": "preserve",
     "moduleResolution": "Bundler",

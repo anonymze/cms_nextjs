@@ -21,7 +21,7 @@ import { createPageQuery } from "@/api/pageQueries";
 import { useToast } from "@/hooks/use_toast";
 
 interface Props {
-  lang: (typeof Language)[number];
+  lang:  typeof Language[number];
   uuid?: Page["uuid"];
 }
 

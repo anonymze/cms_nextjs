@@ -1,7 +1,8 @@
 import prisma from "@/utils/libs/prisma";
 
 export async function GET(req: Request, res: any) {
-  return Response.json("id !!!!");
+  console.log(req);
+  console.log(res)
 }
 
 export async function DELETE(req: Request) {

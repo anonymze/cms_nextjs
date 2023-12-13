@@ -22,7 +22,7 @@ import { createArticleQuery } from "@/api/articleQueries";
 import { useToast } from "@/hooks/use_toast";
 
 interface Props {
-  lang: (typeof Language)[number];
+  lang:  typeof Language[number];
   uuid?: Article["uuid"];
 }
 

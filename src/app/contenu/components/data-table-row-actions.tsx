@@ -19,6 +19,7 @@ interface DataTableRowActionsProps<TData> {
 
 export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const task = taskSchema.parse(row.original);
+  console.log(task);
   console.log(row.original);
   console.log(row.getValue("id"));
 
