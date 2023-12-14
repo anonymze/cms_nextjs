@@ -6,13 +6,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import React from "react";
 import dynamic from "next/dynamic";
 import FormPage from "./Form";
-import { Flag } from "lucide-react";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const IconDynamic = dynamic(() => import("@/components/ui/IconDynamic"), {
   loading: () => (
     <span>
-      <Flag />
+      ...
     </span>
   ),
 });
