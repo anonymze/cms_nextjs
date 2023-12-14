@@ -7,7 +7,7 @@ import { PlusCircleIcon } from "lucide-react";
 import { useRef } from "react";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUploadQuery } from "@/api/uploadQueries";
+import { createUploadQuery } from "@/api/queries/uploadQueries";
 import { useToast } from "@/hooks/use_toast";
 import type { PropsWithChildren, FormEvent } from "react";
 

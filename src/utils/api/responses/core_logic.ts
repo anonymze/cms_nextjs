@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-/** JSON RESPONSE */
+/** TYPING */
+type ParserRequestReturn<T = undefined> =
+  | { error: true; messageError: string }
+  | { error: false; [key: string]: T | boolean };
+
 interface JsonResponseCore {
   status: number;
   statusText: string;
@@ -11,75 +15,79 @@ export interface JsonResponse extends JsonResponseCore {
   body: unknown;
 }
 
+type ContentTypeAccepted = "multipart/form-data" | "application/json";
+
+/** MY JSON RESPONSE */
 export function jsonResponse({ body, status, statusText, headers }: JsonResponse) {
-  if (typeof body === "string")
+  if (typeof body === "string") {
     return Response.json({ status, message: body }, { status, statusText, headers });
+  }
+  
   return Response.json(body, { status, statusText, headers });
 }
 
 /** PARSER REQUEST */
-type ParserRequest<T = undefined> =
-  | { error: true; messageError: string }
-  | { error: false; [key: string]: T | boolean };
-type ContentTypeAccepted = "multipart/form-data" | "application/json";
+export class ParserRequest {
+  constructor(
+    readonly request: Request,
+    readonly contentType: ContentTypeAccepted,
+  ) {}
 
-function validContentType(headers: Headers, acceptedContentType: ContentTypeAccepted) {
-  if (headers.get("content-type")?.startsWith(acceptedContentType)) {
-    return {
-      error: false,
-      contentType: acceptedContentType,
-    } satisfies ParserRequest<ContentTypeAccepted>;
-  }
-
-  return {
-    error: true,
-    messageError: "Content-Type doit être de type multipart/form-data",
-  } satisfies ParserRequest;
-}
-
-function validData<T>(data: unknown, contentType: ContentTypeAccepted, dataSchema: z.ZodType<T>) {
-  try {
-    if (contentType === "multipart/form-data") {
-      let newData: Record<string, unknown> = {};
-      const files = (data as FormData).getAll("files[]");
-
-      newData["files"] = files;
-
-      for (let [key, value] of (data as FormData).entries()) {
-        if (key === "files[]") continue;
-        newData[key] = value;
-      }
-
-      data = newData;
+  validContentType() {
+    if (this.request.headers.get("content-type")?.startsWith(this.contentType)) {
+      return {
+        error: false,
+        contentType: this.contentType,
+      } satisfies ParserRequestReturn<ContentTypeAccepted>;
     }
 
-    return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequest<T>;
-  } catch (err) {
-    if (err instanceof Error) {
-      return { error: true, messageError: err.message } satisfies ParserRequest;
-    }
-
-    return { error: true, messageError: "Les données sont invalides" } satisfies ParserRequest;
-  }
-}
-
-async function parseBody(req: Request, contentType: ContentTypeAccepted) {
-  try {
-    if (contentType === "multipart/form-data") {
-      return { error: false, dataParsed: await req.formData() } satisfies ParserRequest<FormData>;
-    }
-
-    return { error: false, dataParsed: await req.json() } satisfies ParserRequest<any>;
-  } catch (err) {
     return {
       error: true,
-      messageError: "Le contenu n'a pas pu être parsé",
-    } satisfies ParserRequest;
+      messageError: "Content-Type doit être de type multipart/form-data",
+    } satisfies ParserRequestReturn;
+  }
+
+  validData<T>(data: unknown, dataSchema: z.ZodType<T>) {
+    try {
+      if (this.contentType === "multipart/form-data") {
+        let newData: Record<string, unknown> = {};
+        const files = (data as FormData).getAll("files[]");
+
+        newData["files"] = files;
+
+        for (let [key, value] of (data as FormData).entries()) {
+          if (key === "files[]") continue;
+          newData[key] = value;
+        }
+
+        data = newData;
+      }
+
+      return { error: false, dataVerified: dataSchema.parse(data) } satisfies ParserRequestReturn<T>;
+    } catch (err) {
+      if (err instanceof Error) {
+        return { error: true, messageError: err.message } satisfies ParserRequestReturn;
+      }
+
+      return { error: true, messageError: "Les données sont invalides" } satisfies ParserRequestReturn;
+    }
+  }
+
+  async parseBody() {
+    try {
+      if (this.contentType === "multipart/form-data") {
+        return {
+          error: false,
+          dataParsed: await this.request.formData(),
+        } satisfies ParserRequestReturn<FormData>;
+      }
+
+      return { error: false, dataParsed: await this.request.json() } satisfies ParserRequestReturn<any>;
+    } catch (_) {
+      return {
+        error: true,
+        messageError: "Le contenu n'a pas pu être parsé",
+      } satisfies ParserRequestReturn;
+    }
   }
 }
-
-export const parserRequest = {
-  validContentType,
-  parseBody,
-  validData,
-};

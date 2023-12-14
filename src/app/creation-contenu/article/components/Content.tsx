@@ -34,8 +34,8 @@ const Content: React.FC<{ uuid?: Article["uuid"] }> = ({ uuid }) => {
           </React.Fragment>
         ))}
       </TabsList>
-      {Language.map((lang) => (
-        <React.Fragment key={lang + "2"}>
+      {Language.map((lang, idx) => (
+        <React.Fragment key={idx}>
           <TabsContent value={lang}>
             <FormArticle uuid={uuid} lang={lang} />
           </TabsContent>

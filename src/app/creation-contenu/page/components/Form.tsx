@@ -17,7 +17,7 @@ import type { z } from "zod";
 import { formCreatePageSchema, type Page } from "@/types/page";
 import type { Language } from "@/utils/language";
 import { useMutation } from "@tanstack/react-query";
-import { createPageQuery } from "@/api/pageQueries";
+import { createPageQuery } from "@/api/queries/pageQueries";
 import { useToast } from "@/hooks/use_toast";
 
 interface Props {
@@ -36,7 +36,7 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
 
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
     resolver: zodResolver(formCreatePageSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     // default values is needed if controller used
     defaultValues: {
       title: "",

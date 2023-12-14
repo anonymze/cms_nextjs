@@ -18,7 +18,7 @@ import type { Language } from "@/utils/language";
 import Tiptap from "@/components/RichText/Tiptap";
 import type { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { createArticleQuery } from "@/api/articleQueries";
+import { createArticleQuery } from "@/api/queries/articleQueries";
 import { useToast } from "@/hooks/use_toast";
 
 interface Props {
@@ -37,7 +37,7 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
 
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     // default values is needed if controller used
     defaultValues: {
       title: "",

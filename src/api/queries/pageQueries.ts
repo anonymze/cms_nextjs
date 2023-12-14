@@ -1,5 +1,5 @@
 import type { Page } from "@/types/page";
-import { api } from "./_config";
+import { api } from "../_config";
 import type { Article } from "@/types/article";
 
 export async function getPagesQuery() {

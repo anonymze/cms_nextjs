@@ -30,12 +30,12 @@ const Content: React.FC<{uuid?: Page["uuid"]}> = ({uuid}) => {
               value={lang}
             >
               <DynamicIcon name="Heading" size={20} />
-            </TabsTrigger>
+            </TabsTrigger>@&@
           </React.Fragment>
         ))}
       </TabsList>
-      {Language.map((lang) => (
-        <React.Fragment key={lang + "2"}>
+      {Language.map((lang, idx) => (
+        <React.Fragment key={idx}>
           <TabsContent value={lang}>
             <FormPage uuid={uuid} lang={lang} />
           </TabsContent>

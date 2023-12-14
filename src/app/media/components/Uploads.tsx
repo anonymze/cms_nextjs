@@ -4,7 +4,7 @@ import Image from "next/image";
 import MediaOperation from "@/components/MediaOperation/MediaOperation";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getUploadsQuery } from "@/api/uploadQueries";
+import { getUploadsQuery } from "@/api/queries/uploadQueries";
 import { cn } from "@/utils/libs/shadcn";
 import Content from "./Content";
 

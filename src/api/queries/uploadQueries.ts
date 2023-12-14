@@ -1,5 +1,5 @@
 import type { FileTypeStore } from "@/contexts/store_files_context";
-import { api } from "./_config";
+import { api } from "../_config";
 import type { Upload } from "@/types/upload";
 
 export async function getUploadsQuery() {

@@ -1,14 +1,15 @@
 import type { z } from "zod";
-import { parserRequest } from "./core_logic";
+import { ParserRequest } from "./core_logic";
 
-type ProcessRequest<T> = {
-  error: true;
-  messageError: string;
-} |
-{
-  error: false;
-  data: T;
-};
+type ProcessRequest<T> =
+  | {
+      error: true;
+      messageError: string;
+    }
+  | {
+      error: false;
+      data: T;
+    };
 
 /**
  *
@@ -21,30 +22,33 @@ export async function processRequest<T>(
   acceptedContentType: "application/json" | "multipart/form-data",
   dataSchema: z.ZodType<T>,
 ) {
-  const {
-    error: errorContentType,
-    messageError: messageErrorContentType,
-    contentType,
-  } = parserRequest.validContentType(req.headers, acceptedContentType);
+  const parserRequest = new ParserRequest(req, acceptedContentType);
 
-  if (errorContentType) return { error: true, messageError: messageErrorContentType } satisfies ProcessRequest<T>;
+  // we first validate the content type
+  const { error: errorContentType, messageError: messageErrorContentType } = parserRequest.validContentType();
 
+  if (errorContentType)
+    return { error: true, messageError: messageErrorContentType } satisfies ProcessRequest<T>;
+
+  // we parse the body to get the data
   const {
     error: errorParsing,
     messageError: messageErrorParsing,
     dataParsed,
-  } = await parserRequest.parseBody(req, contentType);
+  } = await parserRequest.parseBody();
 
   if (errorParsing) return { error: true, messageError: messageErrorParsing } satisfies ProcessRequest<T>;
 
+  // we verify the correctness of the data
   const {
     error: errorVerification,
     messageError: messageErrorVerification,
     dataVerified,
-  } = parserRequest.validData(dataParsed, contentType, dataSchema);
+  } = parserRequest.validData(dataParsed, dataSchema);
 
-  if (errorVerification) return { error: true, messageError: messageErrorVerification } satisfies ProcessRequest<T>;
+  if (errorVerification)
+    return { error: true, messageError: messageErrorVerification } satisfies ProcessRequest<T>;
 
-
+  // we return the data typed correctly
   return { error: false, data: dataVerified } satisfies ProcessRequest<T>;
 }

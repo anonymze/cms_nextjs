@@ -1,4 +1,4 @@
-import { getUploadsQuery } from "@/api/uploadQueries";
+import { getUploadsQuery } from "@/api/queries/uploadQueries";
 import Uploads from "./components/Uploads";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 
@@ -13,8 +13,9 @@ export default async function Page() {
   });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Uploads />
-    </HydrationBoundary>
+    <div></div>
+    // <HydrationBoundary state={dehydrate(queryClient)}>
+    //   <Uploads />
+    // </HydrationBoundary>
   );
 }

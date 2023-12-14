@@ -1,4 +1,4 @@
-import { api } from "./_config";
+import { api } from "../_config";
 import type { Article } from "@/types/article";
 
 export async function getArticlesQuery() {
