@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/utils/libs/shadcn";
 
 const convertPathnameToReadableString = (pathname: string) => {
   return pathname.replaceAll("-", " ").replace(/^./, pathname[0]!.toUpperCase());
@@ -24,12 +25,14 @@ const Breadcrump: React.FC = () => {
   //  if pathnames has less than 2 entry, we don't show the breadcrump
   if (pathnames.length < 2) return null;
 
+  const currentIdxPathname = pathnames.length - 1;
+
   return (
     <div className="mb-3 text-sm italic" role="breadcrump">
       {pathnames.map((pathname, idx) => (
         <React.Fragment key={idx}>
           {" - "}
-          <Link className="underline" href={constructURL(pathnames, idx)}>
+          <Link className={cn(idx === currentIdxPathname ? "underline" : undefined)} href={constructURL(pathnames, idx)}>
             {convertPathnameToReadableString(pathname)}
           </Link>
         </React.Fragment>

@@ -13,18 +13,24 @@ import {
 import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreateArticleSchema, type Article } from "@/types/article";
-import type { Language } from "@/utils/language";
-import Tiptap from "@/components/RichText/Tiptap";
-import type { z } from "zod";
+import { formCreateArticleSchema } from "@/types/article";
 import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery } from "@/api/queries/articleQueries";
 import { useToast } from "@/hooks/use_toast";
+import dynamic from "next/dynamic";
+import type { Language } from "@/utils/language";
+import type { z } from "zod";
+import type { Article } from "@/types/article";
 
 interface Props {
   lang:  typeof Language[number];
   uuid?: Article["uuid"];
 }
+
+// we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
+const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
+  loading: () => <span>...</span>,
+})
 
 // TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
@@ -100,7 +106,7 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
             <FormItem>
               <FormLabel>Contenu *</FormLabel>
               <FormControl>
-                <Tiptap description={field.name} onChange={field.onChange} />
+                <TiptapDynamic description={field.name} onChange={field.onChange} />
               </FormControl>
               <FormDescription>Le contenu de l&apos;article</FormDescription>
               <FormMessage />

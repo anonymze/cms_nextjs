@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { type Page } from "@/types/page";
 import { Language } from "@/utils/language";
 import { cn } from "@/utils/libs/shadcn";
@@ -6,13 +6,18 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import React from "react";
 import dynamic from "next/dynamic";
 import FormPage from "./Form";
+import { Flag } from "lucide-react";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
-const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {
-  loading: () => <span>...</span>,
+const IconDynamic = dynamic(() => import("@/components/ui/IconDynamic"), {
+  loading: () => (
+    <span>
+      <Flag />
+    </span>
+  ),
 });
 
-const Content: React.FC<{uuid?: Page["uuid"]}> = ({uuid}) => {
+const Content: React.FC<{ uuid?: Page["uuid"] }> = ({ uuid }) => {
   return (
     <Tabs defaultValue={Language[0]}>
       <TabsList className="h-10 p-1 w-fit mb-8 rounded-md bg-muted text-muted-foreground">
@@ -29,8 +34,8 @@ const Content: React.FC<{uuid?: Page["uuid"]}> = ({uuid}) => {
               )}
               value={lang}
             >
-              <DynamicIcon name="Heading" size={20} />
-            </TabsTrigger>@&@
+              <IconDynamic name="Heading" size={20} />
+            </TabsTrigger>
           </React.Fragment>
         ))}
       </TabsList>
