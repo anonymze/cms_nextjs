@@ -4,14 +4,14 @@ import "./Skeleton.css";
 
 type SuffixValueHeight = '%' | 'px' | 'rem' | 'em' | 'vh'
 
-type PropsSkeleton<T = undefined> = PropsWithChildren & {
+type PropsSkeleton = PropsWithChildren & {
   animated?: boolean;
-  height?: T extends `${string}${SuffixValueHeight}` ? T : never
-}
+  height?: `${number}${SuffixValueHeight}`
+} & React.HTMLAttributes<HTMLDivElement>
 
-const SkeletonCard = <T = undefined>({ animated, height }: PropsSkeleton<T>) => {
+const SkeletonCard: React.FC<PropsSkeleton> = ({ animated, height, className }) => {
   return (
-    <div style={{ height }} className={cn("background-skeleton", { animated })} role="presentation"></div>
+    <div style={{ height }} className={cn("background-skeleton", className, { animated })} role="presentation"></div>
   );
 };
 

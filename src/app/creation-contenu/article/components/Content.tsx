@@ -9,11 +9,7 @@ import type { Article } from "@/types/article";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {
-  loading: () => (
-    <span>
-      ...
-    </span>
-  ),
+  loading: () => <span>...</span>,
 });
 
 const Content: React.FC<{ uuid?: Article["uuid"] }> = ({ uuid }) => {

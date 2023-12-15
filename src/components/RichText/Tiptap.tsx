@@ -3,6 +3,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
 import { SpinnerLoader } from "../ui/Loader/Loader";
+import { SkeletonCard } from "../ui/Skeleton/Skeleton";
 
 interface Props {
   description: string;
@@ -35,7 +36,14 @@ const Tiptap: React.FC<Props> = ({ description, onChange }) => {
   });
 
   // TODO rotation
-  if (!editor) return <SpinnerLoader />;
+  if (!editor) {
+    return (
+      <>
+          <SkeletonCard animated height="2.2rem" />
+          <SkeletonCard animated height="9rem" />
+      </>
+    );
+  }
 
   return (
     <div role="textbox" className="flex flex-col justify-stretch">

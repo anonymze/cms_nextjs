@@ -51,7 +51,7 @@ const Uploads: React.FC<{}> = ({}) => {
         <>
           {/* else we show the placeholders */}
           {[...Array(COUNT_CARD_SKELETONS)].map((_, i) => (
-            <SkeletonCard key={i} />
+            <SkeletonCard height={"9px"} key={i} />
           ))}
         </>
       )}
