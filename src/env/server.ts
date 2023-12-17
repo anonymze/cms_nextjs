@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const envServerSchema = z.object({
+const envServerSchema = z.object({
   NODE_ENV: z.enum(["development", "production"]).default("production"),
   API_KEY: z.string()
 });

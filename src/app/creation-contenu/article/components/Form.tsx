@@ -21,16 +21,22 @@ import dynamic from "next/dynamic";
 import type { Language } from "@/utils/language";
 import type { z } from "zod";
 import type { Article } from "@/types/article";
+import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
 
 interface Props {
-  lang:  typeof Language[number];
+  lang: (typeof Language)[number];
   uuid?: Article["uuid"];
 }
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
-  loading: () => <span>...</span>,
-})
+  loading: () => (
+    <>
+      <SkeletonCard animated height="2.2rem" />
+      <SkeletonCard animated height="9rem" />
+    </>
+  ),
+});
 
 // TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
@@ -60,7 +66,7 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
       title: "Article créé",
       variant: "success",
       duration: 2500,
-    })
+    });
   }
 
   return (

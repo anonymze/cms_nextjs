@@ -7,16 +7,19 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/queries/uploadQueries";
 import { cn } from "@/utils/libs/shadcn";
 import Content from "./Content";
+import type { Upload } from "@/types/upload";
 
 const COUNT_CARD_SKELETONS = 6;
 
 const Uploads: React.FC<{}> = ({}) => {
-  const {
-    data: uploads,
-  } = useSuspenseQuery({
-    queryKey: ["uploads"],
-    queryFn: getUploadsQuery,
-  });
+  // TODO fix bug here on build
+  // const {
+  //   data: uploads,
+  // } = useSuspenseQuery({
+  //   queryKey: ["uploads"],
+  //   queryFn: getUploadsQuery,
+  // });
+  const uploads: Upload[] = [];
 
   // TODO IF IS FETCHING WE SHOW AN INDICATOR (loader ?)
 

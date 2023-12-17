@@ -1,22 +1,20 @@
-import { promises as fs } from "fs";
-import path from "path";
-import { z } from "zod";
+import Content from "./components/Content";
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import { getArticlesQuery } from "@/api/queries/articleQueries";
 
-import { columns } from "./components/columns";
-import { DataTable } from "./components/data-table";
-import { taskSchema } from "./data/schema";
+// get the data from the server then hydrate it on children
+// or you can props drilling with initial data (i use this if only 1 layer of props drilling)
+export default async function Page() {
+  const queryClient = new QueryClient();
 
-// Simulate a database read for tasks.
-async function getTasks() {
-  const data = await fs.readFile(path.join(process.cwd(), "src/app/contenu/data/tasks.json"));
+  await queryClient.prefetchQuery({
+    queryKey: ["uploads"],
+    queryFn: getArticlesQuery,
+  });
 
-  const tasks = JSON.parse(data.toString());
-
-  return z.array(taskSchema).parse(tasks);
-}
-
-export default async function TaskPage() {
-  const tasks = await getTasks();
-
-  return <DataTable data={tasks} columns={columns} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Content />
+    </HydrationBoundary>
+  );
 }

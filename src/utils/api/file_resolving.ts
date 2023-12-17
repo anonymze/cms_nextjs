@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { MAX_FILE_SIZE, isValidFileType } from "../file_resolving";
 import type { Upload } from "@/types/upload";
+import path from "path";
 
 const FOLDER_UPLOADS = "uploads";
 
@@ -50,10 +51,10 @@ const createFileLocally = async (file: File) => {
   // unique hash for the name of the file
   const hash = uuidv4();
   const fileExtension = getExtensionFile(file.type);
-  const filepathPublic = `/${FOLDER_UPLOADS}/${hash}.${fileExtension}`;
+  const filepathPublic = `${path.join('public', FOLDER_UPLOADS, hash)}.${fileExtension}`;
 
   // Uint8Array or Buffer is accepted
-  fs.appendFileSync(`public${filepathPublic}`, Buffer.from(await file.arrayBuffer()));
+  fs.appendFileSync(filepathPublic, Buffer.from(await file.arrayBuffer()));
 
   return { filepathPublic: filepathPublic, filetype: file.type };
 };
