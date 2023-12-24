@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const envClientSchema = z.object({
+const envClientSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url(),
 });
 

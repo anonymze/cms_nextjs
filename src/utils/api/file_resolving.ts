@@ -3,8 +3,8 @@ import prisma from "../libs/prisma";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { MAX_FILE_SIZE, isValidFileType } from "../file_resolving";
-import type { Upload } from "@/types/upload";
 import path from "path";
+import type { Upload } from "@/types/upload";
 
 const FOLDER_UPLOADS = "uploads";
 
@@ -50,15 +50,16 @@ export async function manageFiles(files: File[]) {
 const createFileLocally = async (file: File) => {
   // unique hash for the name of the file
   const hash = uuidv4();
-  const fileExtension = getExtensionFile(file.type);
-  const filepathPublic = `${path.join('public', FOLDER_UPLOADS, hash)}.${fileExtension}`;
+  const fileExtension = getFileExtension(file.type);
+  const filePath = `${path.join('/', FOLDER_UPLOADS, hash)}.${fileExtension}`
 
   // Uint8Array or Buffer is accepted
-  fs.appendFileSync(filepathPublic, Buffer.from(await file.arrayBuffer()));
+  // we save the file in the public folder
+  fs.appendFileSync(path.join('public', filePath), Buffer.from(await file.arrayBuffer()));
 
-  return { filepathPublic: filepathPublic, filetype: file.type };
+  return { filepathPublic: filePath, filetype: file.type };
 };
 
-const getExtensionFile = (filetype: File["type"]) => {
+const getFileExtension = (filetype: File["type"]) => {
   return filetype.split("/")[1];
 };

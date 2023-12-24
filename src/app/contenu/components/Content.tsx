@@ -1,9 +1,11 @@
+"use client";
+
 import { getArticlesQuery } from "@/api/queries/articleQueries";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const Content: React.FC = () => {
   // TODO fix bug here on build
-  const { data: articles } = useSuspenseQuery({
+  const { data: articles } = useQuery({
     queryKey: ["uploads"],
     queryFn: getArticlesQuery,
   });

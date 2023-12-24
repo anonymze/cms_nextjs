@@ -9,12 +9,9 @@ import { Switch } from "../../ui/Switch";
 interface Props {}
 
 const TopNavbar: React.FC<Props> = () => {
-  const setTheme = useThemeStore((theme) => theme.setTheme);
   const router = useRouter();
+  const setTheme = useThemeStore((theme) => theme.setTheme);
 
-  const goBack = () => {
-    router.back();
-  };
 
   const changeTheme = (checked: boolean) => {
     if (checked) {
@@ -27,7 +24,7 @@ const TopNavbar: React.FC<Props> = () => {
   };
   return (
     <nav className="flex justify-between items-center pb-8">
-      <Button onClick={goBack}>
+      <Button onClick={() => router.back()}>
         <ArrowLeft className="h-5 w-5 mr-1" /> Retour
       </Button>
       <Switch onCheckedChange={changeTheme} />
