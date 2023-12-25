@@ -16,7 +16,9 @@ const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props
   const deleteMutation = useMutation({
     mutationFn: deleteUploadQuery,
     mutationKey: ["uploads"],
-    meta: { test: "oui" },
+    meta: {
+      message: "Le média a été supprimé"
+    },
   });
 
   return (
@@ -24,16 +26,6 @@ const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props
       onClick={async () => {
         if (!removeFileFromApi) return;
         deleteMutation.mutate(removeFileFromApi);
-        toast.error(
-          "Event has been created",
-          // , {
-          //   description: "Sunday, December 03, 2023 at 9:00 AM",
-          //   action: {
-          //     label: "Undo",
-          //     onClick: () => console.log("Undo"),
-          //   },
-          // }
-        );
       }}
       className="media-operation"
       {...props}

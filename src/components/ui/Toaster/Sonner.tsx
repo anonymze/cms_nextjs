@@ -8,6 +8,7 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const theme = useThemeStore((state) => state.theme);
+
   return (
     <Sonner
       theme={theme}

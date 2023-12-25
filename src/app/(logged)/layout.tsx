@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/shadcn";
 import { Providers } from "@/utils/libs/providers_react_query";
 import { Toaster } from "@/components/ui/Toaster/Sonner";
-import { toast } from "sonner"
 import type { Metadata } from "next";
 
 const fontSans = Inter({

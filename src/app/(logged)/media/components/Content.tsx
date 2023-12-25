@@ -8,7 +8,6 @@ import { useRef } from "react";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUploadQuery } from "@/api/queries/uploadQueries";
-import { useToast } from "@/hooks/use_toast";
 import type { PropsWithChildren, FormEvent } from "react";
 
 const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ hideActionButton }) => {
@@ -19,6 +18,10 @@ const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ 
 
   const createMutation = useMutation({
     mutationFn: createUploadQuery,
+    mutationKey: ["uploads"],
+    meta: {
+      message: "Le média a été ajouté"
+    },
   });
 
   const sendFilesToApi = (ev: FormEvent<HTMLFormElement>) => {
