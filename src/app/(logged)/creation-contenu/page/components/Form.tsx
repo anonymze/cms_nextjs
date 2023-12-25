@@ -28,10 +28,8 @@ interface Props {
 // TODO dunno yet but i have to do a correct translation system
 const FormPage: React.FC<Props> = ({ lang, uuid }) => {
   console.log(lang, uuid);
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
 
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: createPageQuery,
   });
 
@@ -46,14 +44,9 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
     },
   });
 
-  // values is typesafe
+  // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
-    await mutation.mutateAsync(values);
-    toast({
-      title: "Page créée",
-      variant: "success",
-      duration: 2500,
-    })
+    createMutation.mutate(values);
   }
 
   return (

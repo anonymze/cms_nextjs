@@ -40,13 +40,7 @@ const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
 
 // TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
-  console.log(lang, uuid);
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  const mutation = useMutation({
-    mutationFn: createArticleQuery,
-  });
+  const createMutation = useMutation({ mutationFn: createArticleQuery });
 
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
@@ -60,14 +54,9 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
     },
   });
 
-  // values is typesafe
+  // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
-    await mutation.mutateAsync(values);
-    toast({
-      title: "Article créé",
-      variant: "success",
-      duration: 2500,
-    });
+    createMutation.mutate(values);
   }
 
   return (
@@ -139,8 +128,8 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
 
         <p className="text-xs">* champs obligatoires</p>
 
-        <Button disabled={mutation.isPending} type="submit">
-          {mutation.isPending ? (
+        <Button disabled={createMutation.isPending} type="submit">
+          {createMutation.isPending ? (
             <svg
               className="animate-spin mr-3 h-5 w-5"
               xmlns="http://www.w3.org/2000/svg"

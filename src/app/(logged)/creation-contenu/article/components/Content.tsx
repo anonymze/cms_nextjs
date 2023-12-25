@@ -6,6 +6,7 @@ import FormArticle from "./Form";
 import { cn } from "@/utils/libs/shadcn";
 import dynamic from "next/dynamic";
 import type { Article } from "@/types/article";
+import { toast } from "sonner"
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {

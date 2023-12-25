@@ -1,9 +1,6 @@
 import App from "@/App";
-import Layout from "@/components/layout/Layout";
 import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/shadcn";
-import { Providers } from "@/utils/libs/providers_react_query";
-import { Toaster } from "@/components/ui/Toaster/Toaster";
 import type { Metadata } from "next";
 
 const fontSans = Inter({
@@ -18,13 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+ 
   return (
     <App>
       <body className={cn("h-screen", fontSans.className)}>
-        <Layout>
-          <Providers>{children}</Providers>
-        </Layout>
-        <Toaster />
+      {children}
       </body>
     </App>
   );

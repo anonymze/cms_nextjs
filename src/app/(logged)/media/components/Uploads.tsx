@@ -11,15 +11,12 @@ import Content from "./Content";
 const COUNT_CARD_SKELETONS = 6;
 
 const Uploads: React.FC<{}> = ({}) => {
-
   const {
     data: uploads,
   } = useQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,
   });
-
-  // TODO IF IS FETCHING WE SHOW AN INDICATOR (loader ?)
 
   return (    
     <section
@@ -58,7 +55,7 @@ const Uploads: React.FC<{}> = ({}) => {
       )}
       <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col">
         {/* if data we hide the action button */}
-        <Content hideActionButton={uploads && uploads.length > 0 ? true : false} />
+        <Content hideActionButton={!uploads || !uploads.length ? false : true} />
       </div>
     </section>
   );

@@ -12,8 +12,6 @@ import { useToast } from "@/hooks/use_toast";
 import type { PropsWithChildren, FormEvent } from "react";
 
 const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ hideActionButton }) => {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
   // files from context
   const files = useFilesStore((state) => state.files);
   const setFiles = useFilesStore((state) => state.setFiles);
@@ -21,14 +19,6 @@ const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ 
 
   const createMutation = useMutation({
     mutationFn: createUploadQuery,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["uploads"] });
-      toast({
-        title: "Média(s) ajouté(s)",
-		duration: 2500,
-        variant: "success",
-      });
-    },
   });
 
   const sendFilesToApi = (ev: FormEvent<HTMLFormElement>) => {
