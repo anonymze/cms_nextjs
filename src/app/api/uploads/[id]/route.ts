@@ -2,7 +2,7 @@ import fs from "fs";
 import prisma from "@/utils/libs/prisma";
 import path from "path";
 
-export async function GET(req: Request, res: any) {
+export async function GET(req: Request, res: Response) {
   console.log(req);
   console.log(res);
 }

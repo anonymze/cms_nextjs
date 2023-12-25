@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { formCreatePageSchema, type Page } from "@/types/page";
 import type { Language } from "@/utils/language";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPageQuery } from "@/api/queries/pageQueries";
 import { useToast } from "@/hooks/use_toast";
 
@@ -28,6 +28,7 @@ interface Props {
 // TODO dunno yet but i have to do a correct translation system
 const FormPage: React.FC<Props> = ({ lang, uuid }) => {
   console.log(lang, uuid);
+  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const mutation = useMutation({

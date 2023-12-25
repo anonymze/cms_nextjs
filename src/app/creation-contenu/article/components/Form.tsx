@@ -14,7 +14,7 @@ import { Textarea } from "@/components/Form/Textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formCreateArticleSchema } from "@/types/article";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createArticleQuery } from "@/api/queries/articleQueries";
 import { useToast } from "@/hooks/use_toast";
 import dynamic from "next/dynamic";
@@ -41,6 +41,7 @@ const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
 // TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
   console.log(lang, uuid);
+  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const mutation = useMutation({
@@ -53,7 +54,7 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
     // default values is needed if controller used
     defaultValues: {
       title: "",
-      content: "",
+      content: "<p></p>",
       description: "",
       conclusion: "",
     },

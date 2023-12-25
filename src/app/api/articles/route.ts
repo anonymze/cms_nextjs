@@ -7,7 +7,7 @@ import prisma from "@/utils/libs/prisma";
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET() {
-  return jsonResponsePost(await prisma.upload.findMany());
+  return jsonResponsePost(await prisma.article.findMany());
 }
 
 export async function POST(req: Request) {

@@ -5,18 +5,18 @@ export type Article = {
   readonly id: number;
   readonly uuid: string;
   title: string;
-  content: string;
+  // should start with <?> and end with </?>
+  content: `<${string}>${string}</${string}>`;
   description?: string;
   conclusion?: string;
 };
-
 
 // Zod schema
 export type ArticleZodType = z.infer<typeof articleSchema>;
 
 export const articleSchema = z.object({
   conclusion: z.string().max(200).trim().optional(),
-  content: z.string(),
+  content: z.custom<Article['content']>(),
   description: z.string().max(200).trim().optional(),
   title: z.string().min(2).max(30).trim(),
 });
@@ -26,7 +26,7 @@ export const formCreateArticleSchema = articleSchema.refine(
     // editor tiptap return <p></p> if empty, we have to check if the content has been populated
     const divElement = document.createElement("div");
     divElement.innerHTML = data.content;
-    
+
     const isNodePopulate = divElement.firstChild?.textContent !== "";
     divElement.remove();
 
