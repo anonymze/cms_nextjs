@@ -1,7 +1,7 @@
 import "@tanstack/react-query";
 import { MutationCache, QueryClient } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
 import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 // we use axios so we declare the type error returned
 declare module "@tanstack/react-query" {
@@ -30,12 +30,12 @@ export const queryClient = new QueryClient({
       });
     },
     onSuccess: (data, variables, context, mutation) => {
-      if (mutation.meta) {
-        toast.success(mutation.meta.message);
-      }
-
       if (mutation.options.mutationKey) {
         queryClient.invalidateQueries({ queryKey: mutation.options.mutationKey });
+      }
+
+      if (mutation.meta) {
+        toast.success(mutation.meta.message);
       }
     },
   }),

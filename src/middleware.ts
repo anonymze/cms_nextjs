@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { jsonResponseUnauthorized } from "./utils/api/responses/response_error";
 import { ENV_SERVER } from "./env/server";
-
+import type { NextRequest } from "next/server";
+import { authMiddleware } from "@clerk/nextjs";
 
 type TokenInfo =
   | {
@@ -15,37 +14,58 @@ type TokenInfo =
     };
 
 export const config = {
-  matcher: ["/", "/api/:path*"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - login (authentication routes)
+     * - register (authentication routes)
+     */
+    "/((?!_next/static|_next/image|favicon.ico|login|register).*)",
+  ],
 };
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  // we redirect / to /dashboard
-  if (request.nextUrl.pathname === "/") return NextResponse.redirect(new URL("/dashboard", request.url));
+export default authMiddleware({
+  // if this is an api route and my logic in beforeAuth does not return false (return false bypass Clerk's protection),
+  // clerk will return a 401 unauthorized if you are not logged
+  // and that's what we want if we call an api route from outside this project
+  apiRoutes(req) {
+    return req.nextUrl.pathname.startsWith("/api");
+  },
+  beforeAuth: (req) => {
+    // / redirect to /dashboard
+    if (req.nextUrl.pathname === "/") {
+      return NextResponse.redirect(new URL("dashboard", req.nextUrl.origin));
+    }
 
-  if (request.nextUrl.pathname.startsWith("/api")) {
-    const { validToken, token } = tokenInfo(request);
+    if (req.nextUrl.pathname.startsWith("/api")) {
+      const { validToken, token } = tokenInfo(req);
 
-    // token no valid = 401
-    if (!validToken) return jsonResponseUnauthorized();
+      // token no valid = 401 unauthorized from clerk, you can redirect here if you prefer
+      if (!validToken) return;
 
-    console.log(token);
-    // TODO
-  }
+      console.log(token);
 
-  return NextResponse.next();
-}
+      return false;
+    }
+
+    return;
+  },
+});
 
 const tokenInfo = (request: NextRequest): TokenInfo => {
   const tokenCookie = request.cookies.get("token")?.value;
 
-  // 2 methods authorized, if we get the token by cookies
-  if (tokenCookie && tokenCookie === ENV_SERVER.API_KEY) return { validToken: true, token: tokenCookie };
+  // 2 authentications authorized, if we get the token by cookies
+  if (tokenCookie === ENV_SERVER.API_KEY) return { validToken: true, token: tokenCookie };
 
   const tokenAuth = request.headers.get("authorization");
 
-  // if we get the token by authorization header
-  if (tokenAuth && tokenAuth === ENV_SERVER.API_KEY) return { validToken: true, token: tokenAuth };
+  // or if we get the token by authorization header
+  if (tokenAuth === ENV_SERVER.API_KEY) return { validToken: true, token: tokenAuth };
 
   return { validToken: false, token: null };
 };

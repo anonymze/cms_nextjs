@@ -31,21 +31,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         disabled={disabled}
       >
-        {disabled && (
-          <svg
-            className="absolute w-6 h-6 text-primary-foreground animate-spin"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <path
-              d="M12 2a10 10 0 00-7.64 16.36L12 22l7.64-3.64A10 10 0 0012 2z"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
         {children}
       </button>
     );
