@@ -1,5 +1,6 @@
 import type { z } from "zod";
 import { ParserRequest } from "./core_logic";
+import type { NextRequest } from "next/server";
 
 type ProcessRequest<T> =
   | {
@@ -18,7 +19,7 @@ type ProcessRequest<T> =
  * @param dataSchema Validator schema
  */
 export async function processRequest<T>(
-  req: Request,
+  req: NextRequest,
   acceptedContentType: "application/json" | "multipart/form-data",
   dataSchema: z.ZodType<T>,
 ) {

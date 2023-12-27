@@ -24,7 +24,7 @@ export const config = {
      * - login (authentication routes)
      * - register (authentication routes)
      */
-    "/((?!_next/static|_next/image|favicon.ico|login|register).*)",
+    "/((?!_next/static|_next/image|favicon.ico|login|register|api/auth/.*).*)",
   ],
 };
 

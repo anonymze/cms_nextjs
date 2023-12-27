@@ -1,3 +1,4 @@
+import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 /** TYPING */
@@ -29,7 +30,7 @@ export function jsonResponse({ body, status, statusText, headers }: JsonResponse
 /** PARSER REQUEST */
 export class ParserRequest {
   constructor(
-    readonly request: Request,
+    readonly request: NextRequest,
     readonly contentType: ContentTypeAccepted,
   ) {}
 
