@@ -1,7 +1,14 @@
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+
 export default async function Page() {
   return (
     <div className="p-6">
-      <h1 className="mb-3">Conditions Générales d&lsquo;Utilisation (CGU).</h1>
+      <Link href="/dashboard">
+        <ArrowLeft className="size-8" />
+      </Link>
+
+      <h1 className="my-3">Conditions Générales d&lsquo;Utilisation (CGU).</h1>
       <p className="mb-4">
         En utilisant notre système de gestion de contenu (CMS), vous acceptez et vous engagez à respecter les
         conditions générales d&lsquo;utilisation suivantes :
