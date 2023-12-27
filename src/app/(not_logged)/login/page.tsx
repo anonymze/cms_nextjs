@@ -39,11 +39,11 @@ export default function AuthenticationPage() {
             <UserAuthForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               En vous connectant, vous agréez aux{" "}
-              <Link href="/login" className="underline underline-offset-4 hover:text-primary">
+              <Link href="/cgu" className="underline underline-offset-4 hover:text-primary">
                 Conditions d&apos;utilisation
               </Link>{" "}
               et à la{" "}
-              <Link href="/login" className="underline underline-offset-4 hover:text-primary">
+              <Link href="/politique-de-confidentialite" className="underline underline-offset-4 hover:text-primary">
                 Politique de confidentialité
               </Link>
               .

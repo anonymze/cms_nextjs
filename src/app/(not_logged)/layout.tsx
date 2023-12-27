@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <App>
-      <body className={cn("h-screen", fontSans.className)}>{children}</body>
+      <body className={cn("h-dvh", fontSans.className)}>{children}</body>
     </App>
   );
 }

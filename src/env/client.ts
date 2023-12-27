@@ -10,7 +10,7 @@ const envClientSchema = z.object({
 type EnvClientType = z.infer<typeof envClientSchema>;
 
 // we adjust the typing because we don't know if the envs are set
-export const envClientTyped: {[key in keyof EnvClientType]: EnvClientType[keyof EnvClientType] | undefined} = {
+export const envClientTyped: {[Key in keyof EnvClientType]: EnvClientType[Key] | undefined} = {
   NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL: process.env.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL,
