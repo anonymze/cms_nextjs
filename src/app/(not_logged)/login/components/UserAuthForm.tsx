@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/Button";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import { cn } from "@/utils/libs/shadcn";
 import { useSignUp } from "@clerk/nextjs";
-import { GithubIcon } from "lucide-react";
+import { AppleIcon, GithubIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ENV_CLIENT } from "@/env/client";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -47,7 +49,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err.errors[0].message);
         setIsLoading(false);
       });
   };
@@ -67,6 +69,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   Email
                 </Label>
                 <Input
+                  required
                   name="email"
                   id="email"
                   placeholder="nom@exemple.fr"
@@ -81,6 +84,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   Mot de passe
                 </Label>
                 <Input
+                  required
                   name="password"
                   id="password"
                   placeholder="mot de passe"
@@ -105,13 +109,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <span className="bg-background px-2 text-muted-foreground">ou connectez-vous avec</span>
             </div>
           </div>
-          {ENV_CLIENT.NEXT_PUBLIC_GITHUB_CLIENT_ID && ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL && (
-            <Button outline type="button" disabled={isLoading}>
-              <a href={ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL} title="Github connexion">
-                {isLoading ? <SpinnerLoader /> : <GithubIcon />} Github
-              </a>
-            </Button>
-          )}
+          <div className="flex flex-nowrap justify-around gap-2">
+            {ENV_CLIENT.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
+              ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL && (
+                <Button className="p-0" fill={false} type="button" disabled={isLoading}>
+                  <a
+                    onClick={() => setIsLoading(true)}
+                    className="flex items-center justify-center size-12"
+                    href={ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL}
+                    title="Github connexion"
+                  >
+                    {isLoading ? <SpinnerLoader className="mr-0" /> : <GithubIcon className="size-5" />}
+                  </a>
+                </Button>
+              )}
+          </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
             En vous connectant, vous agréez aux{" "}
             <Link href="/cgu" className="underline underline-offset-4 hover:text-primary">

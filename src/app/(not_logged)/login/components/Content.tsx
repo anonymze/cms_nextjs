@@ -1,5 +1,4 @@
 "use client";
-
 import { Activity } from "lucide-react";
 import { UserAuthForm } from "./UserAuthForm";
 import { useSearchParams } from "next/navigation";

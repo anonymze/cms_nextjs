@@ -25,7 +25,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           fill
             ? "bg-primary text-primary-foreground hover:bg-primary/90"
             : "bg-transparent text-secondary-foreground hover:bg-primary/10",
-          !fill && outline && "border-[1px]",
+          !fill && outline && "border-[2px]",
           secondary ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "",
           className,
         )}

@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/Form/Input";
 import { Label } from "@/components/Form/Label";
 import { Button } from "@/components/ui/Button";
@@ -5,10 +6,9 @@ import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
-interface Props {}
-
-const UserCodeForm: React.FC<Props> = () => {
+const UserCodeForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,6 +41,7 @@ const UserCodeForm: React.FC<Props> = () => {
         }
       })
       .catch((err) => {
+        toast.error(err.errors[0].message);
         setIsLoading(false);
       });
   };
@@ -48,7 +49,7 @@ const UserCodeForm: React.FC<Props> = () => {
   return (
     <div className="lg:p-8">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-      <div className="flex flex-col space-y-2 text-center">
+        <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">Authentification</h1>
           <p className="text-sm text-muted-foreground">Entrez le code de vérification reçu</p>
         </div>
@@ -59,6 +60,7 @@ const UserCodeForm: React.FC<Props> = () => {
                 Code de vérification
               </Label>
               <Input
+                required
                 name="code"
                 id="code"
                 placeholder="123456"
@@ -70,6 +72,9 @@ const UserCodeForm: React.FC<Props> = () => {
             <Button disabled={isLoading}>
               {isLoading && <SpinnerLoader />}
               Valider le code
+            </Button>
+            <Button type="button" onClick={() => router.back()} fill={false} disabled={isLoading}>
+              Annuler
             </Button>
           </div>
         </form>

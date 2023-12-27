@@ -1,6 +1,6 @@
 /* TODO */
 [data-sonner-toast][data-type="success"] {
-        background-color: #4caf50 !important;
+    background-color: #4caf50 !important;
 }
 
 [data-sonner-toast][data-type="error"] {

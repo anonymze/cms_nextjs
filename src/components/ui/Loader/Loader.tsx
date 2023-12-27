@@ -1,10 +1,13 @@
 import { cn } from "@/utils/libs/shadcn";
-import type { PropsWithChildren } from "react";
 
-const SpinnerLoader: React.FC<PropsWithChildren & { large?: boolean }> = ({ large = false }) => {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  large?: boolean;
+}
+
+const SpinnerLoader: React.FC<Props> = ({ large = false, className }) => {
   return (
     <svg
-      className={cn("animate-spin mr-3 h-5 w-5", large && "h-8 w-8")}
+      className={cn("animate-spin mr-3 h-5 w-5", large && "h-8 w-8", className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

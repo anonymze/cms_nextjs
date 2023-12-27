@@ -2,6 +2,7 @@ import App from "@/App";
 import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/shadcn";
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/Toaster/Sonner";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -17,7 +18,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <App>
-      <body className={cn("h-dvh", fontSans.className)}>{children}</body>
+      <body className={cn("h-dvh", fontSans.className)}>
+        {children}
+        <Toaster duration={2500} />
+      </body>
     </App>
   );
 }
