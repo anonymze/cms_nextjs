@@ -8,6 +8,7 @@ import { useSignUp } from "@clerk/nextjs";
 import { GithubIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ENV_CLIENT } from "@/env/client";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
@@ -16,6 +17,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter();
   const { isLoaded: isClerkLoaded, signUp, setActive } = useSignUp();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  console.log(ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL);
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -152,9 +155,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <span className="bg-background px-2 text-muted-foreground">ou connectez-vous avec</span>
         </div>
       </div>
-      <Button outline type="button" disabled={isLoading}>
-        {isLoading ? <SpinnerLoader /> : <GithubIcon />} Github
-      </Button>
+      {ENV_CLIENT.NEXT_PUBLIC_GITHUB_CLIENT_ID && ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL && (
+        <Button outline type="button" disabled={isLoading}>
+          <a href={ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL} title="Github connexion">{isLoading ? <SpinnerLoader /> : <GithubIcon />} Github</a>
+        </Button>
+      )}
     </div>
   );
 }
