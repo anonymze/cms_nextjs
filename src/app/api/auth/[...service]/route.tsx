@@ -1,21 +1,12 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
+import prisma from "@/utils/libs/prisma";
+import { Clerk } from "@clerk/clerk-sdk-node";
 import type { NextRequest } from "next/server";
-
-type GithubToken = {
-  data: {
-    error?: string
-    error_description?: string,
-    access_token?: string,
-    scope: string;
-    token_type: string;
-  }
-};
 
 const OAUTH_SERVICES = ["github", "google", "apple"] as const;
 
 export async function GET(req: NextRequest) {
-  
   const service = req.nextUrl.pathname.split("/").at(-1);
   const searchParams = req.nextUrl.searchParams;
 
@@ -46,34 +37,58 @@ export async function GET(req: NextRequest) {
     return new Response("Github URL access token not set");
   }
 
-  console.log(code);
+  try {
+    const accessToken = await api.post(
+      ENV_SERVER.GITHUB_ACCESS_TOKEN_URL,
+      {
+        client_id: ENV_SERVER.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+        client_secret: ENV_SERVER.GITHUB_CLIENT_SECRET,
+        redirect_uri: ENV_SERVER.GITHUB_REDIRECT_URL,
+        code,
+      },
+      {
+        headers: { Accept: "application/json" },
+      },
+    );
 
-  const accessToken: GithubToken = await api.post(
-    ENV_SERVER.GITHUB_ACCESS_TOKEN_URL,
-    {
-      client_id: ENV_SERVER.NEXT_PUBLIC_GITHUB_CLIENT_ID,
-      client_secret: ENV_SERVER.GITHUB_CLIENT_SECRET,
-      redirect_uri: ENV_SERVER.GITHUB_REDIRECT_URL,
-      code,
-    },
-    {
-      headers: { Accept: "application/json" },
-    },
-  );
+    if (accessToken.data?.error) {
+      return new Response(accessToken.data.error_description);
+    }
 
-  if (accessToken.data?.error) {
-    return new Response(accessToken.data.error_description);
+    if (!ENV_SERVER.GITHUB_USER_URL) {
+      return new Response("URL user github not set");
+    }
+
+    try {
+      const user = await api.get(ENV_SERVER.GITHUB_USER_URL, {
+        headers: { Authorization: `Bearer ${accessToken.data.access_token}` },
+      });
+
+      const userEmail = user.data.email;
+
+      const existingUser = await prisma.user.findUnique({
+        where: { email: userEmail },
+      });
+
+      if (existingUser?.isActive) {
+        return new Response("oui");
+      }
+
+      if (!existingUser) {
+        await prisma.user.create({
+          data: {
+            email: userEmail,
+            name: user.data.name,
+            isActive: false,
+          },
+        });
+      }      
+
+      return new Response("oui mais pas actif");
+    } catch (error: any) {
+      return new Response(error.response.statusText, { status: error.response.status });
+    }
+  } catch (error: any) {
+    return new Response(error.response.statusText, { status: error.response.status });
   }
-
-  if (!ENV_SERVER.GITHUB_USER_URL) {
-    return new Response("URL user github not set");
-  }
-
-  const user: any = await api.get(ENV_SERVER.GITHUB_USER_URL, {
-    headers: { Authorization: `Bearer ${accessToken.data.access_token}` },
-  });
-
-  console.log(user);
-
-  return new Response("oui");
 }
