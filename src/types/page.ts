@@ -7,6 +7,7 @@ export type Page = {
   title: string;
   subtitle?: string;
   description: string;
+  createdAt: Date;
 };
 
 // Zod schema

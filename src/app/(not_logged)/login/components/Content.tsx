@@ -2,7 +2,6 @@
 
 import { Activity } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { cn } from "@/utils/libs/shadcn";
 import VerificationCodeForm from "./Form/VerificationCodeForm";
 import AuthForm from "./Form/AuthForm";
 

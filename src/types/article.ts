@@ -9,6 +9,7 @@ export type Article = {
   content: `<${string}>${string}</${string}>`;
   description?: string;
   conclusion?: string;
+  createdAt: Date;
 };
 
 // Zod schema

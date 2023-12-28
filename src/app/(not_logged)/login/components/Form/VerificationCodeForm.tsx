@@ -5,14 +5,13 @@ import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import { useSignUp } from "@clerk/nextjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const VerificationCodeForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { isLoaded: isClerkLoaded, signUp, setActive } = useSignUp();
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
@@ -34,11 +33,12 @@ const VerificationCodeForm: React.FC = () => {
         setIsLoading(false);
 
         if (result.status === "complete") {
-          setActive({ session: result.createdSessionId });
-          router.push(
-            (searchParams.get("redirect_url") ||
-              "/dashboard") as __next_route_internal_types__.RouteImpl<string>,
-          );
+          // setActive({ session: result.createdSessionId });
+          // router.push(
+          //   (searchParams.get("redirect_url") ||
+          //     "/dashboard") as __next_route_internal_types__.RouteImpl<string>,
+          // );
+          toast.info("Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter.");
         }
       })
       .catch((err) => {

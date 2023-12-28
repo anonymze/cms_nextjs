@@ -34,15 +34,22 @@ const AuthForm = () => {
         password: ev.currentTarget.email.value,
       })
       .then(async (result) => {
+        setIsLoading(false);
+
+        if (!result.emailAddress) {
+          toast.error("Quelque chose d'innatendu s'est produit, Clerk n'a pas retourné d'adresse email. Veuillez réessayer");
+          return;
+        }
+
         // send the user an email with the verification code
         await result.prepareEmailAddressVerification({
           strategy: "email_code",
         });
 
         const params = new URLSearchParams(searchParams);
-        params.set("verifying", result.emailAddress || "");
-        router.push((pathname + "?" + params.toString()) as __next_route_internal_types__.RouteImpl<string>);
-        setIsLoading(false);
+        params.set("verifying", result.emailAddress);
+
+        router.push((`${pathname}?${params.toString()}`) as __next_route_internal_types__.RouteImpl<string>);
       })
       .catch((err) => {
         toast.error(err.errors[0].message);
