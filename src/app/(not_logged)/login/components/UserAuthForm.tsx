@@ -112,16 +112,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <div className="flex flex-wrap justify-around gap-2">
             {ENV_CLIENT.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
               ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL && (
-                <Button className="p-0" fill={false} type="button" disabled={isLoading}>
-                  <a
-                    onClick={() => setIsLoading(true)}
-                    className="flex items-center justify-center size-12"
-                    href={ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL}
-                    title="Github connexion"
-                  >
-                    {isLoading ? <SpinnerLoader className="mr-0" /> : <GithubIcon className="size-5" />}
-                  </a>
-                </Button>
+                <a
+                  onClick={(ev) => {
+                    if (isLoading) return ev.preventDefault();
+                    setIsLoading(true);
+                  }}
+                  aria-disabled={isLoading}
+                  className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-primary/10"
+                  href={ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL}
+                  title="Github connexion"
+                >
+                  {isLoading ? <SpinnerLoader className="mr-0" /> : <GithubIcon className="size-5" />}
+                </a>
               )}
           </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
