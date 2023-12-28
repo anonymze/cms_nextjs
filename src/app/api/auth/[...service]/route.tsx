@@ -3,14 +3,19 @@ import { ENV_SERVER } from "@/env/server";
 import type { NextRequest } from "next/server";
 
 type GithubToken = {
-  access_token: string;
-  scope: string;
-  token_type: string;
+  data: {
+    error?: string
+    error_description?: string,
+    access_token?: string,
+    scope: string;
+    token_type: string;
+  }
 };
 
 const OAUTH_SERVICES = ["github", "google", "apple"] as const;
 
 export async function GET(req: NextRequest) {
+  
   const service = req.nextUrl.pathname.split("/").at(-1);
   const searchParams = req.nextUrl.searchParams;
 
@@ -41,21 +46,23 @@ export async function GET(req: NextRequest) {
     return new Response("Github URL access token not set");
   }
 
+  console.log(code);
+
   const accessToken: GithubToken = await api.post(
     ENV_SERVER.GITHUB_ACCESS_TOKEN_URL,
     {
       client_id: ENV_SERVER.NEXT_PUBLIC_GITHUB_CLIENT_ID,
       client_secret: ENV_SERVER.GITHUB_CLIENT_SECRET,
-      code,
       redirect_uri: ENV_SERVER.GITHUB_REDIRECT_URL,
+      code,
     },
     {
       headers: { Accept: "application/json" },
     },
   );
 
-  if (!accessToken) {
-    return new Response("error on access token");
+  if (accessToken.data?.error) {
+    return new Response(accessToken.data.error_description);
   }
 
   if (!ENV_SERVER.GITHUB_USER_URL) {
@@ -63,7 +70,7 @@ export async function GET(req: NextRequest) {
   }
 
   const user: any = await api.get(ENV_SERVER.GITHUB_USER_URL, {
-    headers: { Authorization: `Bearer ${accessToken.access_token}` },
+    headers: { Authorization: `Bearer ${accessToken.data.access_token}` },
   });
 
   console.log(user);

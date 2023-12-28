@@ -109,7 +109,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <span className="bg-background px-2 text-muted-foreground">ou connectez-vous avec</span>
             </div>
           </div>
-          <div className="flex flex-nowrap justify-around gap-2">
+          <div className="flex flex-wrap justify-around gap-2">
             {ENV_CLIENT.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
               ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL && (
                 <Button className="p-0" fill={false} type="button" disabled={isLoading}>
