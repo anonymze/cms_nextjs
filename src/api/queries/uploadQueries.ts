@@ -1,9 +1,9 @@
-import type { FileTypeStore } from "@/contexts/store_files_context";
 import { api } from "../_config";
-import type { Upload } from "@/types/upload";
+import type { FileTypeStore } from "@/contexts/store_files_context";
+import type { Upload } from "@prisma/client";
 
 export async function getUploadsQuery() {
-  const result = await api.get<Upload[]>("uploads");
+  const result = await api.get<Omit<Upload, 'id'>[]>("uploads");
   return result.data;
 }
 

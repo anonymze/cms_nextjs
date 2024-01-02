@@ -3,6 +3,14 @@
 import { ENV_SERVER } from "@/env/server";
 import { PrismaClient } from "@prisma/client";
 
+export const getSelectObject = (fields: string[]) => {
+  const selectObject: Record<string, boolean> = { id: false };
+  fields.forEach(field => {
+    selectObject[field] = true;
+  });
+  return selectObject;
+}
+
 const prismaClientSingleton = () => {
   return new PrismaClient();
 };

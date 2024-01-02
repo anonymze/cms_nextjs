@@ -1,12 +1,12 @@
+import type { Article } from "@prisma/client";
 import { api } from "../_config";
-import type { Article } from "@/types/article";
 
 export async function getArticlesQuery() {
-  const result = await api.get<Article[]>("articles");
+  const result = await api.get<Omit<Article, 'id'>[]>("articles");
   return result.data;
 }
 
-export async function createArticleQuery(article: Omit<Article, "uuid" | "id">) {
+export async function createArticleQuery(article: Omit<Article, "uuid" | "id" | "createdAt">) {
   const result = await api.post("articles", article);
   return result.data;
 }

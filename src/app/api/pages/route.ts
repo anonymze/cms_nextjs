@@ -2,13 +2,15 @@ import { pageSchema } from "@/types/page";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
-import prisma from "@/utils/libs/prisma";
+import prisma, { getSelectObject } from "@/utils/libs/prisma";
 import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET() {
-  return jsonResponsePost(await prisma.upload.findMany());
+  return jsonResponsePost(await prisma.upload.findMany({
+    select: getSelectObject([''])
+  }));
 }
 
 export async function POST(req: NextRequest) {

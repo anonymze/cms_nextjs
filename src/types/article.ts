@@ -1,23 +1,12 @@
 import { z } from "zod";
-
-// TS type
-export type Article = {
-  readonly id: number;
-  readonly uuid: string;
-  title: string;
-  // should start with <?> and end with </?>
-  content: `<${string}>${string}</${string}>`;
-  description?: string;
-  conclusion?: string;
-  createdAt: Date;
-};
+import type { Article } from "@prisma/client";
 
 // Zod schema
 export type ArticleZodType = z.infer<typeof articleSchema>;
 
 export const articleSchema = z.object({
-  conclusion: z.string().max(200).trim().optional(),
   content: z.custom<Article['content']>(),
+  conclusion: z.string().max(200).trim().optional(),
   description: z.string().max(200).trim().optional(),
   title: z.string().min(2).max(30).trim(),
 });

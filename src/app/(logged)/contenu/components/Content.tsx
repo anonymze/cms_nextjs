@@ -2,9 +2,8 @@
 
 import { getArticlesQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
-import Table from "./Table/Table";
+import Table from "../../../../components/ui/Table/Table";
 import type { Article } from "@prisma/client";
-import { excludeEntryFromArrayOfObjects } from "@/utils/exclude_entry";
 
 const Content: React.FC = () => {
   const { data: articles } = useQuery({
@@ -20,10 +19,8 @@ const Content: React.FC = () => {
     return <div>Aucune donnée...</div>;
   }
 
-  const data = excludeEntryFromArrayOfObjects(articles, ["id"]);
-
   return (
-    <Table hasActions data={data} columns={Object.keys(data[0] as Article)} />
+    <Table hasActions data={articles} columns={Object.keys(articles[0] as Article)} />
   );
 };
 

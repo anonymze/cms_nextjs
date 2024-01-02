@@ -35,6 +35,7 @@ model Article {
     @@index(fields: [uuid])
 }model User {
     id        Int      @id @default(autoincrement())
+    uuid       String   @unique @default(uuid())
     isActive  Boolean  @default(false)
     name      String?
     email     String   @unique

@@ -1,15 +1,5 @@
 import { z } from "zod";
 
-// TS type
-export type Page = {
-  readonly id: number;
-  readonly uuid: string;
-  title: string;
-  subtitle?: string;
-  description: string;
-  createdAt: Date;
-};
-
 // Zod schema
 export type PageZodType = z.infer<typeof pageSchema>;
 

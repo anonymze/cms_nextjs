@@ -1,13 +1,12 @@
-import type { Page } from "@/types/page";
 import { api } from "../_config";
-import type { Article } from "@/types/article";
+import type { Page } from "@prisma/client";
 
 export async function getPagesQuery() {
-  const result = await api.get<Article[]>("articles");
+  const result = await api.get<Omit<Page, 'id'>[]>("pages");
   return result.data;
 }
 
-export async function createPageQuery(article: Omit<Page, "uuid" | "id">) {
+export async function createPageQuery(article: Omit<Page, "uuid" | "id" | "createdAt">) {
   const result = await api.post("pages", article);
   return result.data;
 }

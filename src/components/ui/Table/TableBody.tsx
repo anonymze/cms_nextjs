@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { Table } from "./Table";
 
-export type TValue = string | number | Date | boolean;
+export type TValue = string | number | Date | boolean | null;
 
 const MAX_LENGTH_VALUE = 16;
 
@@ -25,7 +25,7 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
 }
 
 const trimmedString = (val: TValue) => {
-    if (typeof val === "boolean") return val;
+    if (!val || typeof val === "boolean") return val;
   
     val = val.toString();
 

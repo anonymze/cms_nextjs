@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import FormArticle from "./Form";
 import { cn } from "@/utils/libs/shadcn";
 import dynamic from "next/dynamic";
-import type { Article } from "@/types/article";
+import type { Article } from "@prisma/client";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {
