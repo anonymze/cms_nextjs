@@ -13,16 +13,14 @@ export interface THead {
   }>;
 }
 
-function TableHead({ columns, hasActions, dispatch }: THead) {
+export function TableHead({ columns, hasActions, dispatch }: THead) {
   return (
-    <>
-      {columns.map((titleColumn) => {
-        <td>{titleColumn}</td>;
+    <tr className="border-b">
+      {columns.map((titleColumn, idx) => {
+        return (<th align="left" className="px-2 py-2 text-muted-foreground text-xs" key={idx}>{titleColumn}</th>);
       })}
 
-      {hasActions && <td>actions</td>}
-    </>
+      {hasActions && <th>actions</th>}
+    </tr>
   );
 }
-
-export default TableHead;

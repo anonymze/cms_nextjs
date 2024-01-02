@@ -11,10 +11,10 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
   return (
     <>
       {data.map((field, idx) => (
-        <tr key={idx}>
+        <tr className="border-b last:border-b-0" key={idx}>
           <>
             {dataKeys.map((key) => (
-              <td key={key}>{trimmedString(field[key] || "")}</td>
+              <td className="px-2 py-2 whitespace-nowrap" key={key}>{trimmedString(field[key] || "")}</td>
             ))}
           </>
           {hasActions && <td>actions</td>}

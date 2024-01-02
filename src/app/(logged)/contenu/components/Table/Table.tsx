@@ -2,8 +2,7 @@
 
 import { memo, useEffect, useReducer } from "react";
 import TableBody, { type TValue } from "./TableBody";
-import TableHead from "./TableHead";
-import { type OrderBy, type THead } from "./TableHead";
+import { TableHead, type OrderBy, type THead } from "./TableHead";
 
 export interface Table {
   data: { [key: string]: TValue }[];
@@ -13,22 +12,22 @@ export interface Table {
 
 function Table({ data, columns, hasActions }: Table) {
   const [state, dispatch] = useReducer(reducer, data);
-  
+
   useEffect(() => {
     dispatch({ payload: data });
   }, [data]);
 
   return (
-    <table>
-      <thead>
-        <tr>
+    <div className="relative w-full overflow-auto border rounded-md">
+      <table className="w-full">
+        <thead>
           <TableHeadMemoized dispatch={dispatch} hasActions={hasActions} columns={columns} />
-        </tr>
-      </thead>
-      <tbody>
-        <TableBody hasActions={hasActions} data={state} />
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <TableBody hasActions={hasActions} data={state} />
+        </tbody>
+      </table>
+    </div>
   );
 }
 

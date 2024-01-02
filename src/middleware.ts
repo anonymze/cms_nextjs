@@ -26,17 +26,11 @@ export const config = {
      * - conditions-utilisation (legal routes)
      * - politique-confidentialite (legal routes)
      */
-    "/((?!_next/static|_next/image|favicon.ico|login|register|politique-de-confidentialite|cgu|api/auth/.*).*)",
+    "/((?!_next/static|_next/image|favicon.ico|login|register|politique-de-confidentialite|cgu|api/.*).*)",
   ],
 };
 
 export default authMiddleware({
-  // if this is an api route and my logic in beforeAuth does not return false (return false bypass Clerk's protection),
-  // clerk will return a 401 unauthorized if you are not logged
-  // and that's what we want if we call an api route from outside this project
-  apiRoutes(req) {
-    return req.nextUrl.pathname.startsWith("/api");
-  },
   beforeAuth: (req) => {
     // / redirect to /dashboard
     if (req.nextUrl.pathname === "/") {

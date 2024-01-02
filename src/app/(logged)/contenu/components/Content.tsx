@@ -3,28 +3,27 @@
 import { getArticlesQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
 import Table from "./Table/Table";
+import type { Article } from "@prisma/client";
+import { excludeEntryFromArrayOfObjects } from "@/utils/exclude_entry";
 
 const Content: React.FC = () => {
-  // TODO fix bug here on build
   const { data: articles } = useQuery({
     queryKey: ["articles"],
     queryFn: getArticlesQuery,
   });
 
-  
-  if (!articles || !articles.length) {
+  if (!articles) {
+    return <div>Chargement...</div>;
+  }
+
+  if (articles.length === 0) {
     return <div>Aucune donnée...</div>;
   }
-  
-  console.log({articles});
-  // const ok = Object.keys(!articles[0])
 
-  // console.log('làààà');
-  // console.log(ok);
-  // console.log(articles[0]);
+  const data = excludeEntryFromArrayOfObjects(articles, ["id"]);
 
   return (
-    <Table hasActions data={articles} columns={Object.keys(!articles[0])} />
+    <Table hasActions data={data} columns={Object.keys(data[0] as Article)} />
   );
 };
 
