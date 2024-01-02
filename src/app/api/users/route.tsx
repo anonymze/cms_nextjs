@@ -8,8 +8,8 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET() {
-  return jsonResponsePost(await prisma.page.findMany({
-    select: getSelectObject(['uuid', 'title', 'subtitle', 'description', 'createdAt'])
+  return jsonResponsePost(await prisma.user.findMany({
+    select: getSelectObject(['uuid', 'isActive', 'name', 'email', 'createdAt'])
   }));
 }
 
