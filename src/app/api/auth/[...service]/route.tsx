@@ -75,7 +75,7 @@ export async function GET(req: NextRequest) {
     });
 
     const userClerk =
-      usersClerk.length > 0
+      typeof usersClerk[0] !== "undefined"
         ? usersClerk[0]
         : await clerkClient.users.createUser({
             emailAddress: [userGithubEmail],
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
             password: Math.random().toString(36) + Math.random().toString(36).slice(2),
           });
 
-    // if user does not exists in my database at all, we create it
+    // if user does not exists in our database at all, we create it
     if (!existingUserOurDb) {
       await prisma.user.create({
         data: {
@@ -95,7 +95,19 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    return NextResponse.redirect(`${req.nextUrl.origin}/dashboard`);
+    const token = await clerkClient.signInTokens.createSignInToken({
+      userId: userClerk.id,
+      expiresInSeconds: 60 * 60 * 24 * 31, // 31 days
+    });
+
+    // revoke sessions
+    // const sessions = await clerkClient.sessions.getSessionList();
+
+    // for await (let session of sessions) {
+    //   await clerkClient.sessions.revokeSession(session.id);
+    // }
+
+    return NextResponse.redirect(token.url);
   } catch (error) {
     if (error instanceof Response) {
       return new Response(error.statusText, { status: error.status });
