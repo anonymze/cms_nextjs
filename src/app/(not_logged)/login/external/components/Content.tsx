@@ -14,12 +14,13 @@ export default function Content() {
 
   useEffect(() => {
     if (!signIn || !setActive || !token) {
-      return;
+      return router.replace("/login");
     }
 
     const aFunc = async () => {
+      console.log('iciii');
       try {
-        // Create a signIn with the token, note that you need to use the "ticket" strategy
+        // create a signIn with the token, note that you need to use the "ticket" strategy
         const res = await signIn.create({
           strategy: "ticket",
           ticket: token,
@@ -29,18 +30,14 @@ export default function Content() {
           session: res.createdSessionId,
         });
 
-        router.replace("/dashboard" as __next_route_internal_types__.RouteImpl<string>);
+        return router.replace("/dashboard" as __next_route_internal_types__.RouteImpl<string>);
       } catch (err) {
-        router.push("/login");
+        return router.replace("/login");
       }
     };
 
     aFunc();
   }, [signIn, setActive, token, router]);
-
-  if (!token) {
-    router.push("/login");
-  }
 
   return (
     <div className="grid place-items-center h-full">

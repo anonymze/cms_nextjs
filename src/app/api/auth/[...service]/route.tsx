@@ -22,6 +22,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 
   /***/
   const searchParams = req.nextUrl.searchParams;
+
   const code = searchParams.get("code");
   const state = searchParams.get("state");
   const errorDescription = searchParams.get("error_description");
@@ -30,7 +31,8 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
     return new Response(errorDescription);
   }
 
-  if (!code || state !== ENV_SERVER.API_KEY) {
+  // TODO state is the code we sent to github, and we need to check github is sending us back the same code
+  if (!code || state !== "1234") {
     return new Response("Oauth invalid data");
   }
 
@@ -101,7 +103,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 
     // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back yet)
     const magicLink = await api.post(
-      "https://api.clerk.com/v1/sign_in_tokens",
+      ENV_SERVER.GITHUB_MAGIC_LINK_URL as string,
       {
         user_id: signInToken.userId,
       },
@@ -154,5 +156,9 @@ function verifyGithubEnvVariables(): void {
 
   if (!ENV_SERVER.GITHUB_USER_URL) {
     throw new Error("URL user github is not set in your env");
+  }
+  
+  if (!ENV_SERVER.GITHUB_MAGIC_LINK_URL) {
+    throw new Error("URL magic link github is not set in your env");
   }
 }

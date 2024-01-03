@@ -14,6 +14,7 @@ const envServerSchema = z.object({
   GITHUB_REDIRECT_URL: z.string().url().optional(),
   GITHUB_ACCESS_TOKEN_URL: z.string().url().optional(),
   GITHUB_USER_URL: z.string().url().optional(),
+  GITHUB_MAGIC_LINK_URL: z.string().url().optional(),
 });
 
 /**
