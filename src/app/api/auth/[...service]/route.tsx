@@ -2,17 +2,16 @@ import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
 import prisma from "@/utils/libs/prisma";
 import { clerkClient } from "@clerk/nextjs";
-import next from "next";
 import { NextResponse, type NextRequest } from "next/server";
 
 const OAUTH_SERVICES = ["github", "google", "apple"];
 
-export async function GET(req: NextRequest) {
-  /***/
-  const service = req.nextUrl.pathname.split("/").at(-1);
+export async function GET(req: NextRequest, { params }: { params: { service: string } }) {
+  // we get the service from the URL params
+  const [service] = params.service;
 
   if (!service || !OAUTH_SERVICES.includes(service)) {
-    return new Response("Service OAUTH not handled");
+    return new Response("Service OAuth not handled");
   }
 
   try {
@@ -101,14 +100,18 @@ export async function GET(req: NextRequest) {
     });
 
     // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back yet)
-    const magicLink = await api.post('https://api.clerk.com/v1/sign_in_tokens', {
-      user_id: signInToken.userId,
-    }, {
-      headers: {
-        Authorization: `Bearer ${signInToken.token}`,
-        'Content-Type': 'application/json',
+    const magicLink = await api.post(
+      "https://api.clerk.com/v1/sign_in_tokens",
+      {
+        user_id: signInToken.userId,
       },
-    })
+      {
+        headers: {
+          Authorization: `Bearer ${signInToken.token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
     return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${magicLink}`);
   } catch (error) {
