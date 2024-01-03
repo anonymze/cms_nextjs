@@ -2,6 +2,7 @@ import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
 import prisma from "@/utils/libs/prisma";
 import { clerkClient } from "@clerk/nextjs";
+import next from "next";
 import { NextResponse, type NextRequest } from "next/server";
 
 const OAUTH_SERVICES = ["github", "google", "apple"];
@@ -22,7 +23,6 @@ export async function GET(req: NextRequest) {
 
   /***/
   const searchParams = req.nextUrl.searchParams;
-
   const code = searchParams.get("code");
   const state = searchParams.get("state");
   const errorDescription = searchParams.get("error_description");
@@ -84,30 +84,33 @@ export async function GET(req: NextRequest) {
             password: Math.random().toString(36) + Math.random().toString(36).slice(2),
           });
 
-    // if user does not exists in our database at all, we create it
+    // if user does not exists in our database at all, we create it, careful he will be inactive by default
     if (!existingUserOurDb) {
       await prisma.user.create({
         data: {
           email: userGithubEmail,
           name: userGithub.data.name,
-          isActive: false,
         },
       });
     }
 
-    const token = await clerkClient.signInTokens.createSignInToken({
+    // we create a sign in token for the user
+    const signInToken = await clerkClient.signInTokens.createSignInToken({
       userId: userClerk.id,
-      expiresInSeconds: 60 * 60 * 24 * 31, // 31 days
+      expiresInSeconds: 60 * 60 * 24 * 1, // 1 day
     });
 
-    // revoke sessions
-    // const sessions = await clerkClient.sessions.getSessionList();
+    // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back yet)
+    const magicLink = await api.post('https://api.clerk.com/v1/sign_in_tokens', {
+      user_id: signInToken.userId,
+    }, {
+      headers: {
+        Authorization: `Bearer ${signInToken.token}`,
+        'Content-Type': 'application/json',
+      },
+    })
 
-    // for await (let session of sessions) {
-    //   await clerkClient.sessions.revokeSession(session.id);
-    // }
-
-    return NextResponse.redirect(token.url);
+    return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${magicLink}`);
   } catch (error) {
     if (error instanceof Response) {
       return new Response(error.statusText, { status: error.status });
