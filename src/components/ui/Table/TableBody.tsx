@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { Table } from "./Table";
 
-export type TValue = string | number | Date | boolean | null;
+export type TValue = string | number | Date | boolean | null  | undefined;
 
 const MAX_LENGTH_VALUE = 16;
 
@@ -14,8 +14,8 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
         <tr className="border-b last:border-b-0" key={idx}>
           <>
             {dataKeys.map((key) => (
-              <td className="px-2 py-2 whitespace-nowrap" key={key}>
-                {trimmedString(field[key] || "")}
+              <td className="px-4 py-3 whitespace-nowrap" key={key}>
+                {trimmedString(field[key])}
               </td>
             ))}
           </>
@@ -27,7 +27,8 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
 }
 
 const trimmedString = (val: TValue) => {
-  if (!val || typeof val === "boolean") return val;
+  if (typeof val === "boolean") return val ? "Oui" : "Non";
+  if (!val) return val;
 
   val = val.toString();
 

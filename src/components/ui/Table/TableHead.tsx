@@ -21,7 +21,7 @@ export function TableHead({ columns, hasActions, dispatch }: THead) {
         return (
           <th
             align="left"
-            className="px-2 py-2 text-muted-foreground cursor-pointer text-xs whitespace-nowrap first-letter:uppercase"
+            className="px-4 py-3 text-muted-foreground cursor-pointer text-xs whitespace-nowrap first-letter:uppercase"
             key={idx}
           >
             {titleColumn} <ChevronsUpDown className="inline size-3" />
@@ -30,9 +30,7 @@ export function TableHead({ columns, hasActions, dispatch }: THead) {
       })}
 
       {hasActions && (
-        <th align="left" className="px-2 py-2 text-muted-foreground cursor-pointer text-xs whitespace-nowrap">
-          Actions <ChevronsUpDown className="inline size-3" />
-        </th>
+        <th></th>
       )}
     </tr>
   );
