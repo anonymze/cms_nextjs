@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Form/Input";
@@ -38,7 +38,9 @@ const VerificationCodeForm: React.FC = () => {
           //   (searchParams.get("redirect_url") ||
           //     "/dashboard") as __next_route_internal_types__.RouteImpl<string>,
           // );
-          toast.info("Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter.");
+          toast.info(
+            "Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter.",
+          );
         }
       })
       .catch((err) => {

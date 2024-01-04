@@ -17,7 +17,7 @@ const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props
     mutationFn: deleteUploadQuery,
     mutationKey: ["uploads"],
     meta: {
-      message: "Le média a été supprimé"
+      message: "Le média a été supprimé",
     },
   });
 

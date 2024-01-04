@@ -16,9 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <h1>Médiathèque</h1>
         <ActionsButtons actionPopup={{ label: "Ajouter" }} />
       </Header>
-      <Suspense fallback={<div>Loading....</div>}>
-        {children}
-      </Suspense>
+      <Suspense fallback={<div>Loading....</div>}>{children}</Suspense>
     </>
   );
 }

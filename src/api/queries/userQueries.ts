@@ -2,7 +2,7 @@ import type { User } from "@prisma/client";
 import { api } from "../_config";
 
 export async function getUsersQuery() {
-  const result = await api.get<Omit<User, 'id'>[]>("users");
+  const result = await api.get<Omit<User, "id">[]>("users");
   return result.data;
 }
 

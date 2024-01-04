@@ -1,6 +1,6 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
-import prisma from "@/utils/libs/prisma/select_object";
+import prisma from "@/utils/libs/prisma/single_instance";
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -157,7 +157,7 @@ function verifyGithubEnvVariables(): void {
   if (!ENV_SERVER.GITHUB_USER_URL) {
     throw new Error("URL user github is not set in your env");
   }
-  
+
   if (!ENV_SERVER.GITHUB_MAGIC_LINK_URL) {
     throw new Error("URL magic link github is not set in your env");
   }

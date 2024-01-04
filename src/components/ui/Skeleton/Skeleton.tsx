@@ -2,16 +2,20 @@ import type { PropsWithChildren } from "react";
 import { cn } from "@/utils/libs/tailwind/merge";
 import "./Skeleton.css";
 
-type SuffixValueHeight = '%' | 'px' | 'rem' | 'em' | 'vh'
+type SuffixValueHeight = "%" | "px" | "rem" | "em" | "vh";
 
 type PropsSkeleton = PropsWithChildren & {
   animated?: boolean;
-  height?: `${number}${SuffixValueHeight}`
-} & React.HTMLAttributes<HTMLDivElement>
+  height?: `${number}${SuffixValueHeight}`;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const SkeletonCard: React.FC<PropsSkeleton> = ({ animated, height, className }) => {
   return (
-    <div style={{ height }} className={cn("background-skeleton", className, { animated })} role="presentation"></div>
+    <div
+      style={{ height }}
+      className={cn("background-skeleton", className, { animated })}
+      role="presentation"
+    ></div>
   );
 };
 

@@ -1,10 +1,7 @@
 import type { PropsWithChildren } from "react";
 import Breadcrump from "../Breadcrump";
 
-const Header: React.FC<PropsWithChildren & { breadcrump?: boolean }> = ({
-  children,
-  breadcrump = true,
-}) => {
+const Header: React.FC<PropsWithChildren & { breadcrump?: boolean }> = ({ children, breadcrump = true }) => {
   return (
     <header>
       {breadcrump && <Breadcrump />}

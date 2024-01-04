@@ -5,11 +5,7 @@ const SeparatorHorizontal: React.FC<Props> = () => {
 };
 
 const SeparatorVertical: React.FC<Props> = () => {
-    return (
-      <>
-          |
-      </>
-    )
-  }
+  return <>|</>;
+};
 
 export { SeparatorHorizontal, SeparatorVertical };

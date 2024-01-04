@@ -17,7 +17,7 @@ const CardContentManager: React.FC<Props> = ({ title, redirect }) => {
     );
   }
 
-  return <div>Pas de redirect...</div>
+  return <div>Pas de redirect...</div>;
 };
 
 export { CardContentManager };

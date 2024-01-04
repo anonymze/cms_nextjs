@@ -32,7 +32,7 @@ const Breadcrump: React.FC = () => {
       {pathnames.map((pathname, idx) => (
         <React.Fragment key={idx}>
           {" - "}
-          <Link className={cn({underline: idx === currentIdxPathname })} href={constructURL(pathnames, idx)}>
+          <Link className={cn({ underline: idx === currentIdxPathname })} href={constructURL(pathnames, idx)}>
             {convertPathnameToReadableString(pathname)}
           </Link>
         </React.Fragment>

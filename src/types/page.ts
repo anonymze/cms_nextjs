@@ -10,4 +10,3 @@ export const pageSchema = z.object({
 });
 
 export const formCreatePageSchema = pageSchema;
-

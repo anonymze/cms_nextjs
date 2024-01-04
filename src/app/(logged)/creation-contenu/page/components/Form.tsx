@@ -1,19 +1,26 @@
-"use client";;
+"use client";
 import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
 import { formCreatePageSchema, type Page } from "@/types/page";
-import { useMutation} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createPageQuery } from "@/api/queries/pageQueries";
 import type { z } from "zod";
 import type { Language } from "@/utils/language";
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/Form/Form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from "@/components/ui/Form/Form";
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
 
 interface Props {
-  lang:  typeof Language[number];
+  lang: (typeof Language)[number];
   uuid?: Page["uuid"];
 }
 

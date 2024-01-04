@@ -5,7 +5,7 @@ import type { Article } from "@prisma/client";
 export type ArticleZodType = z.infer<typeof articleSchema>;
 
 export const articleSchema = z.object({
-  content: z.custom<Article['content']>(),
+  content: z.custom<Article["content"]>(),
   conclusion: z.string().max(200).trim().optional(),
   description: z.string().max(200).trim().optional(),
   title: z.string().min(2).max(30).trim(),

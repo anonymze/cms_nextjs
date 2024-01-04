@@ -20,7 +20,7 @@ const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ 
     mutationFn: createUploadQuery,
     mutationKey: ["uploads"],
     meta: {
-      message: "Le média a été ajouté"
+      message: "Le média a été ajouté",
     },
   });
 

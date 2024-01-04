@@ -8,10 +8,12 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET() {
-  return jsonResponsePost(await prisma.article.findMany({
-    // we take everything except the id
-    select: getSelectObject(['uuid', 'title', 'content', 'description', 'conclusion', 'createdAt'])
-  }));
+  return jsonResponsePost(
+    await prisma.article.findMany({
+      // we take everything except the id
+      select: getSelectObject(["uuid", "title", "content", "description", "conclusion", "createdAt"]),
+    }),
+  );
 }
 
 export async function POST(req: NextRequest) {
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
   if (error) return jsonResponseBadRequest(messageError);
 
   const article = await prisma.article.create({
-    data
+    data,
   });
 
   return jsonResponsePost(article);

@@ -14,7 +14,9 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
         <tr className="border-b last:border-b-0" key={idx}>
           <>
             {dataKeys.map((key) => (
-              <td className="px-2 py-2 whitespace-nowrap" key={key}>{trimmedString(field[key] || "")}</td>
+              <td className="px-2 py-2 whitespace-nowrap" key={key}>
+                {trimmedString(field[key] || "")}
+              </td>
             ))}
           </>
           {hasActions && <td>actions</td>}
@@ -25,12 +27,12 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
 }
 
 const trimmedString = (val: TValue) => {
-    if (!val || typeof val === "boolean") return val;
-  
-    val = val.toString();
+  if (!val || typeof val === "boolean") return val;
 
-    // if value superior to the max length, we trim the string
-    return val.length > MAX_LENGTH_VALUE ? val.substring(0, MAX_LENGTH_VALUE - 3) + "..." : val;
-  };
+  val = val.toString();
+
+  // if value superior to the max length, we trim the string
+  return val.length > MAX_LENGTH_VALUE ? val.substring(0, MAX_LENGTH_VALUE - 3) + "..." : val;
+};
 
 export default TableBody;

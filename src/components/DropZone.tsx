@@ -25,7 +25,7 @@ const DropZone: React.FC<PropsWithChildren> = () => {
           break;
         case "upload":
           const eventChange = ev as ChangeEvent<HTMLInputElement>;
-		  // we use structuredClone to avoid reference
+          // we use structuredClone to avoid reference
           fileList = structuredClone(eventChange.currentTarget.files);
           // we reset the input value to be able to upload the same file if necessary
           eventChange.currentTarget.value = "";

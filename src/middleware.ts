@@ -23,7 +23,7 @@ export const config = {
      * - favicon.ico (favicon file)
      * - login (authentication routes)
      * - register (authentication routes)
-     * - conditions-utilisation (legal routes)
+     * - conditions utilisation cgu (legal routes)
      * - politique-confidentialite (legal routes)
      */
     "/((?!_next/static|_next/image|favicon.ico|login|register|politique-de-confidentialite|cgu|api/.*).*)",

@@ -2,7 +2,7 @@
 
 import { useThemeStore } from "@/contexts/store_ui_context";
 import { Toaster as Sonner } from "sonner";
-import './Sonner.css';
+import "./Sonner.css";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 

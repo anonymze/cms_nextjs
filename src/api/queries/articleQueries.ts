@@ -2,7 +2,7 @@ import type { Article } from "@prisma/client";
 import { api } from "../_config";
 
 export async function getArticlesQuery() {
-  const result = await api.get<Omit<Article, 'id'>[]>("articles");
+  const result = await api.get<Omit<Article, "id">[]>("articles");
   return result.data;
 }
 

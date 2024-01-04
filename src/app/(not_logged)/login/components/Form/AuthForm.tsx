@@ -37,7 +37,9 @@ const AuthForm = () => {
         setIsLoading(false);
 
         if (!result.emailAddress) {
-          toast.error("Quelque chose d'innatendu s'est produit, Clerk n'a pas retourné d'adresse email. Veuillez réessayer");
+          toast.error(
+            "Quelque chose d'innatendu s'est produit, Clerk n'a pas retourné d'adresse email. Veuillez réessayer",
+          );
           return;
         }
 
@@ -49,7 +51,7 @@ const AuthForm = () => {
         const params = new URLSearchParams(searchParams);
         params.set("verifying", result.emailAddress);
 
-        router.push((`${pathname}?${params.toString()}`) as __next_route_internal_types__.RouteImpl<string>);
+        router.push(`${pathname}?${params.toString()}` as __next_route_internal_types__.RouteImpl<string>);
       })
       .catch((err) => {
         toast.error(err.errors[0].message);

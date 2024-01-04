@@ -2,7 +2,7 @@ import { api } from "../_config";
 import type { Page } from "@prisma/client";
 
 export async function getPagesQuery() {
-  const result = await api.get<Omit<Page, 'id'>[]>("pages");
+  const result = await api.get<Omit<Page, "id">[]>("pages");
   return result.data;
 }
 

@@ -11,14 +11,12 @@ import Content from "./Content";
 const COUNT_CARD_SKELETONS = 6;
 
 const Uploads: React.FC<{}> = ({}) => {
-  const {
-    data: uploads,
-  } = useQuery({
+  const { data: uploads } = useQuery({
     queryKey: ["uploads"],
     queryFn: getUploadsQuery,
   });
 
-  return (    
+  return (
     <section
       className={cn(
         "relative min-h-[50vh]",

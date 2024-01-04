@@ -18,7 +18,7 @@ export default function Content() {
     }
 
     const aFunc = async () => {
-      console.log('iciii');
+      console.log("iciii");
       try {
         // create a signIn with the token, note that you need to use the "ticket" strategy
         const res = await signIn.create({

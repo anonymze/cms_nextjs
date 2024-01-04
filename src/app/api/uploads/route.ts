@@ -9,11 +9,11 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
 
 export async function GET() {
-  return jsonResponsePost(await prisma.upload.findMany(
-    {
-      select: getSelectObject(['uuid', 'filepath_public', 'filetype'])
-    }
-  ));
+  return jsonResponsePost(
+    await prisma.upload.findMany({
+      select: getSelectObject(["uuid", "filepath_public", "filetype"]),
+    }),
+  );
 }
 
 export async function POST(req: NextRequest) {

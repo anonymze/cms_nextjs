@@ -9,11 +9,7 @@ import FormPage from "./Form";
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const IconDynamic = dynamic(() => import("@/components/ui/IconDynamic"), {
-  loading: () => (
-    <span>
-      ...
-    </span>
-  ),
+  loading: () => <span>...</span>,
 });
 
 const Content: React.FC<{ uuid?: Page["uuid"] }> = ({ uuid }) => {

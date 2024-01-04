@@ -19,9 +19,7 @@ const Content: React.FC = () => {
     return <div>Aucune donnée...</div>;
   }
 
-  return (
-    <Table hasActions data={articles} columns={Object.keys(articles[0] as Article)} />
-  );
+  return <Table hasActions data={articles} columns={Object.keys(articles[0] as Article)} />;
 };
 
 export default Content;

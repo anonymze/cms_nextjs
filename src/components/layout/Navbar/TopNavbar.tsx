@@ -12,7 +12,6 @@ const TopNavbar: React.FC<Props> = () => {
   const router = useRouter();
   const setTheme = useThemeStore((theme) => theme.setTheme);
 
-
   const changeTheme = (checked: boolean) => {
     if (checked) {
       setTheme("light");

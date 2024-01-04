@@ -39,8 +39,8 @@ const Tiptap: React.FC<Props> = ({ description, onChange }) => {
   if (!editor) {
     return (
       <>
-          <SkeletonCard animated height="2.2rem" />
-          <SkeletonCard animated height="9rem" />
+        <SkeletonCard animated height="2.2rem" />
+        <SkeletonCard animated height="9rem" />
       </>
     );
   }

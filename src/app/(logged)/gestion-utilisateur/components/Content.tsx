@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import Table from "../../../../components/ui/Table/Table";
 import { getUsersQuery } from "@/api/queries/userQueries";
@@ -18,9 +18,7 @@ const Content: React.FC = () => {
     return <div>Aucune donnée...</div>;
   }
 
-  return (
-    <Table hasActions data={Users} columns={Object.keys(Users[0] as User)} />
-  );
+  return <Table hasActions data={Users} columns={Object.keys(Users[0] as User)} />;
 };
 
 export default Content;

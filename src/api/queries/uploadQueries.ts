@@ -3,7 +3,7 @@ import type { FileTypeStore } from "@/contexts/store_files_context";
 import type { Upload } from "@prisma/client";
 
 export async function getUploadsQuery() {
-  const result = await api.get<Omit<Upload, 'id'>[]>("uploads");
+  const result = await api.get<Omit<Upload, "id">[]>("uploads");
   return result.data;
 }
 

@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import Content from "./components/Content";
 
@@ -8,7 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AuthenticationPage() {
-  return (
-    <Content />
-  );
+  return <Content />;
 }

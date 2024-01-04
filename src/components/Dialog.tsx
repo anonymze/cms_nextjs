@@ -62,13 +62,7 @@ const DialogFooter: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div className="flex items-center gap-2">
       {children}
-      <Button
-        className="ml-auto"
-        type="submit"
-        role="cancel"
-        fill={false}
-        aria-label="Fermer la popup"
-      >
+      <Button className="ml-auto" type="submit" role="cancel" fill={false} aria-label="Fermer la popup">
         Annuler
       </Button>
       <Button type="submit">Enregistrer</Button>
