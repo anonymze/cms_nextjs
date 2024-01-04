@@ -3,7 +3,7 @@ import React from "react";
 import { Language } from "@/utils/language";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import FormArticle from "./Form";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 import dynamic from "next/dynamic";
 import type { Article } from "@prisma/client";
 

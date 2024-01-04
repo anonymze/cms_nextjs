@@ -1,5 +1,5 @@
 import fs from "fs";
-import prisma from "../libs/prisma";
+import prisma from "../libs/prisma/select_object";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { MAX_FILE_SIZE, isValidFileType } from "../file_resolving";

@@ -1,7 +1,7 @@
 import App from "@/App";
 import Layout from "@/components/layout/Layout";
 import { Inter } from "next/font/google";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 import { Providers } from "@/utils/libs/providers";
 import { Toaster } from "@/components/ui/Toaster/Sonner";
 import type { Metadata } from "next";

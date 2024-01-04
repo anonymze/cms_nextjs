@@ -1,7 +1,7 @@
 "use client";
 import { type Page } from "@/types/page";
 import { Language } from "@/utils/language";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import React from "react";
 import dynamic from "next/dynamic";

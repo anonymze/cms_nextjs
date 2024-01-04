@@ -2,7 +2,7 @@
 import React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
 import { type ControllerProps, type FieldPath, type FieldValues } from "react-hook-form";
 import { Label } from "./Label";

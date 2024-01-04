@@ -5,7 +5,7 @@ import MediaOperation from "@/components/MediaOperation/MediaOperation";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { getUploadsQuery } from "@/api/queries/uploadQueries";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 import Content from "./Content";
 
 const COUNT_CARD_SKELETONS = 6;

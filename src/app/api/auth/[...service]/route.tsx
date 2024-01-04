@@ -1,6 +1,6 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
-import prisma from "@/utils/libs/prisma";
+import prisma from "@/utils/libs/prisma/select_object";
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse, type NextRequest } from "next/server";
 

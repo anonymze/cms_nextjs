@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./ui/Separator";
 import { Button } from "./ui/Button";

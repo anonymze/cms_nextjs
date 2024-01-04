@@ -1,5 +1,5 @@
 import fs from "fs";
-import prisma from "@/utils/libs/prisma";
+import prisma from "@/utils/libs/prisma/select_object";
 import path from "path";
 
 export async function GET(req: Request, res: Response) {

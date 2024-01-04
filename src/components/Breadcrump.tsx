@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 
 const convertPathnameToReadableString = (pathname: string) => {
   return pathname.replaceAll("-", " ").replace(/^./, pathname[0]!.toUpperCase());

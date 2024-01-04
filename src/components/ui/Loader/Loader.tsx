@@ -1,4 +1,4 @@
-import { cn } from "@/utils/libs/shadcn";
+import { cn } from "@/utils/libs/tailwind/merge";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   large?: boolean;
