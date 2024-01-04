@@ -35,10 +35,11 @@ model Article {
     @@index(fields: [uuid])
 }model User {
     id        Int      @id @default(autoincrement())
-    uuid       String   @unique @default(uuid())
+    uuid      String   @unique @default(uuid())
     isActive  Boolean  @default(false)
     name      String?
     email     String   @unique
+    role      String   @default("USER")
     createdAt DateTime @default(now())
 
     @@index(fields: [email])
