@@ -12,7 +12,7 @@ import { toast } from "sonner";
 const VerificationCodeForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const { isLoaded: isClerkLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded: isClerkLoaded, signUp } = useSignUp();
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -29,18 +29,15 @@ const VerificationCodeForm: React.FC = () => {
         strategy: "email_code",
         code: ev.currentTarget.code.value,
       })
-      .then((result) => {
+      .then((res) => {
         setIsLoading(false);
 
-        if (result.status === "complete") {
-          // setActive({ session: result.createdSessionId });
-          // router.push(
-          //   (searchParams.get("redirect_url") ||
-          //     "/dashboard") as __next_route_internal_types__.RouteImpl<string>,
-          // );
+        if (res.status === "complete") {
           toast.info(
-            "Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter.",
+            "Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter avec la même méthode de connexion",
+            { duration: 6000 }
           );
+          router.replace("/login");
         }
       })
       .catch((err) => {

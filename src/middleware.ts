@@ -26,7 +26,7 @@ export const config = {
      * - conditions utilisation cgu (legal routes)
      * - politique-confidentialite (legal routes)
      */
-    "/((?!_next/static|_next/image|favicon.ico|login|register|politique-de-confidentialite|cgu|api/.*).*)",
+    "/((?!_next/static|_next/image|favicon.ico|login|login/external|register|politique-de-confidentialite|cgu|api/.*).*)",
   ],
 };
 

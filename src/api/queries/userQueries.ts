@@ -6,6 +6,11 @@ export async function getUsersQuery() {
   return result.data;
 }
 
+export async function verifyUserQuery(email: User["email"]) {
+  const result = await api.get(`users/verify/${email}`);
+  return result.data;
+}
+
 export async function createUserQuery(user: Omit<User, "uuid" | "id" | "createdAt">) {
   const result = await api.post("users", user);
   return result.data;

@@ -1,45 +1,89 @@
 "use client";
 
+import { verifyUserQuery } from "@/api/queries/userQueries";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import { ENV_CLIENT } from "@/env/client";
-import { useSignUp } from "@clerk/nextjs";
+import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 const AuthForm = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { isLoaded: isClerkLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded: isClerkSignUpLoaded, signUp } = useSignUp();
+  const { isLoaded: isClerkSignInLoaded, signIn, setActive } = useSignIn();
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     setIsLoading(true);
 
-    if (!isClerkLoaded) {
-      console.error("Clerk is not loaded yet");
+    if (!isClerkSignUpLoaded || !isClerkSignInLoaded) {
       return;
     }
 
+    let shouldCreateUserWithClerk = true;
+    const email = ev.currentTarget.email.value;
+    const password = ev.currentTarget.password.value;
+
+    await verifyUserQuery(email)
+      .then(async () => {
+        shouldCreateUserWithClerk = false;
+
+        // if user found and active, we can sign in and log
+        await signIn
+          .create({
+            strategy: "password",
+            identifier: email,
+            password,
+          })
+          .then(async (res) => {
+            setIsLoading(false);
+            if (res.status === "complete") {
+              await setActive({
+                session: res.createdSessionId,
+              });
+
+              router.replace("/dashboard");
+            }
+          })
+          .catch((err) => {
+            setIsLoading(false);
+            return toast.error(err.errors[0].message);
+          });
+      })
+      .catch((err: AxiosError) => {
+        // if 403, it's because the user is not active
+        if (err.response?.status === 403) {
+          shouldCreateUserWithClerk = false;
+          setIsLoading(false);
+          return toast.error("Votre compte est inactif, un administrateur doit le valider");
+        }
+
+        // the others status means (in theory) that we should create the user with clerk
+        return;
+      });
+
+    if (!shouldCreateUserWithClerk) return;
+
     await signUp
       .create({
-        emailAddress: ev.currentTarget.email.value,
-        password: ev.currentTarget.email.value,
+        emailAddress: email,
+        password,
       })
       .then(async (result) => {
         setIsLoading(false);
 
         if (!result.emailAddress) {
-          toast.error(
-            "Quelque chose d'innatendu s'est produit, Clerk n'a pas retourné d'adresse email. Veuillez réessayer",
-          );
+          toast.error("Quelque chose d'innatendu s'est produit. Veuillez réessayer");
           return;
         }
 
@@ -54,14 +98,19 @@ const AuthForm = () => {
         router.push(`${pathname}?${params.toString()}` as __next_route_internal_types__.RouteImpl<string>);
       })
       .catch((err) => {
-        toast.error(err.errors[0].message);
         setIsLoading(false);
+
+        if (err.errors[0].code === "form_param_format_invalid") {
+          return toast.error("L'email doit être au bon format");
+        }
+
+        return toast.error(err.errors[0].message);
       });
   };
 
   return (
     <>
-      <form onSubmit={onSubmit} autoComplete="off">
+      <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -74,6 +123,7 @@ const AuthForm = () => {
               placeholder="nom@exemple.fr"
               type="email"
               autoCapitalize="none"
+              autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
             />

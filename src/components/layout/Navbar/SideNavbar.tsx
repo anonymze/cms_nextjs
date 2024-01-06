@@ -1,8 +1,15 @@
+"use client";
+
 import { cn } from "@/utils/libs/tailwind/merge";
 import Link from "next/link";
 import { mainNavigation, optionsNavigation } from "./navLinks";
+import { useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
 
 const SideNavbar: React.FC = () => {
+  const { signOut } = useClerk();
+  const router = useRouter();
   return (
     <div className="flex grow flex-col gap-y-5 h-full overflow-y-auto">
       <div className="flex h-16 shrink-0 items-center">
@@ -67,8 +74,8 @@ const SideNavbar: React.FC = () => {
             </ul>
           </li>
           <li className="mt-auto">
-            <Link
-              href="/dashboard"
+            <Button
+              onClick={() => signOut(() => router.push("/login"))}
               className="flex items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-white"
             >
               <img
@@ -78,7 +85,7 @@ const SideNavbar: React.FC = () => {
               />
               <span className="sr-only">Your profile</span>
               <span aria-hidden="true">Tom Cook</span>
-            </Link>
+            </Button>
           </li>
         </ul>
       </nav>

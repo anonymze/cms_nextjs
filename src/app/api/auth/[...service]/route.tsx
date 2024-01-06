@@ -65,12 +65,17 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
       where: { email: userGithubEmail },
     });
 
-    // if user is created in our database and is active, we can return the redirection to the dashboard safely
-    if (existingUserOurDb?.isActive) {
-      return NextResponse.redirect(`${req.nextUrl.origin}/dashboard`);
+    // if user does not exists in our database at all, we create it, careful he will be inactive by default
+    if (!existingUserOurDb) {
+      await prisma.user.create({
+        data: {
+          email: userGithubEmail,
+          name: userGithub.data.name,
+        },
+      });
     }
 
-    // otherwise we create the user in Clerk, but before, if already exists we get it from Clerk
+    // we get the clerk user or create it
     const usersClerk = await clerkClient.users.getUserList({
       emailAddress: [userGithubEmail],
     });
@@ -85,25 +90,25 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
             password: Math.random().toString(36) + Math.random().toString(36).slice(2),
           });
 
-    // if user does not exists in our database at all, we create it, careful he will be inactive by default
+    // if not user
     if (!existingUserOurDb) {
-      await prisma.user.create({
-        data: {
-          email: userGithubEmail,
-          name: userGithub.data.name,
-        },
-      });
+      return NextResponse.redirect(`${req.nextUrl.origin}/login/external?info=created`);
+    }
+
+    // if not active
+    if (!existingUserOurDb.isActive) {
+      return NextResponse.redirect(`${req.nextUrl.origin}/login/external?info=inactive`);
     }
 
     // we create a sign in token for the user
     const signInToken = await clerkClient.signInTokens.createSignInToken({
       userId: userClerk.id,
-      expiresInSeconds: 60 * 60 * 24 * 1, // 1 day
+      expiresInSeconds: 60 * 10 // 10 mins
     });
 
     // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back yet)
-    const magicLink = await api.post(
-      ENV_SERVER.GITHUB_MAGIC_LINK_URL as string,
+    const token = await api.post(
+      ENV_SERVER.NEXT_PUBLIC_CLERK_MAGIC_LINK_URL,
       {
         user_id: signInToken.userId,
       },
@@ -115,8 +120,9 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
       },
     );
 
-    return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${magicLink}`);
+    return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${token}`);
   } catch (error) {
+    console.log({ error });
     if (error instanceof Response) {
       return new Response(error.statusText, { status: error.status });
     }
@@ -139,6 +145,11 @@ function verifyEnvVariables(service: string): void {
     case "apple":
       break;
   }
+
+  // clerk
+  if (!ENV_SERVER.NEXT_PUBLIC_CLERK_MAGIC_LINK_URL) {
+    throw new Error("URL magic link clerk is not set in your env");
+  }
 }
 
 function verifyGithubEnvVariables(): void {
@@ -156,9 +167,5 @@ function verifyGithubEnvVariables(): void {
 
   if (!ENV_SERVER.GITHUB_USER_URL) {
     throw new Error("URL user github is not set in your env");
-  }
-
-  if (!ENV_SERVER.GITHUB_MAGIC_LINK_URL) {
-    throw new Error("URL magic link github is not set in your env");
   }
 }

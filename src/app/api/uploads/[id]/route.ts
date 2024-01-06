@@ -2,11 +2,6 @@ import prisma from "@/utils/libs/prisma/single_instance";
 import fs from "fs";
 import path from "path";
 
-export async function GET(req: Request, res: Response) {
-  console.log(req);
-  console.log(res);
-}
-
 export async function DELETE(req: Request) {
   // get uuid form url
   const uuid = req.url.split("/").at(-1);
