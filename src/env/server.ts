@@ -6,9 +6,9 @@ const envServerSchema = z.object({
   // CLERK
   CLERK_SECRET_KEY: z.string(),
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+  NEXT_PUBLIC_CLERK_MAGIC_LINK_URL: z.string(),
   NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string(),
   NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string(),
-  NEXT_PUBLIC_CLERK_MAGIC_LINK_URL: z.string(),
   // GITHUB
   NEXT_PUBLIC_GITHUB_CLIENT_ID: z.string().optional(),
   GITHUB_CLIENT_SECRET: z.string().optional(),

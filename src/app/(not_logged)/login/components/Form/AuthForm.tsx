@@ -30,82 +30,10 @@ const AuthForm = () => {
       return;
     }
 
-    let shouldCreateUserWithClerk = true;
     const email = ev.currentTarget.email.value;
     const password = ev.currentTarget.password.value;
 
-    await verifyUserQuery(email)
-      .then(async () => {
-        shouldCreateUserWithClerk = false;
-
-        // if user found and active, we can sign in and log
-        await signIn
-          .create({
-            strategy: "password",
-            identifier: email,
-            password,
-          })
-          .then(async (res) => {
-            setIsLoading(false);
-            if (res.status === "complete") {
-              await setActive({
-                session: res.createdSessionId,
-              });
-
-              router.replace("/dashboard");
-            }
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            return toast.error(err.errors[0].message);
-          });
-      })
-      .catch((err: AxiosError) => {
-        // if 403, it's because the user is not active
-        if (err.response?.status === 403) {
-          shouldCreateUserWithClerk = false;
-          setIsLoading(false);
-          return toast.error("Votre compte est inactif, un administrateur doit le valider");
-        }
-
-        // the others status means (in theory) that we should create the user with clerk
-        return;
-      });
-
-    if (!shouldCreateUserWithClerk) return;
-
-    await signUp
-      .create({
-        emailAddress: email,
-        password,
-      })
-      .then(async (result) => {
-        setIsLoading(false);
-
-        if (!result.emailAddress) {
-          toast.error("Quelque chose d'innatendu s'est produit. Veuillez réessayer");
-          return;
-        }
-
-        // send the user an email with the verification code
-        await result.prepareEmailAddressVerification({
-          strategy: "email_code",
-        });
-
-        const params = new URLSearchParams(searchParams);
-        params.set("verifying", result.emailAddress);
-
-        router.push(`${pathname}?${params.toString()}` as __next_route_internal_types__.RouteImpl<string>);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-
-        if (err.errors[0].code === "form_param_format_invalid") {
-          return toast.error("L'email doit être au bon format");
-        }
-
-        return toast.error(err.errors[0].message);
-      });
+    
   };
 
   return (

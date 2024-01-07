@@ -1,8 +1,8 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
-import prisma from "@/utils/libs/prisma/single_instance";
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse, type NextRequest } from "next/server";
+import prisma from "@/utils/libs/prisma/single_instance";
 
 const OAUTH_SERVICES = ["github", "google", "apple"];
 
@@ -103,7 +103,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
     // we create a sign in token for the user
     const signInToken = await clerkClient.signInTokens.createSignInToken({
       userId: userClerk.id,
-      expiresInSeconds: 60 * 10 // 10 mins
+      expiresInSeconds: 60 * 10, // 10 mins
     });
 
     // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back yet)
@@ -141,8 +141,10 @@ function verifyEnvVariables(service: string): void {
       verifyGithubEnvVariables();
       break;
     case "google":
+      verifyGithubEnvVariables();
       break;
     case "apple":
+      verifyGithubEnvVariables();
       break;
   }
 
