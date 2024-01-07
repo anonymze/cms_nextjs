@@ -3,11 +3,10 @@ import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
-import { formCreatePageSchema, type Page } from "@/types/page";
+import { formCreatePageSchema } from "@/types/page";
 import { useMutation } from "@tanstack/react-query";
 import { createPageQuery } from "@/api/queries/pageQueries";
 import type { z } from "zod";
-import type { Language } from "@/utils/language";
 import {
   FormField,
   FormItem,
@@ -18,9 +17,10 @@ import {
 } from "@/components/ui/Form/Form";
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
+import type { Page } from "@prisma/client";
 
 interface Props {
-  lang: (typeof Language)[number];
+  lang: any;
   uuid?: Page["uuid"];
 }
 
@@ -45,6 +45,7 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
 
   // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
+    // @ts-ignore
     createMutation.mutate(values);
   }
 

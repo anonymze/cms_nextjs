@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <App>
       <body className={cn("h-dvh", fontSans.className)}>
         {children}
-        <Toaster duration={2500} />
+        <Toaster duration={4000} />
       </body>
     </App>
   );

@@ -29,14 +29,14 @@ const Uploads: React.FC<{}> = ({}) => {
         <>
           {/* if data we show the medias */}
           {uploads.map((upload) => (
-            <MediaOperation removeFileFromApi={upload.uuid} key={upload.id}>
+            <MediaOperation removeFileFromApi={upload.uuid} key={upload.uuid}>
               <Image
                 placeholder="blur"
                 blurDataURL={"/placeholder-150x150.jpg"}
                 width={150}
                 height={150}
                 priority
-                key={upload.id}
+                key={upload.uuid}
                 src={upload.filepath_public}
                 alt=""
               />

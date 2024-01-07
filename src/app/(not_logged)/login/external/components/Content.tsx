@@ -2,7 +2,7 @@
 "use client";
 
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
-import { useSignIn } from "@clerk/nextjs";
+import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -13,38 +13,17 @@ export default function Content() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!signIn || !setActive) {
-      return;
-    }
+    if (!signIn || !setActive) return;
 
     const token = params.get("token");
-    const info = params.get("info");
 
-    if (info && !token) {
-      switch (info) {
-        case "created":
-          toast.info(
-            "Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter avec la même méthode de connexion",
-            { duration: 6000 },
-          );
-          return router.replace("/login");
-        case "inactive":
-          toast.info("Votre compte est inactif, veuillez contacter un administrateur pour l'activer");
-          return router.replace("/login");
-      }
-    }
-
-    if (!token) {
-      toast.error("Une erreur inconnue est survenue");
-      return router.replace("/login");
-    }
-
-    const aFunc = async () => {
+    // we have to use a async function here because we can't use async/await in useEffect
+    const asyncCall = async () => {
       try {
-        // create a signIn with the token, note that you need to use the "ticket" strategy
+        // create a signIn with the token from the magic link in server side, note that you need to use the "ticket" strategy
         const res = await signIn.create({
           strategy: "ticket",
-          ticket: token,
+          ticket: token || "",
         });
 
         await setActive({
@@ -53,13 +32,20 @@ export default function Content() {
 
         return router.replace("/dashboard" as __next_route_internal_types__.RouteImpl<string>);
       } catch (err) {
-        toast.error("Une erreur inconnue est survenue");
+        if (isClerkAPIResponseError(err)) {
+          if (err.errors?.[0]?.code === "session_exists") {
+            return router.replace("/dashboard");
+          }
+
+          toast.error(err.errors?.[0]?.message);
+        }
+
         return router.replace("/login");
       }
     };
 
-    aFunc();
-  }, [signIn, setActive, router, params]);
+    asyncCall();
+  }, [signIn, router, params, setActive]);
 
   return (
     <div className="grid place-items-center h-full">

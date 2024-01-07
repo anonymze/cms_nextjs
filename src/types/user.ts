@@ -3,3 +3,8 @@ export enum UserRole {
   USER = "USER",
   GUEST = "GUEST",
 }
+
+export enum LoginStateInfo {
+  CREATED = "created",
+  INACTIVE = "inactive",
+}

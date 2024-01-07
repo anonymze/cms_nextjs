@@ -8,8 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import type { z } from "zod";
-import type { Language } from "@/utils/language";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import {
   FormField,
@@ -21,10 +19,11 @@ import {
 } from "@/components/ui/Form/Form";
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
+import type { z } from "zod";
 import type { Article } from "@prisma/client";
 
 interface Props {
-  lang: (typeof Language)[number];
+  lang: any;
   uuid?: Article["uuid"];
 }
 
@@ -56,6 +55,7 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
 
   // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
+    // @ts-ignore
     createMutation.mutate(values);
   }
 

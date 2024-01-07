@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <Layout>{children}</Layout>
         </Providers>
-        <Toaster duration={1800} />
+        <Toaster duration={4000} />
       </body>
     </App>
   );

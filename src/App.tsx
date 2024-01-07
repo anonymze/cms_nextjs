@@ -1,10 +1,8 @@
 "use client";
 
 import { useThemeStore } from "./contexts/store_ui_context";
-import { Suspense, type PropsWithChildren } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
-import { SpinnerLoader } from "./components/ui/Loader/Loader";
-import { NavigationEvents } from "./components/NavigationEvents";
+import {  type PropsWithChildren } from "react";
 import "@/styles/globals.css";
 
 export default function App({ children }: PropsWithChildren) {
@@ -14,9 +12,6 @@ export default function App({ children }: PropsWithChildren) {
     <ClerkProvider>
       <html lang="fr" className={theme}>
         {children}
-        <Suspense fallback={<SpinnerLoader />}>
-          <NavigationEvents />
-        </Suspense>
       </html>
     </ClerkProvider>
   );

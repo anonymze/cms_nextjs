@@ -3,9 +3,8 @@
 import { Trash2Icon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { deleteUploadQuery } from "@/api/queries/uploadQueries";
-import { toast } from "sonner";
-import type { Upload } from "@/types/upload";
 import type { HTMLAttributes } from "react";
+import type { Upload } from "@prisma/client";
 import "./MediaOperation.css";
 
 interface Props extends HTMLAttributes<HTMLElement> {

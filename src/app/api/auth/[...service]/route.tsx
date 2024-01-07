@@ -3,6 +3,7 @@ import { ENV_SERVER } from "@/env/server";
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse, type NextRequest } from "next/server";
 import prisma from "@/utils/libs/prisma/single_instance";
+import { LoginStateInfo } from "@/types/user";
 
 const OAUTH_SERVICES = ["github", "google", "apple"];
 
@@ -31,7 +32,6 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
     return new Response(errorDescription);
   }
 
-  // TODO state is the code we sent to github, and we need to check github is sending us back the same code
   if (!code || state !== "1234") {
     return new Response("Oauth invalid data");
   }
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
       where: { email: userGithubEmail },
     });
 
-    // if user does not exists in our database at all, we create it, careful he will be inactive by default
+    // if user does not exists in our database at all, we create it, he will be inactive by default
     if (!existingUserOurDb) {
       await prisma.user.create({
         data: {
@@ -92,35 +92,29 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 
     // if not user
     if (!existingUserOurDb) {
-      return NextResponse.redirect(`${req.nextUrl.origin}/login/external?info=created`);
+      return NextResponse.redirect(`${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}}`);
     }
 
     // if not active
     if (!existingUserOurDb.isActive) {
-      return NextResponse.redirect(`${req.nextUrl.origin}/login/external?info=inactive`);
+      return NextResponse.redirect(`${req.nextUrl.origin}/login/?info=${LoginStateInfo.INACTIVE}}`);
     }
 
-    // we create a sign in token for the user
-    const signInToken = await clerkClient.signInTokens.createSignInToken({
-      userId: userClerk.id,
-      expiresInSeconds: 60 * 10, // 10 mins
-    });
-
-    // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back yet)
-    const token = await api.post(
-      ENV_SERVER.NEXT_PUBLIC_CLERK_MAGIC_LINK_URL,
+    // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back)
+    const { data: magicLink } = await api.post(
+      ENV_SERVER.CLERK_MAGIC_LINK_URL,
       {
-        user_id: signInToken.userId,
+        user_id: userClerk.id,
       },
       {
         headers: {
-          Authorization: `Bearer ${signInToken.token}`,
+          Authorization: `Bearer ${ENV_SERVER.CLERK_SECRET_KEY}`,
           "Content-Type": "application/json",
         },
       },
     );
 
-    return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${token}`);
+    return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${magicLink.token}`);
   } catch (error) {
     console.log({ error });
     if (error instanceof Response) {
@@ -149,7 +143,7 @@ function verifyEnvVariables(service: string): void {
   }
 
   // clerk
-  if (!ENV_SERVER.NEXT_PUBLIC_CLERK_MAGIC_LINK_URL) {
+  if (!ENV_SERVER.CLERK_MAGIC_LINK_URL) {
     throw new Error("URL magic link clerk is not set in your env");
   }
 }

@@ -7,7 +7,7 @@ export async function getUsersQuery() {
 }
 
 export async function verifyUserQuery(email: User["email"]) {
-  const result = await api.get(`users/verify/${email}`);
+  const result = await api.get<unknown>(`users/verify/${email}`);
   return result.data;
 }
 

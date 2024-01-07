@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: { email: strin
   // we get the email from the URL params
   const [email] = params.email;
 
-  if (!email) return jsonResponseNotFound("Email not found");
+  if (!email) return jsonResponseNotFound("Email not specified");
 
   const user = await prisma.user.findUnique({
     where: {
@@ -16,7 +16,6 @@ export async function GET(req: NextRequest, { params }: { params: { email: strin
   });
 
   if (!user) return jsonResponseNotFound("User not found");
-
   if (!user.isActive) return jsonResponseForbidden("User is not active");
 
   return jsonResponse({
