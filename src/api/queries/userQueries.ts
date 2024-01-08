@@ -1,5 +1,6 @@
 import type { User } from "@prisma/client";
 import { api } from "../_config";
+import type { UserCreationZodType } from "@/types/user";
 
 export async function getUsersQuery() {
   const result = await api.get<Omit<User, "id">[]>("users");
@@ -11,7 +12,7 @@ export async function verifyUserQuery(email: User["email"]) {
   return result.data;
 }
 
-export async function createUserQuery(user: Omit<User, "uuid" | "id" | "createdAt">) {
+export async function createUserQuery(user: UserCreationZodType) {
   const result = await api.post("users", user);
   return result.data;
 }

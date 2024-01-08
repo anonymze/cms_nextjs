@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import { ENV_CLIENT } from "@/env/client";
-import { isClerkAPIResponseError, useSignIn, useSignUp } from "@clerk/nextjs";
+import { isClerkAPIResponseError, useClerk, useSignIn, useSignUp } from "@clerk/nextjs";
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -14,9 +14,10 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { LoginStateInfo } from "@/types/user";
-import { set } from "zod";
+import { sign } from "crypto";
 
 const AuthForm = () => {
+  const { signOut } = useClerk();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -25,8 +26,6 @@ const AuthForm = () => {
   const { isLoaded: isClerkSignInLoaded, signIn, setActive } = useSignIn();
 
   useEffect(() => {
-    if (!router || !searchParams) return;
-
     const info = searchParams.get("info");
 
     // if we get an info we are aware of, we can display a toast
@@ -34,14 +33,14 @@ const AuthForm = () => {
       case LoginStateInfo.CREATED:
         toast.info(
           "Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter avec la même méthode de connexion",
-          { duration: 6000 },
+          { duration: 5000 },
         );
         break;
       case LoginStateInfo.INACTIVE:
         toast.info("Votre compte est inactif, veuillez contacter un administrateur pour l'activer");
         break;
     }
-  }, [router, searchParams]);
+  }, []);
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -59,6 +58,9 @@ const AuthForm = () => {
     try {
       await verifyUserQuery(email);
 
+      // we log out in case
+      await signOut();
+      
       // at this point, the user exists in our database
       // and we can try to sign in with Clerk's session
       const signInResource = await signIn.create({
@@ -66,11 +68,12 @@ const AuthForm = () => {
         identifier: email,
         password,
       });
-
+      
       await setActive({
         session: signInResource.createdSessionId,
       });
 
+      setIsLoading(false);
       router.push("/dashboard");
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -117,7 +120,7 @@ const AuthForm = () => {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} autoComplete="off">
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">

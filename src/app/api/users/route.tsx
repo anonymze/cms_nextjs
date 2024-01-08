@@ -1,29 +1,35 @@
-import { pageSchema } from "@/types/page";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
-import { getSelectObject } from "@/utils/libs/prisma/select_object";
-import prisma from "@/utils/libs/prisma/single_instance";
+import { clerkClient } from "@clerk/nextjs";
 import type { NextRequest } from "next/server";
+import { userCreationSchema } from "@/types/user";
+import prisma from "@/utils/libs/prisma/single_instance";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
-export async function GET() {
-  return jsonResponsePost(
-    await prisma.user.findMany({
-      select: getSelectObject(["uuid", "isActive", "name", "email", "createdAt"]),
-    }),
-  );
-}
-
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, pageSchema);
+  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, userCreationSchema);
 
   if (error) return jsonResponseBadRequest(messageError);
 
-  const page = await prisma.page.create({
-    data,
-  });
+  try {
+    const userClerk = await clerkClient.users.getUser(data.clerkUserId);
+    const email = userClerk.emailAddresses[0]?.emailAddress;
 
-  return jsonResponsePost(page);
+    if (!email) {
+      return jsonResponseBadRequest("Email not found from auth service");
+    }
+
+    const user = await prisma.user.create({
+      data: {
+        email,
+        name: "NO_NAME",
+      },
+    });
+
+    return jsonResponsePost(user);
+  } catch (err) {
+    return jsonResponseBadRequest("User not found");
+  }
 }

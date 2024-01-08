@@ -1,19 +1,19 @@
 "use client";
 
+import { createUserQuery } from "@/api/queries/userQueries";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import { useSignUp } from "@clerk/nextjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const VerificationCodeForm: React.FC = () => {
-  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const { isLoaded: isClerkLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded: isClerkLoaded, signUp } = useSignUp();
 
   const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -26,26 +26,25 @@ const VerificationCodeForm: React.FC = () => {
     const code = ev.currentTarget.code.value;
 
     // verify the code in email
-    await signUp
+    signUp
       .attemptVerification({
         strategy: "email_code",
         code: code || "",
       })
       .then(async (result) => {
-        if (result.status !== "complete") {
-        }
+        if (result.status !== "complete") {}
 
-        // create user in our database
-        console.log(result.createdSessionId);
-        console.log(result.createdUserId);
+        await createUserQuery({
+          clerkUserId: result.createdUserId || '',
+        });
 
+        setIsLoading(false);
         router.push("/login?info=created");
       })
       .catch((err) => {
+        setIsLoading(false);
         toast.error(err.errors[0].message);
       });
-
-    setIsLoading(false);
   };
 
   return (

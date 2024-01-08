@@ -59,6 +59,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
       headers: { Authorization: `Bearer ${accessToken.data.access_token}` },
     });
 
+    const userGithubName = userGithub.data.name;
     const userGithubEmail = userGithub.data.email;
 
     const existingUserOurDb = await prisma.user.findUnique({
@@ -70,7 +71,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
       await prisma.user.create({
         data: {
           email: userGithubEmail,
-          name: userGithub.data.name,
+          name: userGithubName,
         },
       });
     }
@@ -85,7 +86,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
         ? usersClerk[0]
         : await clerkClient.users.createUser({
             emailAddress: [userGithubEmail],
-            firstName: userGithub.data.name || "NO_NAME",
+            firstName: userGithub.data.name,
             // generate random password (we don't care, it just needs to be strong)
             password: Math.random().toString(36) + Math.random().toString(36).slice(2),
           });
