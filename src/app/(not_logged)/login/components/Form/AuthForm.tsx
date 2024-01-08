@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { LoginStateInfo } from "@/types/user";
+import { set } from "zod";
 
 const AuthForm = () => {
   const pathname = usePathname();
@@ -70,31 +71,47 @@ const AuthForm = () => {
         session: signInResource.createdSessionId,
       });
 
-      router.push("/dashboard");      
+      router.push("/dashboard");
     } catch (err) {
-      setIsLoading(false);
-      console.log({err});
-
-      if (err instanceof AxiosError) {          
+      if (err instanceof AxiosError) {
         if (err.response?.status === 403) {
           toast.info("Votre compte est inactif, veuillez contacter un administrateur pour l'activer");
-          return;
-        }
+          // if 404 from inside the route, we will create it in Clerk first
+        } else if (err.response?.status === 404 && typeof err.response.data?.message === "string") {
+          await signUp
+            .create({
+              emailAddress: email,
+              password: password,
+            })
+            .then(async (result) => {
+              if (!result.emailAddress) {
+                toast.error(
+                  "Quelque chose d'innatendu s'est produit, Clerk n'a pas retourné d'adresse email. Veuillez réessayer",
+                );
+                return;
+              }
 
-        // if 404 (in the route), we will create it in Clerk and our database
-        if (err.response?.status === 404 && typeof err.response.data?.message === "string") {
-          
-          return;
-        }
-      }
+              // send the user an email with the verification code
+              await result.prepareEmailAddressVerification({
+                strategy: "email_code",
+              });
 
-      if (isClerkAPIResponseError(err)) {
+              router.push(
+                `${pathname}?verifying=${result.emailAddress}}` as __next_route_internal_types__.RouteImpl<string>,
+              );
+            })
+            .catch((err) => {
+              setIsLoading(false);
+              toast.error(err.errors[0].message);
+            });
+        }
+      } else if (isClerkAPIResponseError(err)) {
         toast.error(err.errors?.[0]?.message);
-      }
-
-      if (err instanceof Error) {
+      } else if (err instanceof Error) {
         toast.error(err.message);
       }
+
+      setIsLoading(false);
     }
   };
 
