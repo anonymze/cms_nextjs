@@ -1,7 +1,3 @@
-interface Props {}
-
-const page: React.FC<Props> = () => {
+export default function Page() {
   return <h1>Salut</h1>;
 };
-
-export default page;

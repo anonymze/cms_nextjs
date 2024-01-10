@@ -9,7 +9,7 @@ interface Props {
   };
 }
 
-const ActionsButtons: React.FC<Props> = ({ actionPopup }) => {
+export default function ActionsButtons({actionPopup}: Props) {
   const openDialog = () => {
     document.querySelector("dialog")?.show();
   };
@@ -24,5 +24,3 @@ const ActionsButtons: React.FC<Props> = ({ actionPopup }) => {
     </div>
   );
 };
-
-export default ActionsButtons;

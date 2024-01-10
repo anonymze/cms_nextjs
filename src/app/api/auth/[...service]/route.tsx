@@ -98,7 +98,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 
     // if not active
     if (!existingUserOurDb.isActive) {
-      return NextResponse.redirect(`${req.nextUrl.origin}/login/?info=${LoginStateInfo.INACTIVE}}`);
+      return NextResponse.redirect(`${req.nextUrl.origin}/login/?info=${LoginStateInfo.INACTIVE}`);
     }
 
     // we create a magic link for the user (we have to create the session in the front... Clerk does not handle it in the back)

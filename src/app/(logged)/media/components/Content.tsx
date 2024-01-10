@@ -10,7 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUploadQuery } from "@/api/queries/uploadQueries";
 import type { PropsWithChildren, FormEvent } from "react";
 
-const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ hideActionButton }) => {
+export default function Content({ hideActionButton }: { hideActionButton: boolean }) {
   // files from context
   const files = useFilesStore((state) => state.files);
   const setFiles = useFilesStore((state) => state.setFiles);
@@ -65,5 +65,3 @@ const Content: React.FC<PropsWithChildren & { hideActionButton: boolean }> = ({ 
     </>
   );
 };
-
-export default Content;

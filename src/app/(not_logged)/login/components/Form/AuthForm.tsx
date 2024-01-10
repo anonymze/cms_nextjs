@@ -59,8 +59,8 @@ const AuthForm = () => {
       await verifyUserQuery(email);
 
       // we log out in case
-      await signOut();
-      
+      // await signOut();
+
       // at this point, the user exists in our database
       // and we can try to sign in with Clerk's session
       const signInResource = await signIn.create({
@@ -68,14 +68,14 @@ const AuthForm = () => {
         identifier: email,
         password,
       });
-      
+
       await setActive({
         session: signInResource.createdSessionId,
       });
 
-      setIsLoading(false);
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } catch (err) {
+      console.log({ err });
       if (err instanceof AxiosError) {
         if (err.response?.status === 403) {
           toast.info("Votre compte est inactif, veuillez contacter un administrateur pour l'activer");
@@ -109,6 +109,11 @@ const AuthForm = () => {
             });
         }
       } else if (isClerkAPIResponseError(err)) {
+        // todo to try
+        if (err.errors?.[0]?.code === "session_exists") {
+          return router.replace("/dashboard");
+        }
+
         toast.error(err.errors?.[0]?.message);
       } else if (err instanceof Error) {
         toast.error(err.message);
@@ -156,7 +161,7 @@ const AuthForm = () => {
             />
           </div>
           <Button disabled={isLoading}>
-            {isLoading && <SpinnerLoader />}
+            {isLoading && <SpinnerLoader className="mr-2" />}
             Connexion avec email
           </Button>
         </div>
@@ -197,7 +202,6 @@ const AuthForm = () => {
         >
           Politique de confidentialité
         </Link>
-        .
       </p>
     </>
   );

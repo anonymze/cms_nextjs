@@ -2,9 +2,10 @@ import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
 import { clerkClient } from "@clerk/nextjs";
-import type { NextRequest } from "next/server";
 import { userCreationSchema } from "@/types/user";
 import prisma from "@/utils/libs/prisma/single_instance";
+import type { NextRequest } from "next/server";
+import { getSelectObject } from "@/utils/libs/prisma/select_object";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.create({
       data: {
         email,
-        name: "NO_NAME",
+        name: "",
       },
     });
 
@@ -32,4 +33,10 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     return jsonResponseBadRequest("User not found");
   }
+}
+
+export async function GET(req: NextRequest) {
+  return jsonResponsePost(await prisma.user.findMany({
+    select: getSelectObject(["uuid", "isActive", "name", "email"]),
+  }));
 }

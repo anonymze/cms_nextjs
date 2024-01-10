@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { TableActions } from "./TableActions";
 import type { Table } from "./Table";
 
-export type TValue = string | number | Date | boolean | null | undefined;
-
 const MAX_LENGTH_VALUE = 24;
+
+export type TValue = string | number | Date | boolean | null | undefined;
 
 function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: boolean }) {
   const dataKeys = useMemo(() => Object.keys(data[0] || {}), [data]);
@@ -16,18 +16,22 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
           <>
             {dataKeys.map((key) => (
               <td align="left" className="px-4 py-3 text-sm whitespace-nowrap" key={key}>
-                {trimmedString(field[key], key)}
+                {trimmedString(field[key])}
               </td>
             ))}
           </>
-          {hasActions && <td>actions</td>}
+          {hasActions && (
+            <td className="px-4 py-3 text-sm whitespace-nowrap">
+              <TableActions actions={[]} />
+            </td>
+          )}
         </tr>
       ))}
     </>
   );
 }
 
-const trimmedString = (val: TValue, key: string) => {
+const trimmedString = (val: TValue) => {
   // == type coercion checks for null and undefined
   if (val == null) return;
 

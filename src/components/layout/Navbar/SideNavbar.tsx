@@ -7,7 +7,7 @@ import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 
-const SideNavbar: React.FC = () => {
+export default function SideNavbar() {
   const { signOut } = useClerk();
   const router = useRouter();
   return (
@@ -92,5 +92,3 @@ const SideNavbar: React.FC = () => {
     </div>
   );
 };
-
-export default SideNavbar;

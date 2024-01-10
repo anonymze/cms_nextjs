@@ -4,7 +4,7 @@ import Table from "../../../../components/ui/Table/Table";
 import { getUsersQuery } from "@/api/queries/userQueries";
 import type { User } from "@prisma/client";
 
-const Content: React.FC = () => {
+export default function Content() {
   const { data: Users } = useQuery({
     queryKey: ["users"],
     queryFn: getUsersQuery,
@@ -20,5 +20,3 @@ const Content: React.FC = () => {
 
   return <Table hasActions data={Users} columns={Object.keys(Users[0] as User)} />;
 };
-
-export default Content;

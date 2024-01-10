@@ -21,12 +21,12 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - login (authentication routes)
+     * - login and login/xxx (authentication routes)
      * - register (authentication routes)
      * - conditions utilisation cgu (legal routes)
      * - politique-confidentialite (legal routes)
      */
-    "/((?!_next/static|_next/image|favicon.ico|test|login|login/external|register|politique-de-confidentialite|cgu|api/.*).*)",
+    "/((?!_next/static|_next/image|favicon.ico|test|login.*|register.*|politique-de-confidentialite|cgu|api/.*).*)",
   ],
 };
 

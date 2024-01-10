@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import VerificationCodeForm from "./Form/VerificationCodeForm";
 import AuthForm from "./Form/AuthForm";
 
-const Content: React.FC = () => {
+export default function Content() {
   const searchParams = useSearchParams();
 
   return (
@@ -39,5 +39,3 @@ const Content: React.FC = () => {
     </div>
   );
 };
-
-export default Content;

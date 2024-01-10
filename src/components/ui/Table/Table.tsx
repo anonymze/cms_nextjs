@@ -6,12 +6,13 @@ import { TableHead, type THead } from "./TableHead";
 import { useSearchParams } from "next/navigation";
 
 export interface Table {
-  data: { [key: string]: TValue }[];
+  // data should have an uuid for actions (delete, update, etc..)
+  data: { [key: string]: TValue, uuid: string }[];
   columns: string[];
   hasActions: boolean;
 }
 
-function Table({ data, columns, hasActions }: Table) {
+export default function Table({ data, columns, hasActions }: Table) {
   const searchParams = useSearchParams();
   const dataOrdered = setOrderBy(data, searchParams.get("orderBy"), searchParams.get("column"));
 
@@ -45,5 +46,3 @@ const setOrderBy = (data: any[], orderBy: string | null, titleColumn: string | n
 const TableHeadMemoized = memo(function THead({ hasActions, columns }: THead) {
   return <TableHead hasActions={hasActions} columns={columns} />;
 });
-
-export default Table;

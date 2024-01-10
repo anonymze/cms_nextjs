@@ -13,6 +13,6 @@ export default function App({ children }: PropsWithChildren) {
       <html lang="fr" className={theme}>
         {children}
       </html>
-    </ClerkProvider>
+    </ClerkProvider> 
   );
 }

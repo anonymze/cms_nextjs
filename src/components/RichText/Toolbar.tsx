@@ -7,7 +7,7 @@ interface Props {
   editor: Editor | null;
 }
 
-const Toolbar: React.FC<Props> = ({ editor }) => {
+export default function Toolbar({ editor }: Props) {
   if (!editor) return null;
 
   return (
@@ -56,11 +56,4 @@ const Toolbar: React.FC<Props> = ({ editor }) => {
       </Toggle>
     </div>
   );
-  return (
-    <>
-      <h1>Toolbar</h1>
-    </>
-  );
 };
-
-export default Toolbar;

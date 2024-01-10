@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Table from "../../../../components/ui/Table/Table";
 import type { Article } from "@prisma/client";
 
-const Content: React.FC = () => {
+export default function Content() {
   const { data: articles } = useQuery({
     queryKey: ["articles"],
     queryFn: getArticlesQuery,
@@ -21,5 +21,3 @@ const Content: React.FC = () => {
 
   return <Table hasActions data={articles} columns={Object.keys(articles[0] as Article)} />;
 };
-
-export default Content;

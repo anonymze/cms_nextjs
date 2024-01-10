@@ -11,7 +11,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
   removeFileFromApi: Upload["uuid"] | false;
 }
 
-const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props }) => {
+export default function MediaOperation({ removeFileFromApi, children, ...props }: Props) {
   const deleteMutation = useMutation({
     mutationFn: deleteUploadQuery,
     mutationKey: ["uploads"],
@@ -36,5 +36,3 @@ const MediaOperation: React.FC<Props> = ({ removeFileFromApi, children, ...props
     </figure>
   );
 };
-
-export default MediaOperation;

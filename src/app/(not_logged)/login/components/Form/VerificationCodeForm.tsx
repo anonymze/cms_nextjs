@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const VerificationCodeForm: React.FC = () => {
+export default function VerificationCodeForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const { isLoaded: isClerkLoaded, signUp } = useSignUp();
@@ -75,5 +75,3 @@ const VerificationCodeForm: React.FC = () => {
     </form>
   );
 };
-
-export default VerificationCodeForm;

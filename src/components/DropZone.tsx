@@ -5,7 +5,7 @@ import { useFilesStore } from "@/contexts/store_files_context";
 import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/file_resolving";
 import { type PropsWithChildren, type DragEvent, type ChangeEvent } from "react";
 
-const DropZone: React.FC<PropsWithChildren> = () => {
+export default function DropZone() {
   const inputRef = useRef<HTMLInputElement>(null);
   // files from context
   const files = useFilesStore((state) => state.files);
@@ -102,5 +102,3 @@ const DropZone: React.FC<PropsWithChildren> = () => {
     </>
   );
 };
-
-export default DropZone;

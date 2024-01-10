@@ -43,7 +43,7 @@ export function TableHead({ columns, hasActions }: THead) {
         );
       })}
 
-      {hasActions && <th></th>}
+      {hasActions && <th className="px-4 py-3 text-muted-foreground cursor-pointer text-xs whitespace-nowrap first-letter:uppercase"></th>}
     </tr>
   );
 }

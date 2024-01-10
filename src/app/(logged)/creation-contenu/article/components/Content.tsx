@@ -11,7 +11,7 @@ const DynamicIcon = dynamic(() => import("@/components/ui/IconDynamic"), {
   loading: () => <span>...</span>,
 });
 
-const Content: React.FC<{ uuid?: Article["uuid"] }> = ({ uuid }) => {
+export default function Content({ uuid }: { uuid?: Article["uuid"] }) {
   return (
     <></>
     // <Tabs defaultValue={Language[0]}>
@@ -44,5 +44,3 @@ const Content: React.FC<{ uuid?: Article["uuid"] }> = ({ uuid }) => {
     // </Tabs>
   );
 };
-
-export default Content;
