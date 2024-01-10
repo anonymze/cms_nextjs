@@ -5,7 +5,7 @@ import { SeparatorHorizontal } from "./ui/Separator";
 import { Button } from "./ui/Button";
 import type { PropsWithChildren } from "react";
 
-export interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
+interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
   onSubmitForm?: (ev: React.FormEvent<HTMLFormElement>) => void;
 }
 

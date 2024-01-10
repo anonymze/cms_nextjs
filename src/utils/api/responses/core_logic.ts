@@ -12,7 +12,7 @@ interface JsonResponseCore {
   headers?: HeadersInit;
 }
 
-export interface JsonResponse extends JsonResponseCore {
+interface JsonResponse extends JsonResponseCore {
   body: unknown;
 }
 
