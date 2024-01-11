@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
-import { useSignUp } from "@clerk/nextjs";
+import { isClerkAPIResponseError, useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -32,18 +32,23 @@ export default function VerificationCodeForm() {
         code: code || "",
       })
       .then(async (result) => {
-        if (result.status !== "complete") {}
+        if (result.status !== "complete") {
+        }
 
         await createUserQuery({
-          clerkUserId: result.createdUserId || '',
+          clerkUserId: result.createdUserId || "",
         });
 
-        setIsLoading(false);
         router.push("/login?info=created");
       })
       .catch((err) => {
+        if (isClerkAPIResponseError(err)) {
+          toast.error(err.errors?.[0]?.message);
+        } else if (err instanceof Error) {
+          toast.error(err.message);
+        }
+
         setIsLoading(false);
-        toast.error(err.errors[0].message);
       });
   };
 
@@ -65,7 +70,7 @@ export default function VerificationCodeForm() {
           />
         </div>
         <Button disabled={isLoading}>
-          {isLoading && <SpinnerLoader />}
+          {isLoading && <SpinnerLoader className="mr-2" />}
           Valider le code
         </Button>
         <Button type="button" onClick={() => router.back()} fill={false} disabled={isLoading}>
@@ -74,4 +79,4 @@ export default function VerificationCodeForm() {
       </div>
     </form>
   );
-};
+}

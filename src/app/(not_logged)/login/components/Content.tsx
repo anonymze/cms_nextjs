@@ -29,13 +29,19 @@ export default function Content() {
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">Authentification</h1>
           <p className="text-sm text-muted-foreground">
-            {searchParams.get("verifying")
-              ? "Entrez le code de vérification reçu"
-              : "Entrez votre email et mot de passe"}
+            {searchParams.get("verifying") ? (
+              "Entrez le code de vérification reçu"
+            ) : (
+              <>
+                Entrez votre email et mot de passe
+                <br />
+                <span className="text-xs">(si vous n&lsquo;avez pas de compte, un compte sera créé)</span>
+              </>
+            )}
           </p>
         </div>
         {searchParams.get("verifying") ? <VerificationCodeForm /> : <AuthForm />}
       </div>
     </div>
   );
-};
+}

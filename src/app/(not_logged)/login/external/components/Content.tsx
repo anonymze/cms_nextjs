@@ -2,12 +2,13 @@
 "use client";
 
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
-import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
+import { isClerkAPIResponseError, useClerk, useSignIn } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
 export default function Content() {
+  const { signOut } = useClerk();
   const { signIn, setActive } = useSignIn();
   const params = useSearchParams();
   const router = useRouter();
@@ -20,6 +21,9 @@ export default function Content() {
     // we have to use a async function here because we can't use async/await in useEffect
     const asyncCall = async () => {
       try {
+        // we log out in case
+        await signOut();
+
         // create a signIn with the token from the magic link in server side, note that you need to use the "ticket" strategy
         const res = await signIn.create({
           strategy: "ticket",
@@ -30,22 +34,21 @@ export default function Content() {
           session: res.createdSessionId,
         });
 
-        return router.replace("/dashboard" as __next_route_internal_types__.RouteImpl<string>);
+        router.replace("/dashboard" as __next_route_internal_types__.RouteImpl<string>);
       } catch (err) {
+        // some weird cases can happen here, we don't want to display the error to the user, we just redirect him to the login page
         if (isClerkAPIResponseError(err)) {
-          if (err.errors?.[0]?.code === "session_exists") {
-            return router.replace("/dashboard");
-          }
-
-          toast.error(err.errors?.[0]?.message);
+          console.log(err.errors?.[0]?.message);
+        } else if (err instanceof Error) {
+          console.log(err.message);
         }
-
-        return router.replace("/login");
+        
+        router.replace("/login");
       }
     };
 
     asyncCall();
-  }, [signIn, router, params, setActive]);
+  }, [signIn, setActive]);
 
   return (
     <div className="grid place-items-center h-full">

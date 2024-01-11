@@ -1,4 +1,4 @@
-import { pageSchema } from "@/types/page";
+import { formCreatePageSchema } from "@/types/page";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
@@ -17,7 +17,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, pageSchema);
+  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, formCreatePageSchema);
 
   if (error) return jsonResponseBadRequest(messageError);
 

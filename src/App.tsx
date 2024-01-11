@@ -2,7 +2,7 @@
 
 import { useThemeStore } from "./contexts/store_ui_context";
 import { ClerkProvider } from "@clerk/nextjs";
-import {  type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import "@/styles/globals.css";
 
 export default function App({ children }: PropsWithChildren) {
@@ -13,6 +13,6 @@ export default function App({ children }: PropsWithChildren) {
       <html lang="fr" className={theme}>
         {children}
       </html>
-    </ClerkProvider> 
+    </ClerkProvider>
   );
 }

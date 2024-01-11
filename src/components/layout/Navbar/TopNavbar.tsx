@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../../ui/Button";
 import { useThemeStore } from "@/contexts/store_ui_context";
-import { Switch } from "../../ui/Switch";
+
 
 interface Props {}
 
@@ -26,7 +26,6 @@ const TopNavbar: React.FC<Props> = () => {
       <Button onClick={() => router.back()}>
         <ArrowLeft className="h-5 w-5 mr-1" /> Retour
       </Button>
-      <Switch onCheckedChange={changeTheme} />
     </nav>
   );
 };
