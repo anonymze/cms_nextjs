@@ -42,7 +42,7 @@ export default function Content() {
         } else if (err instanceof Error) {
           console.log(err.message);
         }
-        
+
         router.replace("/login");
       }
     };
