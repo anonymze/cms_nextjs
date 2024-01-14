@@ -1,4 +1,5 @@
 import { articleSchema } from "@/types/article";
+import { I18n } from "@/types/i18n";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
@@ -18,12 +19,26 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, articleSchema);
+  const { error, messageError, data } = await processRequest(
+    req,
+    ACCEPTED_CONTENT_TYPE,
+    articleSchema,
+  );
 
   if (error) return jsonResponseBadRequest(messageError);
 
   const article = await prisma.article.create({
-    data,
+    data: {
+      i18n: {
+        create: {
+          content: data.content,
+          conclusion: data.conclusion,
+          description: data.description,
+          title: data.title,
+          lang: data.lang || I18n.DEFAULT,
+        },
+      },
+    },
   });
 
   return jsonResponsePost(article);

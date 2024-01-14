@@ -20,8 +20,13 @@ type ContentTypeAccepted = "multipart/form-data" | "application/json";
 
 /** MY JSON RESPONSE */
 export function jsonResponse({ body, status, statusText, headers }: JsonResponse) {
-  if (typeof body === "string") {
-    return Response.json({ status, message: body }, { status, statusText, headers });
+  // in case there is a mistake we handle no content
+  if (status === 204) {
+    return new Response(null, { status, statusText, headers });
+  }
+
+  if (!body || typeof body === "string") {
+    return Response.json({ status, message: body || "OK" }, { status, statusText, headers });
   }
 
   return Response.json(body, { status, statusText, headers });

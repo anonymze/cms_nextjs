@@ -6,10 +6,17 @@ import { userCreationSchema } from "@/types/user";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
 import { getSelectObject } from "@/utils/libs/prisma/select_object";
+import next from "next";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
-export async function POST(req: NextRequest) {
+export async function GET(_: NextRequest) {
+  return jsonResponsePost(await prisma.user.findMany({
+    select: getSelectObject(["uuid", "isActive", "name", "email"]),
+  }));
+}
+
+export async function P(req: NextRequest) {
   const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, userCreationSchema);
 
   if (error) return jsonResponseBadRequest(messageError);
@@ -33,10 +40,4 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     return jsonResponseBadRequest("User not found");
   }
-}
-
-export async function GET(req: NextRequest) {
-  return jsonResponsePost(await prisma.user.findMany({
-    select: getSelectObject(["uuid", "isActive", "name", "email"]),
-  }));
 }

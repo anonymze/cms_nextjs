@@ -33,14 +33,12 @@ export default function Table({ data, columns, hasActions }: Table) {
 const setOrderBy = (data: any[], orderBy: string | null, titleColumn: string | null) => {
   if (!titleColumn || !orderBy || orderBy === "reset") return data;
 
-  data.sort((a, b) => {
+  return data.sort((a, b) => {
     if (a[titleColumn] < b[titleColumn]) return orderBy === "asc" ? -1 : 1;
     if (a[titleColumn] > b[titleColumn]) return orderBy === "asc" ? 1 : -1;
 
     return 0;
   });
-
-  return data;
 };
 
 const TableHeadMemoized = memo(function THead({ hasActions, columns }: THead) {

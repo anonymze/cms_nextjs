@@ -1,14 +1,15 @@
 import { z } from "zod";
-import type { Article } from "@prisma/client";
+import { I18n } from "./i18n";
 
 // Zod schema
 export type ArticleZodType = z.infer<typeof articleSchema>;
 
 export const articleSchema = z.object({
-  content: z.custom<Article["content"]>(),
   conclusion: z.string().max(200).trim().optional(),
+  content: z.string().trim(),
   description: z.string().max(200).trim().optional(),
   title: z.string().min(2).max(30).trim(),
+  lang: z.string().default(I18n.DEFAULT),
 });
 
 export const formCreateArticleSchema = articleSchema.refine(

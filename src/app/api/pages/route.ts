@@ -1,3 +1,4 @@
+import { I18n } from "@/types/i18n";
 import { formCreatePageSchema } from "@/types/page";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
@@ -17,12 +18,25 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, formCreatePageSchema);
+  const { error, messageError, data } = await processRequest(
+    req,
+    ACCEPTED_CONTENT_TYPE,
+    formCreatePageSchema,
+  );
 
   if (error) return jsonResponseBadRequest(messageError);
 
   const page = await prisma.page.create({
-    data,
+    data: {
+      i18n: {
+        create: {
+          description: data.description,
+          subtitle: data.subtitle,
+          title: data.title,
+          lang: data.lang || I18n.DEFAULT,
+        },
+      },
+    },
   });
 
   return jsonResponsePost(page);

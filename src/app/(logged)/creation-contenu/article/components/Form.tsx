@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { formCreateArticleSchema } from "@/types/article";
 import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery } from "@/api/queries/articleQueries";
@@ -16,6 +16,7 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
+  Form,
 } from "@/components/ui/Form/Form";
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
@@ -23,7 +24,7 @@ import type { z } from "zod";
 import type { Article } from "@prisma/client";
 
 interface Props {
-  lang: any;
+  lang: string;
   uuid?: Article["uuid"];
 }
 
@@ -37,9 +38,15 @@ const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
   ),
 });
 
-// TODO dunno yet but i have to do a correct translation system
 const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
-  const createMutation = useMutation({ mutationFn: createArticleQuery });
+  const createMutation = useMutation({
+    mutationFn: createArticleQuery,
+    mutationKey: ["articles"],
+    meta: {
+      action: "create",
+      message: "Article créé",
+    },
+  });
 
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
@@ -47,15 +54,16 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
     // default values is needed if controller used
     defaultValues: {
       title: "",
+      // because we use tiptap, we need to pass an empty paragraph to the editor
       content: "<p></p>",
       description: "",
       conclusion: "",
+      lang,
     },
   });
 
   // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
-    // @ts-ignore
     createMutation.mutate(values);
   }
 
@@ -126,10 +134,15 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
           )}
         />
 
-        <p className="text-xs">* champs obligatoires</p>
+        <FormField
+          control={form.control}
+          name="lang"
+          render={({ field }) => <input type="hidden" {...field} />}
+        />
 
-        <Button disabled={createMutation.isPending} type="submit">
-          {createMutation.isPending && <SpinnerLoader />}
+        <p className="pt-5 text-xs">* champs obligatoires</p>
+
+        <Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
           Enregistrer
         </Button>
       </form>

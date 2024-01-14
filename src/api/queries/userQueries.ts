@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
 import { api } from "../_config";
-import type { UserCreationZodType } from "@/types/user";
+import type { UserCreationZodType, UserUpdateZodType } from "@/types/user";
 
 export async function getUsersQuery() {
   const result = await api.get<Omit<User, "id">[]>("users");
@@ -22,7 +22,10 @@ export async function deleteUserQuery(userId: User["uuid"]) {
   return result.data;
 }
 
-export async function updateUserQuery(userId: User["uuid"]) {
-  const result = await api.patch(`users/${userId}`);
+export async function updateUserQuery({
+  uuid,
+  ...userProperties
+}: { uuid: User["uuid"] } & UserUpdateZodType) {
+  const result = await api.patch(`users/${uuid}`, userProperties);
   return result.data;
 }

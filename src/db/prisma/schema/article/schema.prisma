@@ -1,11 +1,9 @@
 model Article {
-    id        Int     @id @default(autoincrement())
-    uuid      String  @unique @default(uuid())
-    title  String
-    content  String
-    description  String? 
-    conclusion  String?
-    createdAt DateTime @default(now())
+    id        Int            @id @default(autoincrement())
+    uuid      String         @unique @default(uuid())
+    i18n_id   Int?           @map("i18n") @ignore
+    i18n      Article_I18n[]
+    createdAt DateTime       @default(now())
 
     @@index(fields: [uuid])
-} 
+}

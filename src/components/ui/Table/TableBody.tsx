@@ -1,12 +1,32 @@
 import { useMemo } from "react";
 import { TableActions } from "./TableActions";
 import type { Table } from "./Table";
+import { useMutation } from "@tanstack/react-query";
+import { deleteUserQuery, updateUserQuery } from "@/api/queries/userQueries";
 
 const MAX_LENGTH_VALUE = 24;
 
 export type TValue = string | number | Date | boolean | null | undefined;
 
 function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: boolean }) {
+  const deleteMutation = useMutation({
+    mutationFn: deleteUserQuery,
+    mutationKey: ["users"],
+    meta: {
+      action: "delete",
+      message: "Utilisateur supprimé",
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateUserQuery,
+    mutationKey: ["users"],
+    meta: {
+      action: "update",
+      message: "Utilisateur mis à jour",
+    },
+  });
+
   const dataKeys = useMemo(() => Object.keys(data[0] || {}), [data]);
 
   return (
@@ -22,7 +42,23 @@ function TableBody({ data, hasActions }: { data: Table["data"]; hasActions: bool
           </>
           {hasActions && (
             <td className="px-4 py-3 text-sm whitespace-nowrap">
-              <TableActions actions={[]} />
+              <TableActions
+                actions={[
+                  {
+                    label: "Activer",
+                    action: () => {
+                      updateMutation.mutate({ uuid: field.uuid, isActive: true });
+                    },
+                    disabled: !!field.isActive,
+                  },
+                  {
+                    label: "Supprimer",
+                    action: () => {
+                      deleteMutation.mutate(field.uuid);
+                    },
+                  },
+                ]}
+              />
             </td>
           )}
         </tr>

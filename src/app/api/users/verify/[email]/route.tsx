@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { email: string } }) {
   // we get the email from the URL params
-  const [email] = params.email;
+  const email = params.email;
 
   if (!email) return jsonResponseNotFound("Email not specified");
 

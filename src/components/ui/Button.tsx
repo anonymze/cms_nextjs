@@ -2,8 +2,10 @@
 
 import React from "react";
 import { cn } from "@/utils/libs/tailwind/merge";
+import { SpinnerLoader } from "./Loader/Loader";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean;
   className?: string;
   fill?: boolean;
   outline?: boolean;
@@ -12,7 +14,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, large, secondary, className, disabled, fill = true, outline = true, ...props }, ref) => {
+  (
+    { children, isLoading, large, secondary, className, disabled, fill = true, outline = true, ...props },
+    ref,
+  ) => {
     return (
       <button
         ref={ref}
@@ -31,6 +36,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         disabled={disabled}
       >
+        {isLoading && <SpinnerLoader className="mr-2" />}
         {children}
       </button>
     );

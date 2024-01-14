@@ -2,11 +2,10 @@
 import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { formCreatePageSchema } from "@/types/page";
 import { useMutation } from "@tanstack/react-query";
 import { createPageQuery } from "@/api/queries/pageQueries";
-import type { z } from "zod";
 import {
   FormField,
   FormItem,
@@ -14,22 +13,27 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
+  Form,
 } from "@/components/ui/Form/Form";
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
+import type { z } from "zod";
 import type { Page } from "@prisma/client";
+import { toast } from "sonner";
 
 interface Props {
-  lang: any;
+  lang: string;
   uuid?: Page["uuid"];
 }
 
-// TODO dunno yet but i have to do a correct translation system
 const FormPage: React.FC<Props> = ({ lang, uuid }) => {
-  console.log(lang, uuid);
-
   const createMutation = useMutation({
     mutationFn: createPageQuery,
+    mutationKey: ["pages"],
+    meta: {
+      action: "create",
+      message: "Page créée",
+    }
   });
 
   const form = useForm<z.infer<typeof formCreatePageSchema>>({
@@ -40,12 +44,12 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
       title: "",
       subtitle: "",
       description: "",
+      lang,
     },
   });
 
   // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
-    // @ts-ignore
     createMutation.mutate(values);
   }
 
@@ -100,9 +104,19 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
           )}
         />
 
-        <p className="text-xs">* champs obligatoires</p>
+        <FormField
+          control={form.control}
+          name="lang"
+          render={({ field }) => (
+              <input type="hidden" {...field} />
+          )}
+        />
 
-        <Button type="submit">Enregistrer</Button>
+        <p className="pt-5 text-xs">* champs obligatoires</p>
+
+        <Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
+          Enregistrer
+        </Button>
       </form>
     </Form>
   );
