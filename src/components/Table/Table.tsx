@@ -4,15 +4,16 @@ import { memo } from "react";
 import TableBody, { type TValue } from "./TableBody";
 import { TableHead, type THead } from "./TableHead";
 import { useSearchParams } from "next/navigation";
+import type { TAction } from "./TableActions";
 
 export interface Table {
   // data should have an uuid for actions (delete, update, etc..)
   data: { [key: string]: TValue, uuid: string }[];
   columns: string[];
-  hasActions: boolean;
+  actions?: TAction[];
 }
 
-export default function Table({ data, columns, hasActions }: Table) {
+export default function Table({ data, columns, actions }: Table) {
   const searchParams = useSearchParams();
   const dataOrdered = setOrderBy(data, searchParams.get("orderBy"), searchParams.get("column"));
 
@@ -20,10 +21,10 @@ export default function Table({ data, columns, hasActions }: Table) {
     <div className="relative w-full overflow-auto border rounded-md">
       <table className="w-full">
         <thead>
-          <TableHeadMemoized hasActions={hasActions} columns={columns} />
+          <TableHeadMemoized hasActions={actions?.length ? true : false} columns={columns} />
         </thead>
         <tbody>
-          <TableBody hasActions={hasActions} data={dataOrdered} />
+          <TableBody data={dataOrdered} actions={actions} />
         </tbody>
       </table>
     </div>

@@ -3,7 +3,6 @@ import { formCreatePageSchema } from "@/types/page";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
-import { getSelectObject } from "@/utils/libs/prisma/select_object";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
 
@@ -12,7 +11,14 @@ const ACCEPTED_CONTENT_TYPE = "application/json";
 export async function GET() {
   return jsonResponsePost(
     await prisma.page.findMany({
-      select: getSelectObject(["uuid", "title", "subtitle", "description", "createdAt"]),
+      where: {
+        i18n: {
+          some: {
+            // TODO we will get locale from the request
+            lang: I18n.DEFAULT,
+          },
+        },
+      },
     }),
   );
 }

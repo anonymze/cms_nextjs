@@ -1,13 +1,31 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import Table from "../../../../components/ui/Table/Table";
-import { getUsersQuery } from "@/api/queries/userQueries";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import Table from "../../../../components/Table/Table";
+import { deleteUserQuery, getUsersQuery, updateUserQuery } from "@/api/queries/userQueries";
 import type { User } from "@prisma/client";
 
 export default function Content() {
   const { data: Users } = useQuery({
     queryKey: ["users"],
     queryFn: getUsersQuery,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteUserQuery,
+    mutationKey: ["users"],
+    meta: {
+      action: "delete",
+      message: "Utilisateur supprimé",
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateUserQuery,
+    mutationKey: ["users"],
+    meta: {
+      action: "update",
+      message: "Utilisateur mis à jour",
+    },
   });
 
   if (!Users) {
@@ -18,5 +36,27 @@ export default function Content() {
     return <div>Aucune donnée...</div>;
   }
 
-  return <Table hasActions data={Users} columns={Object.keys(Users[0] as User)} />;
-};
+  return (
+    <Table
+      actions={[
+        {
+          label: "Activer",
+          action: (uuid: string) => {
+            updateMutation.mutate({ uuid: uuid, isActive: true });
+          },
+          disabled: (entity) => {
+            return entity?.["isActive"];
+          },
+        },
+        {
+          label: "Supprimer",
+          action: (uuid: string) => {
+            deleteMutation.mutate(uuid);
+          },
+        },
+      ]}
+      data={Users}
+      columns={Object.keys(Users[0] as User)}
+    />
+  );
+}

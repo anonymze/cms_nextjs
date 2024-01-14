@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './reset.css';
+
 @layer base {
   * {
     border-color: theme("colors.border");

@@ -2,7 +2,7 @@
 
 import { getArticlesQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
-import Table from "../../../../components/ui/Table/Table";
+import Table from "../../../../components/Table/Table";
 import type { Article } from "@prisma/client";
 
 export default function Content() {
@@ -19,5 +19,5 @@ export default function Content() {
     return <div>Aucune donnée...</div>;
   }
 
-  return <Table hasActions data={articles} columns={Object.keys(articles[0] as Article)} />;
+  return <Table data={articles} columns={Object.keys(articles[0] as Article)} />;
 };

@@ -3,22 +3,25 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
-import { Button } from "../Button";
+import { Button } from "../ui/Button";
 
-interface Props {
-  actions: Array<{
-    label: string;
-    action: (...args: any) => void;
-    disabled?: boolean;
-  }>;
+export interface TAction {
+  label: string;
+  action: (...args: any) => void;
+  disabled?: (...args: any) => boolean | undefined;
 }
 
-export function TableActions({ actions }: Props) {
+export function TableActions({
+  actions,
+  entity,
+}: {
+  actions: TAction[];
+  entity: { uuid: string; [key: string]: any };
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,8 +35,8 @@ export function TableActions({ actions }: Props) {
         {actions.map((action, idx) => (
           <DropdownMenuItem
             key={idx}
-            onClick={action.action}
-            disabled={action.disabled}
+            onClick={() => action.action(entity?.uuid || "")}
+            disabled={!action.disabled ? false : !!action.disabled(entity)}
           >
             {action.label}
           </DropdownMenuItem>
