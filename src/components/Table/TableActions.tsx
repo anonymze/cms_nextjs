@@ -12,7 +12,7 @@ import { Button } from "../ui/Button";
 export interface TAction {
   label: string;
   action: (...args: any) => void;
-  disabled?: (...args: any) => boolean | undefined;
+  disabled?: (...args: any) => boolean;
 }
 
 export function TableActions({

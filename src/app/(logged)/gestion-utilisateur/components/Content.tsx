@@ -41,8 +41,8 @@ export default function Content() {
       actions={[
         {
           label: "Activer",
-          action: (uuid: string) => {
-            updateMutation.mutate({ uuid: uuid, isActive: true });
+          action: (uuid) => {
+            updateMutation.mutate({ uuid, isActive: true });
           },
           disabled: (entity) => {
             return entity?.["isActive"];
