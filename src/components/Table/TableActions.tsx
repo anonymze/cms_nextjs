@@ -20,7 +20,7 @@ export function TableActions({
   entity,
 }: {
   actions: TAction[];
-  entity: { uuid: string; [key: string]: any };
+  entity: { uuid: string; [key: string]: unknown };
 }) {
   return (
     <DropdownMenu>

@@ -15,3 +15,5 @@ export const excludeEntryFromArrayOfObjects = (arrayOfObjects: any[], keys: stri
     return object;
   });
 };
+
+export const getKeysTypedObject = Object.keys as <T extends object>(obj: T) => Array<keyof T>

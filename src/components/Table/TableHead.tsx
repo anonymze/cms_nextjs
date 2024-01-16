@@ -5,15 +5,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import type { Table } from "./Table";
 import { get } from "http";
+import { SpinnerLoader } from "../ui/Loader/Loader";
 
 export type OrderBy = "asc" | "desc" | "reset";
 
 export interface THead {
   columns: Table["columns"];
   hasActions: boolean;
+  isLoading?: boolean;
 }
 
-export function TableHead({ columns, hasActions }: THead) {
+export function TableHead({ columns, hasActions, isLoading }: THead) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -43,7 +45,11 @@ export function TableHead({ columns, hasActions }: THead) {
         );
       })}
 
-      {hasActions && <th className="px-4 py-3 text-muted-foreground cursor-pointer text-xs whitespace-nowrap first-letter:uppercase"></th>}
+      {hasActions && (
+        <th className="px-4 py-3 text-muted-foreground cursor-pointer text-xs whitespace-nowrap first-letter:uppercase">
+          {isLoading && <SpinnerLoader />}
+        </th>
+      )}
     </tr>
   );
 }

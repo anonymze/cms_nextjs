@@ -12,9 +12,10 @@ export interface Table {
   data: { uuid: string; [key: string]: TValue }[];
   columns: string[];
   actions?: TAction[];
+  isLoading?: boolean;
 }
 
-export default function Table({ data, columns, actions }: Table) {
+export default function Table({ data, columns, actions, isLoading }: Table) {
   const searchParams = useSearchParams();
   const dataOrdered = setOrderBy(data, searchParams.get("orderBy"), searchParams.get("column"));
 
@@ -23,7 +24,7 @@ export default function Table({ data, columns, actions }: Table) {
       <div className="relative w-full overflow-auto border rounded-md">
         <table className="w-full">
           <thead>
-            <TableHeadMemoized hasActions={actions?.length ? true : false} columns={columns} />
+            <TableHeadMemoized isLoading={isLoading} hasActions={actions?.length ? true : false} columns={columns} />
           </thead>
           <tbody>
             <TableBody data={dataOrdered} actions={actions} />
@@ -46,6 +47,6 @@ const setOrderBy = (data: any[], orderBy: string | null, titleColumn: string | n
   });
 };
 
-const TableHeadMemoized = memo(function THead({ hasActions, columns }: THead) {
-  return <TableHead hasActions={hasActions} columns={columns} />;
+const TableHeadMemoized = memo(function THead({ hasActions, columns, isLoading }: THead) {
+  return <TableHead isLoading={isLoading} hasActions={hasActions} columns={columns} />;
 });

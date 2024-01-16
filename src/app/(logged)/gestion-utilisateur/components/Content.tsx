@@ -38,6 +38,7 @@ export default function Content() {
 
   return (
     <Table
+      isLoading={deleteMutation.isPending || updateMutation.isPending}
       actions={[
         {
           label: "Activer",

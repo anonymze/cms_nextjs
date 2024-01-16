@@ -3,5 +3,6 @@ export enum I18n {
     DEFAULT = "en_US",
     EN = "en_US",
     FR = "fr_FR",
+    ES = "es_ES",
 }
 

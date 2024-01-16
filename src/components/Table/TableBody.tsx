@@ -13,19 +13,14 @@ function TableBody({ data, actions }: { data: Table["data"]; actions?: TAction[]
     <>
       {data.map((field, idx) => (
         <tr className="border-b last:border-b-0" key={idx}>
-          <>
-            {dataKeys.map((key) => (
-              <td align="left" className="px-4 py-3 text-sm whitespace-nowrap" key={key}>
-                {trimmedString(field[key])}
-              </td>
-            ))}
-          </>
+          {dataKeys.map((key) => (
+            <td align="left" className="px-4 py-3 text-sm whitespace-nowrap" key={key}>
+              {trimmedString(field[key])}
+            </td>
+          ))}
           {actions?.length ? (
             <td className="px-4 py-3 text-sm whitespace-nowrap">
-              <TableActions
-                entity={field}
-                actions={actions}
-              />
+              <TableActions entity={field} actions={actions} />
             </td>
           ) : null}
         </tr>
