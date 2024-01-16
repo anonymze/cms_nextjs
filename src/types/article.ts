@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { I18n } from "./i18n";
+import type { Article } from "@prisma/client";
 
 export type ArticleI18n = {
   conclusion?: string;
   content: string;
   description?: string;
   title: string;
-  uuid: string
+  uuid: Article["uuid"];
 }
 
 // Zod schema

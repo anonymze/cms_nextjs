@@ -2,7 +2,7 @@
 
 import { getArticlesQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
-import Table from "../../../../components/Table/Table";
+import Table from "../../../../components/ui/Table/Table";
 import { getKeysTypedObject } from "@/utils/helper";
 
 export default function Content() {

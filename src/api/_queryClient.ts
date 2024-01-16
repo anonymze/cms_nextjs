@@ -13,6 +13,10 @@ declare module "@tanstack/react-query" {
     action?: "create" | "update" | "delete";
     message: string;
   }
+
+  interface QueryFunctionContext {
+    queryKey: [string, { page?: string }];
+  }
 }
 
 export const queryClient = new QueryClient({

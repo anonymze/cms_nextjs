@@ -3,7 +3,6 @@ import { manageFiles } from "@/utils/api/file_resolving";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
 import { jsonResponsePost } from "@/utils/api/responses/response_success";
-import { getSelectObject } from "@/utils/libs/prisma/select_object";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
 
@@ -12,7 +11,11 @@ const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
 export async function GET() {
   return jsonResponsePost(
     await prisma.upload.findMany({
-      select: getSelectObject(["uuid", "filepath_public", "filetype"]),
+      select: {
+        uuid: true,
+        filepath_public: true,
+        filetype: true,
+      }
     }),
   );
 }

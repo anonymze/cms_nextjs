@@ -2,8 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/utils/libs/tailwind/merge";
+import { Button } from "./ui/Button";
+import { ArrowBigLeft, ArrowLeft } from "lucide-react";
 
 const convertPathnameToReadableString = (pathname: string) => {
   return pathname.replaceAll("-", " ").replace(/^./, pathname[0]!.toUpperCase());
@@ -20,10 +22,17 @@ const constructURL = (pathnames: string[], currentIndex: number) => {
 };
 
 const Breadcrump: React.FC = () => {
+  const router = useRouter();
   const pathnames = usePathname().split("/").filter(Boolean);
 
-  //  if pathnames has less than 2 entry, we don't show the breadcrump
-  if (pathnames.length < 2) return null;
+  //  if pathnames has less than 2 entry, we just show an arrow which goes back
+  if (pathnames.length < 2) {
+    return (
+      <Button onClick={() => router.back()} outline={false} fill={false} className="mb-3 ml-[-1rem]">
+        <ArrowLeft className="w-5 h-5" />
+      </Button>
+    );
+  }
 
   const currentIdxPathname = pathnames.length - 1;
 

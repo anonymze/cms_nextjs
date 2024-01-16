@@ -1,12 +1,15 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Table from "../../../../components/Table/Table";
+import Table from "../../../../components/ui/Table/Table";
 import { deleteUserQuery, getUsersQuery, updateUserQuery } from "@/api/queries/userQueries";
 import { getKeysTypedObject } from "@/utils/helper";
+import { useSearchParams } from "next/navigation";
 
 export default function Content() {
+  const searchParams = useSearchParams();
+  
   const { data: users } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", { page: searchParams.get("page") }],
     queryFn: getUsersQuery,
   });
 

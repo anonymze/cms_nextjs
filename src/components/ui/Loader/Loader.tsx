@@ -7,7 +7,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 const SpinnerLoader: React.FC<Props> = ({ large = false, className }) => {
   return (
     <svg
-      className={cn("animate-spin h-5 w-5", large && "h-10 w-10", className)}
+      className={cn("animate-spin h-4 w-4", large && "h-10 w-10", className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

@@ -4,16 +4,22 @@ import { jsonResponsePost } from "@/utils/api/responses/response_success";
 import { clerkClient } from "@clerk/nextjs";
 import { userCreationSchema } from "@/types/user";
 import prisma from "@/utils/libs/prisma/single_instance";
+import { findManyWithDefaults } from "@/utils/libs/prisma/find_many_defaults";
 import type { NextRequest } from "next/server";
-import { getSelectObject } from "@/utils/libs/prisma/select_object";
-import next from "next";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
-export async function GET(_: NextRequest) {
-  return jsonResponsePost(await prisma.user.findMany({
-    select: getSelectObject(["uuid", "isActive", "name", "email"]),
-  }));
+export async function GET(req: NextRequest) {
+   const users = await findManyWithDefaults(prisma.user, {
+    select: {
+      uuid: true,
+      isActive: true,
+      name: true,
+      email: true,
+    },
+  }, req.nextUrl.searchParams);
+
+  return jsonResponsePost(users);
 }
 
 export async function P(req: NextRequest) {

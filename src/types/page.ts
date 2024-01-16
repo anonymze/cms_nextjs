@@ -1,5 +1,13 @@
 import { z } from "zod";
 import { I18n } from "./i18n";
+import type { Page } from "@prisma/client";
+
+export type PageI18n = {
+  description: string;
+  subtitle?: string;
+  title: string;
+  uuid: Page["uuid"];
+};
 
 // Zod schema
 export const formCreatePageSchema = z.object({

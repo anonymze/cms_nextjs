@@ -1,9 +1,15 @@
-import type { User } from "@prisma/client";
 import { api } from "../_config";
+import type { User } from "@prisma/client";
 import type { UserCreationZodType, UserUpdateZodType } from "@/types/user";
+import type { QueryFunctionContext } from "@tanstack/react-query";
 
-export async function getUsersQuery() {
-  const result = await api.get<Omit<User, "id">[]>("users");
+export async function getUsersQuery({ queryKey }: QueryFunctionContext) {
+  const searchParams = new URLSearchParams();
+  const [, params] = queryKey;
+
+  if (params?.page) searchParams.set("page", params.page);
+
+  const result = await api.get<Omit<User, "id">[]>(`users?${searchParams.toString()}`);
   return result.data;
 }
 

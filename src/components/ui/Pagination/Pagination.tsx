@@ -16,7 +16,7 @@ const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
 
 const PaginationContent = React.forwardRef<HTMLUListElement, React.ComponentProps<"ul">>(
   ({ className, ...props }, ref) => (
-    <ul ref={ref} className={cn("flex flex-row items-center gap-4", className)} {...props} />
+    <ul ref={ref} className={cn("flex flex-row items-center gap-2", className)} {...props} />
   ),
 );
 PaginationContent.displayName = "PaginationContent";
@@ -40,7 +40,7 @@ const PaginationLink = ({ className, isActive, isDisabled, ...props }: Paginatio
       onClick={(ev) => isDisabled && ev.preventDefault()}
       aria-disabled={isDisabled || false}
       aria-current={isActive ? "page" : undefined}
-      className={cn("flex items-center", isDisabled && "cursor-not-allowed", className)}
+      className={cn("flex items-center px-3 py-1 border rounded-sm hover:bg-primary/10", isDisabled && "cursor-not-allowed", className)}
       {...props}
     />
   </PaginationItem>

@@ -1,10 +1,16 @@
-import type { formCreatePageSchema } from "@/types/page";
+import type { PageI18n, formCreatePageSchema } from "@/types/page";
 import { api } from "../_config";
 import type { Page } from "@prisma/client";
 import type { z } from "zod";
+import type { QueryFunctionContext } from "@tanstack/react-query";
 
-export async function getPagesQuery() {
-  const result = await api.get<Omit<Page, "id">[]>("pages");
+export async function getPagesQuery({queryKey}: QueryFunctionContext) {
+  const searchParams = new URLSearchParams();
+  const [, params] = queryKey;
+
+  if (params?.page) searchParams.set("page", params.page);
+
+  const result = await api.get<PageI18n[]>(`pages?${searchParams.toString()}`);
   return result.data;
 }
 
