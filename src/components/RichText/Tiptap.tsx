@@ -31,7 +31,6 @@ const Tiptap: React.FC<Props> = ({ description, onChange }) => {
     },
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
-      console.log(editor.getHTML());
     },
   });
 

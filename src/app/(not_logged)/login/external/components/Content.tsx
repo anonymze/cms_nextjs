@@ -38,9 +38,9 @@ export default function Content() {
       } catch (err) {
         // some weird cases can happen here, we don't want to display the error to the user, we just redirect him to the login page
         if (isClerkAPIResponseError(err)) {
-          console.log(err.errors?.[0]?.message);
+          // console.log(err.errors?.[0]?.message);
         } else if (err instanceof Error) {
-          console.log(err.message);
+          // console.log(err.message);
         }
 
         router.replace("/login");

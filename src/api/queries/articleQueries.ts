@@ -1,10 +1,10 @@
 import type { Article } from "@prisma/client";
 import { api } from "../_config";
-import type { formCreateArticleSchema } from "@/types/article";
+import type { ArticleI18n, ArticleZodType, formCreateArticleSchema } from "@/types/article";
 import type { z } from "zod";
 
 export async function getArticlesQuery() {
-  const result = await api.get<Omit<Article, "id">[]>("articles");
+  const result = await api.get<ArticleI18n[]>("articles");
   return result.data;
 }
 

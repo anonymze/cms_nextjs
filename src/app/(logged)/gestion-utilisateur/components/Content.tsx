@@ -2,10 +2,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Table from "../../../../components/Table/Table";
 import { deleteUserQuery, getUsersQuery, updateUserQuery } from "@/api/queries/userQueries";
-import type { User } from "@prisma/client";
+import { getKeysTypedObject } from "@/utils/helper";
 
 export default function Content() {
-  const { data: Users } = useQuery({
+  const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: getUsersQuery,
   });
@@ -28,11 +28,11 @@ export default function Content() {
     },
   });
 
-  if (!Users) {
+  if (!users) {
     return <div>Chargement...</div>;
   }
 
-  if (Users.length === 0) {
+  if (!users.length) {
     return <div>Aucune donnée...</div>;
   }
 
@@ -56,8 +56,9 @@ export default function Content() {
           },
         },
       ]}
-      data={Users}
-      columns={Object.keys(Users[0] as User)}
+      data={users}
+      // for now the type with keys is not really useful, but keep it ! We will upgrade the Table component when i'm better with typescript
+      columns={getKeysTypedObject(users[0]!)}
     />
   );
 }

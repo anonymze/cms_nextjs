@@ -43,7 +43,7 @@ export default authMiddleware({
       // token no valid = 401 unauthorized from clerk, you can redirect here if you prefer
       if (!validToken) return;
 
-      console.log(token);
+      // console.log(token);
 
       return false;
     }

@@ -1,6 +1,14 @@
 import { z } from "zod";
 import { I18n } from "./i18n";
 
+export type ArticleI18n = {
+  conclusion?: string;
+  content: string;
+  description?: string;
+  title: string;
+  uuid: string
+}
+
 // Zod schema
 export type ArticleZodType = z.infer<typeof articleSchema>;
 

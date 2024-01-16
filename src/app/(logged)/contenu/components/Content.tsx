@@ -3,7 +3,7 @@
 import { getArticlesQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
 import Table from "../../../../components/Table/Table";
-import type { Article } from "@prisma/client";
+import { getKeysTypedObject } from "@/utils/helper";
 
 export default function Content() {
   const { data: articles } = useQuery({
@@ -15,9 +15,10 @@ export default function Content() {
     return <div>Chargement...</div>;
   }
 
-  if (articles.length === 0) {
+  if (!articles.length) {
     return <div>Aucune donnée...</div>;
   }
 
-  return <Table data={articles} columns={Object.keys(articles[0] as Article)} />;
+  // for now the type with keys is not really useful, but keep it ! We will upgrade the Table component when i'm better with typescript
+  return <Table data={articles} columns={getKeysTypedObject(articles[0]!)} />;
 };

@@ -117,7 +117,6 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 
     return NextResponse.redirect(`${req.nextUrl.origin}/login/external?token=${magicLink.token}`);
   } catch (error) {
-    console.log({ error });
     if (error instanceof Response) {
       return new Response(error.statusText, { status: error.status });
     }
