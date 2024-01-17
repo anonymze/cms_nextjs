@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
         },
       },
     },
-  }, req.headers)).map((page) => ({
+  }, req.nextUrl.searchParams)).map((page) => ({
     uuid: page.uuid,
     title: page.i18n[0]?.title,
     description: page.i18n[0]?.description,

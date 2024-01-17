@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
         },
       },
     },
-  }, req.headers)).map((article) => ({
+  }, req.nextUrl.searchParams)).map((article) => ({
     uuid: article.uuid,
     title: article.i18n[0]?.title,
     description: article.i18n[0]?.description,

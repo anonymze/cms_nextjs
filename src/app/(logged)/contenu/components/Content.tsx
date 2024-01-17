@@ -4,10 +4,13 @@ import { getArticlesQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
 import Table from "../../../../components/ui/Table/Table";
 import { getKeysTypedObject } from "@/utils/helper";
+import { useSearchParams } from "next/navigation";
 
 export default function Content() {
+  const searchParams = useSearchParams();
+  
   const { data: articles } = useQuery({
-    queryKey: ["articles"],
+    queryKey: ["articles", { page: searchParams.get("page") }],
     queryFn: getArticlesQuery,
   });
 
