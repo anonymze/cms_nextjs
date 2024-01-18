@@ -10,6 +10,17 @@ export type ArticleI18n = {
   uuid: Article["uuid"];
 }
 
+export type ArticleI18ns = { 
+  uuid: Article["uuid"];
+  i18n : Array<{
+    lang: I18n;
+    conclusion?: string;
+    content: string;
+    description?: string;
+    title: string;
+  }>;
+}
+
 // Zod schema
 export type ArticleZodType = z.infer<typeof articleSchema>;
 

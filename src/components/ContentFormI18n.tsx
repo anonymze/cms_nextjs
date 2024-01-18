@@ -1,21 +1,26 @@
 "use client";
+
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-import FormArticle from "./Form";
 import { cn } from "@/utils/libs/tailwind/merge";
-import dynamic from "next/dynamic";
-import type { Article } from "@prisma/client";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import Flags from "@/components/Flags";
 import { getKeysTypedObject } from "@/utils/helper";
+
+type ChildComponentProps = { langForm: I18n };
+type ChildComponentType = React.FunctionComponent<ChildComponentProps>;
+
+type ContentProps = {
+  children: React.ReactElement<ChildComponentProps, ChildComponentType> | React.ReactElement<ChildComponentProps, ChildComponentType>[];
+};
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 // const IconDynamic = dynamic(() => import("@/components/ui/IconDynamic"), {
 //   loading: () => <span>...</span>,
 // });
 
-export default function Content({ uuid }: { uuid?: Article["uuid"] }) {
+export function ContentFormI18n({ children }: ContentProps) {
   return (
     <Tabs defaultValue={I18n.DEFAULT}>
       <TabsList className="h-10 p-1 w-fit mb-8 rounded-md bg-muted text-muted-foreground">
@@ -37,10 +42,17 @@ export default function Content({ uuid }: { uuid?: Article["uuid"] }) {
           </React.Fragment>
         ))}
       </TabsList>
-      {Object.keys(i18n).map((lang, idx) => (
+      {getKeysTypedObject(i18n).map((lang, idx) => (
         <React.Fragment key={idx}>
           <TabsContent value={lang}>
-            <FormArticle uuid={uuid} lang={lang} />
+            {React.Children.map(children, (child) => {
+              if (React.isValidElement(child) && typeof child.type === "function") {
+                return React.cloneElement(child, {
+                  langForm: lang,
+                });
+              }
+              return child;
+            })}
           </TabsContent>
         </React.Fragment>
       ))}

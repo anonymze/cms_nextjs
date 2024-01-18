@@ -9,6 +9,16 @@ export type PageI18n = {
   uuid: Page["uuid"];
 };
 
+export type PageI18ns = {
+  uuid: Page["uuid"];
+  i18n: Array<{
+    lang: I18n;
+    description: string;
+    subtitle?: string;
+    title: string;
+  }>;
+};
+
 // Zod schema
 export const formCreatePageSchema = z.object({
   description: z.string().min(2).max(100).trim(),
@@ -16,4 +26,3 @@ export const formCreatePageSchema = z.object({
   subtitle: z.string().min(2).max(30).trim().optional(),
   title: z.string().min(2).max(30).trim(),
 });
-

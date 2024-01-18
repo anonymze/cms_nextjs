@@ -15,7 +15,7 @@ declare module "@tanstack/react-query" {
   }
 
   interface QueryFunctionContext {
-    queryKey: [string, { page?: string }];
+    queryKey: [string, { page?: string, slug?: string }];
   }
 }
 

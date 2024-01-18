@@ -1,9 +1,9 @@
-"use client";
+"use client";;
 import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreatePageSchema } from "@/types/page";
+import { formCreatePageSchema, type PageI18ns } from "@/types/page";
 import { useMutation } from "@tanstack/react-query";
 import { createPageQuery } from "@/api/queries/pageQueries";
 import {
@@ -18,15 +18,14 @@ import {
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
 import type { z } from "zod";
-import type { Page } from "@prisma/client";
-import { toast } from "sonner";
+import type { I18n } from "@/types/i18n";
 
 interface Props {
-  lang: string;
-  uuid?: Page["uuid"];
+  langForm?: I18n;
+  page?: PageI18ns;
 }
 
-const FormPage: React.FC<Props> = ({ lang, uuid }) => {
+const FormPage: React.FC<Props> = ({ langForm, page }) => {
   const createMutation = useMutation({
     mutationFn: createPageQuery,
     mutationKey: ["pages"],
@@ -44,7 +43,7 @@ const FormPage: React.FC<Props> = ({ lang, uuid }) => {
       title: "",
       subtitle: "",
       description: "",
-      lang,
+      lang: langForm,
     },
   });
 

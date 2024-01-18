@@ -7,8 +7,12 @@ import { useSearchParams } from "next/navigation";
 
 export default function Content() {
   const searchParams = useSearchParams();
-  
-  const { data: users } = useQuery({
+
+  const {
+    data: users,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["users", { page: searchParams.get("page") }],
     queryFn: getUsersQuery,
   });
@@ -31,11 +35,15 @@ export default function Content() {
     },
   });
 
-  if (!users) {
+  if (isLoading) {
     return <div>Chargement...</div>;
   }
 
-  if (!users.length) {
+  if (isError) {
+    return <div>Erreur...</div>;
+  }
+
+  if (!users || !users.length) {
     return <div>Aucune donnée...</div>;
   }
 

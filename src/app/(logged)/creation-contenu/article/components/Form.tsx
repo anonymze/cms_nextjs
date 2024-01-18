@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreateArticleSchema } from "@/types/article";
+import { formCreateArticleSchema, type ArticleI18ns } from "@/types/article";
 import { useMutation } from "@tanstack/react-query";
-import { createArticleQuery } from "@/api/queries/articleQueries";
+import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
@@ -21,11 +21,11 @@ import {
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
 import type { z } from "zod";
-import type { Article } from "@prisma/client";
+import type { I18n } from "@/types/i18n";
 
 interface Props {
-  lang: string;
-  uuid?: Article["uuid"];
+  langForm?: I18n;
+  article?: ArticleI18ns;
 }
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
@@ -38,13 +38,22 @@ const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
   ),
 });
 
-const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
+const FormArticle: React.FC<Props> = ({ langForm, article }) => {
   const createMutation = useMutation({
     mutationFn: createArticleQuery,
     mutationKey: ["articles"],
     meta: {
       action: "create",
       message: "Article créé",
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: updateArticleQuery,
+    mutationKey: ["articles"],
+    meta: {
+      action: "update",
+      message: "Article modifié",
     },
   });
 
@@ -58,12 +67,13 @@ const FormArticle: React.FC<Props> = ({ lang, uuid }) => {
       content: "<p></p>",
       description: "",
       conclusion: "",
-      lang,
+      lang: langForm,
     },
   });
 
   // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
+    if (article) return updateMutation.mutate({ uuid: article.uuid, ...values });
     createMutation.mutate(values);
   }
 
