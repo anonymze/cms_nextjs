@@ -1,7 +1,10 @@
+// if not client side i don't get the props langForm... WHY ??
+"use client";
+
 import { ContentFormI18n } from "@/components/ContentFormI18n";
 import FormPage from "./components/Form";
 
-export default async function Page() {
+export default function Page() {
   return (
     <ContentFormI18n>
       <FormPage />

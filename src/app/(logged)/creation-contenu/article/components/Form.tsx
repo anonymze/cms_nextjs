@@ -3,12 +3,11 @@ import { Button } from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreateArticleSchema, type ArticleI18ns } from "@/types/article";
+import { type ArticleI18ns, formCreateArticleSchema } from "@/types/article";
 import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
-import { SpinnerLoader } from "@/components/ui/Loader/Loader";
 import {
   FormField,
   FormItem,
@@ -57,6 +56,9 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
     },
   });
 
+ 
+  const uuidForm = article?.uuid || createMutation.data?.uuid;
+
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
     mode: "onSubmit",
@@ -73,7 +75,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
   // values are typesafe
   async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
-    if (article) return updateMutation.mutate({ uuid: article.uuid, ...values });
+    console.log({uuidForm});
+    if (uuidForm) return updateMutation.mutate({ ...values, uuid: uuidForm });
     createMutation.mutate(values);
   }
 

@@ -1,7 +1,7 @@
 model Article_I18n {
     id          Int     @id @default(autoincrement())
     article_id  Int     @map("article")
-    article     Article @relation(fields: [article_id], references: [id])
+    article     Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
     lang        String
     title       String
     content     String

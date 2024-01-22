@@ -10,7 +10,7 @@ export default function Content() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { data: articles } = useQuery({
+  const { data: articles, isLoading } = useQuery({
     queryKey: ["articles", { page: searchParams.get("page") }],
     queryFn: getArticlesQuery,
   });
@@ -24,11 +24,10 @@ export default function Content() {
     },
   });
 
-  if (!articles) {
-    return <div>Chargement...</div>;
-  }
+  if (isLoading) return <div>Chargement...</div>;
+  
 
-  if (!articles.length) {
+  if (!articles || !articles.length) {
     return <div>Aucune donnée...</div>;
   }
 

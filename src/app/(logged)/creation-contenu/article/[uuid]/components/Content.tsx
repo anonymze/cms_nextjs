@@ -10,19 +10,12 @@ export default function Content({ uuid }: { uuid: Article["uuid"] }) {
   const {
     data: article,
     isLoading,
-    isError,
   } = useQuery({
-    queryKey: ["article", { uuid }],
+    queryKey: ["article", { slug: uuid }],
     queryFn: getArticleQuery,
   });
 
-  if (!isLoading) {
-    return <div>Chargement...</div>;
-  }
-
-  if (isError) {
-    return <div>Erreur...</div>;
-  }
+  if (isLoading) return <div>Chargement...</div>;
 
   if (!article) {
     return <div>Article non trouvé</div>;

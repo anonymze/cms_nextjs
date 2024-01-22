@@ -1,7 +1,7 @@
 import "@tanstack/react-query";
 import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { AxiosError } from "axios";
+import { isAxiosError, type AxiosError } from "axios";
 
 // we use axios so we declare the type error returned
 declare module "@tanstack/react-query" {
@@ -22,16 +22,14 @@ declare module "@tanstack/react-query" {
 export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onError: (err) => {
-      if (err.response) {
-        toast.error(err.response.status, {
-          description: err.response.data as string,
+      if (isAxiosError(err)) {
+        toast.error(err.response?.status, {
+          description: (err.response?.data as any)?.message  || err.message,
         });
         return;
       }
 
-      toast.error("Erreur inconnue, contactez l'administrateur", {
-        description: err.message,
-      });
+      toast.error("Erreur inconnue, contactez l'administrateur");
     },
     onSuccess: (data, variables, context, mutation) => {
       if (mutation.options.mutationKey) {

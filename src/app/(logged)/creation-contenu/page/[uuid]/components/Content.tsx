@@ -12,7 +12,7 @@ export default function Content({ uuid }: { uuid: Page["uuid"] }) {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["page", { uuid }],
+    queryKey: ["page", { slug: uuid }],
     queryFn: getPageQuery,
   });
 

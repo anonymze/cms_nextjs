@@ -79,6 +79,7 @@ const AuthForm = () => {
 
       router.replace("/dashboard");
     } catch (err) {
+      console.log({err});
       if (err instanceof AxiosError) {
         if (err.response?.status === 403) {
           toast.info("Votre compte est inactif, veuillez contacter un administrateur pour l'activer");

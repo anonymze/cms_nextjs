@@ -17,7 +17,7 @@ export async function getPagesQuery({queryKey}: QueryFunctionContext) {
 export async function getPageQuery({ queryKey }: QueryFunctionContext) {
   const [, params] = queryKey;
 
-  // if (params?.slug) throw new Error("Slug is required");
+  if (!params?.slug) throw new Error("Slug is required");
 
   const result = await api.get<PageI18ns>(`pages/${params.slug}`);
   return result.data;
