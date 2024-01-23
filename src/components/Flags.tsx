@@ -9,7 +9,6 @@ export default function Flags({ flag }: { flag: I18n }) {
       alt={`Drapeau ${flag}`}
       width={20}
       height={20}
-      layout="fixed"
     />
   );
 }

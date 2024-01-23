@@ -52,7 +52,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 
   const updateMutation = useMutation({
     mutationFn: updateArticleQuery,
-    mutationKey: ["articles"],
+    mutationKey: ["article", { slug: article?.uuid }],
     meta: {
       action: "update",
       message: "Article modifié",
@@ -84,7 +84,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 
     // if article is created then we redirect to the form with the uuid (to be in an updating state)
     if (articleCreated) router.push(`/creation-contenu/article/${articleCreated.uuid}`);
-  }
+  };
 
   return (
     <Form {...form}>
@@ -129,9 +129,14 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
             <FormItem>
               <FormLabel>Contenu *</FormLabel>
               <FormControl>
-                <TiptapDynamic description={field.name} onChange={field.onChange} />
+                <TiptapDynamic description={field.value} onChange={field.onChange} />
               </FormControl>
               <FormDescription>Le contenu de l&apos;article</FormDescription>
+              {/* @ts-ignore need to fix this */}
+              {form.formState.isSubmitted && form.formState.errors[""] && (
+                /* @ts-ignore need to fix this */
+                <FormMessage>{form.formState.errors[""].message}</FormMessage>
+              )}
               <FormMessage />
             </FormItem>
           )}

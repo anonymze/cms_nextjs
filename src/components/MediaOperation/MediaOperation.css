@@ -2,6 +2,7 @@
   --size: 7rem;
   --transition: 0.2s ease-in-out;
   position: relative;
+  height: fit-content;
   padding-inline: 2rem;
   background: repeating-conic-gradient(
       rgb(24, 24, 38) 0%,

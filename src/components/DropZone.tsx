@@ -1,11 +1,14 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import { Button } from "./ui/Button";
 import MediaOperation from "./MediaOperation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/file_resolving";
 import { type PropsWithChildren, type DragEvent, type ChangeEvent } from "react";
+import { set } from "zod";
+import { CloudLightningIcon, DropletIcon } from "lucide-react";
 
 export default function DropZone() {
+  const [isDraggedOver, setIsDraggedOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   // files from context
   const files = useFilesStore((state) => state.files);
@@ -18,10 +21,10 @@ export default function DropZone() {
 
       switch (type) {
         case "drop":
+          ev.preventDefault();
           const eventDrag = ev as DragEvent<HTMLInputElement>;
           fileList = eventDrag.dataTransfer.files;
           // prevent default to avoid opening the file in the browser
-          ev.preventDefault();
           break;
         case "upload":
           const eventChange = ev as ChangeEvent<HTMLInputElement>;
@@ -54,28 +57,44 @@ export default function DropZone() {
     <>
       {files.length <= 0 ? (
         <div
-          onDrop={(ev) => handleFiles(ev, "drop")}
+          onDrop={async (ev) => {
+            ev.preventDefault();
+            await handleFiles(ev, "drop");
+            setIsDraggedOver(false);
+          }}
           // prevent default to avoid opening the file in the browser
-          onDragOver={(ev) => ev.preventDefault()}
-          className="grid items-center h-full py-14 text-center rounded-md border-[1px] border-dashed"
+          onDragOver={(ev) => {
+            ev.preventDefault();
+            setIsDraggedOver(true);
+          }}
+          onDragLeave={(ev) => {
+            // Ignore event if we're entering a child element
+            if (ev.currentTarget.contains(ev.relatedTarget as Node)) return;
+            setIsDraggedOver(false);
+          }}
+          className="grid items-center h-48 text-center rounded-md border-[1px] border-dashed"
         >
-          <p>
-            Déposer un fichier
-            <br />
-            ou
-            <br />
-            <Button
-              onClick={() => inputRef.current?.click()}
-              type="button"
-              className="mt-1"
-              aria-label="Bouton utilisé pour ajouter un fichier local"
-            >
-              Cliquer ici pour sélectionner un fichier
-            </Button>
-          </p>
+          {isDraggedOver ? (
+            <CloudLightningIcon className="w-12 h-12 mx-auto" />
+          ) : (
+            <p>
+              Déposer un fichier
+              <br />
+              ou
+              <br />
+              <Button
+                onClick={() => inputRef.current?.click()}
+                type="button"
+                className="mt-1"
+                aria-label="Bouton utilisé pour ajouter un fichier local"
+              >
+                Cliquer ici pour sélectionner un fichier
+              </Button>
+            </p>
+          )}
         </div>
       ) : (
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 min-h-48">
           {files.map((fileTypeStore, idx) => (
             <MediaOperation
               removeFileFromApi={false}
@@ -101,4 +120,4 @@ export default function DropZone() {
       />
     </>
   );
-};
+}
