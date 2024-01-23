@@ -23,7 +23,7 @@ export async function getArticleQuery({ queryKey }: QueryFunctionContext) {
   return result.data;
 }
 
-export async function createArticleQuery(article: z.infer<typeof formCreateArticleSchema>) {
+export async function createArticleQuery(article: z.infer<typeof formCreateArticleSchema>): Promise<Article> {
   const result = await api.post("articles", article);
   return result.data;
 }

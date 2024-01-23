@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface Props {
   title: string;
-  redirect?: __next_route_internal_types__.RouteImpl<string>;
+  redirect?: string;
 }
 
 const CardContentManager: React.FC<Props> = ({ title, redirect }) => {

@@ -21,7 +21,7 @@ export type PageI18ns = {
 
 // Zod schema
 export const formCreatePageSchema = z.object({
-  description: z.string().min(2).max(100).trim(),
+  description: z.string().min(2).max(400).trim(),
   lang: z.string().default(I18n.DEFAULT),
   subtitle: z.string().min(2).max(30).trim().optional(),
   title: z.string().min(2).max(30).trim(),

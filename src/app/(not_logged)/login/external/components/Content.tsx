@@ -34,7 +34,7 @@ export default function Content() {
           session: res.createdSessionId,
         });
 
-        router.replace("/dashboard" as __next_route_internal_types__.RouteImpl<string>);
+        router.replace("/dashboard");
       } catch (err) {
         // some weird cases can happen here, we don't want to display the error to the user, we just redirect him to the login page
         if (isClerkAPIResponseError(err)) {

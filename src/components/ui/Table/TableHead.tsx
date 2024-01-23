@@ -41,7 +41,7 @@ export function TableHead({ columns, hasActions, isLoading }: THead) {
                   searchParams.get("column"),
                   titleColumn,
                   orderBy,
-                )}` as __next_route_internal_types__.RouteImpl<string>,
+                )}`,
               )
             }
           >

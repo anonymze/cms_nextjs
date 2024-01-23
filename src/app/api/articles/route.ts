@@ -39,9 +39,6 @@ export async function GET(req: NextRequest) {
     content: article.i18n[0]?.content,
   }));
 
-  console.log('heuuu');
-  console.log(articles);
-
   return jsonResponsePost(articles);
 }
 

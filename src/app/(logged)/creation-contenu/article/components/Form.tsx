@@ -20,7 +20,8 @@ import {
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
 import type { z } from "zod";
-import type { I18n } from "@/types/i18n";
+import { I18n } from "@/types/i18n";
+import { useRouter } from "next/navigation";
 
 interface Props {
   langForm?: I18n;
@@ -37,7 +38,9 @@ const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
   ),
 });
 
-const FormArticle: React.FC<Props> = ({ langForm, article }) => {
+const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
+  const router = useRouter();
+
   const createMutation = useMutation({
     mutationFn: createArticleQuery,
     mutationKey: ["articles"],
@@ -56,28 +59,31 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
     },
   });
 
- 
-  const uuidForm = article?.uuid || createMutation.data?.uuid;
+  const articleI18n = article?.i18n.find((articleI18n) => articleI18n.lang === langForm);
 
   const form = useForm<z.infer<typeof formCreateArticleSchema>>({
     resolver: zodResolver(formCreateArticleSchema),
     mode: "onSubmit",
     // default values is needed if controller used
     defaultValues: {
-      title: "",
+      title: articleI18n?.title || "",
       // because we use tiptap, we need to pass an empty paragraph to the editor
-      content: "<p></p>",
-      description: "",
-      conclusion: "",
+      content: articleI18n?.content || "<p></p>",
+      description: articleI18n?.description || "",
+      conclusion: articleI18n?.conclusion || "",
       lang: langForm,
     },
   });
 
   // values are typesafe
-  async function onSubmit(values: z.infer<typeof formCreateArticleSchema>) {
-    console.log({uuidForm});
-    if (uuidForm) return updateMutation.mutate({ ...values, uuid: uuidForm });
-    createMutation.mutate(values);
+  const onSubmit = async (values: z.infer<typeof formCreateArticleSchema>) => {
+    // if uuid is present then we update the entity
+    if (article?.uuid) return updateMutation.mutate({ ...values, uuid: article.uuid });
+
+    const articleCreated = await createMutation.mutateAsync(values);
+
+    // if article is created then we redirect to the form with the uuid (to be in an updating state)
+    if (articleCreated) router.push(`/creation-contenu/article/${articleCreated.uuid}`);
   }
 
   return (

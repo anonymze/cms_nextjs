@@ -37,10 +37,10 @@ type PaginationLinkProps = {
 const PaginationLink = ({ className, isActive, isDisabled, ...props }: PaginationLinkProps) => (
   <PaginationItem>
     <Link
-      onClick={(ev) => isDisabled && ev.preventDefault()}
+      onClick={(ev) => (isDisabled || isActive) && ev.preventDefault()}
       aria-disabled={isDisabled || false}
       aria-current={isActive ? "page" : undefined}
-      className={cn("flex items-center px-3 py-1 border rounded-sm hover:bg-primary/10", isDisabled && "cursor-not-allowed", className)}
+      className={cn("flex items-center px-3 py-1 border rounded-sm hover:bg-primary/10", isActive && "bg-primary/5 cursor-default", isDisabled && "cursor-not-allowed", className)}
       {...props}
     />
   </PaginationItem>

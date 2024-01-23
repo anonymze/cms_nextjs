@@ -104,7 +104,7 @@ const AuthForm = () => {
               });
 
               router.push(
-                `${pathname}?verifying=${result.emailAddress}}` as __next_route_internal_types__.RouteImpl<string>,
+                `${pathname}?verifying=${result.emailAddress}}`,
               );
             })
             .catch((err) => {

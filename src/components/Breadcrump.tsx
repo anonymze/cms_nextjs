@@ -18,7 +18,7 @@ const constructURL = (pathnames: string[], currentIndex: number) => {
     url += "/" + pathnames[i];
   }
 
-  return url as __next_route_internal_types__.RouteImpl<string>;
+  return url;
 };
 
 const Breadcrump: React.FC = () => {
