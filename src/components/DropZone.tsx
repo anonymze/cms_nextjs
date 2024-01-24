@@ -75,7 +75,7 @@ export default function DropZone() {
           className="grid items-center h-48 text-center rounded-md border-[1px] border-dashed"
         >
           {isDraggedOver ? (
-            <CloudLightningIcon className="w-12 h-12 mx-auto" />
+            <CloudLightningIcon className="w-8 h-8 mx-auto" />
           ) : (
             <p>
               Déposer un fichier

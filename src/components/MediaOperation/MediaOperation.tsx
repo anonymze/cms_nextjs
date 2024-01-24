@@ -6,6 +6,8 @@ import { deleteUploadQuery } from "@/api/queries/uploadQueries";
 import type { HTMLAttributes } from "react";
 import type { Upload } from "@prisma/client";
 import "./MediaOperation.css";
+import { SpinnerLoader } from "../ui/Loader/Loader";
+import { cn } from "@/utils/libs/tailwind/merge";
 
 interface Props extends HTMLAttributes<HTMLElement> {
   removeFileFromApi: Upload["uuid"] | false;
@@ -30,9 +32,9 @@ export default function MediaOperation({ removeFileFromApi, children, ...props }
       {...props}
     >
       {children}
-      <figcaption>
-        <Trash2Icon className="w-8 h-8" />
+      <figcaption className={cn(deleteMutation.isPending && "action")}>
+        {deleteMutation.isPending ? <SpinnerLoader /> : <Trash2Icon className="w-8 h-8" />}
       </figcaption>
     </figure>
   );
-};
+}

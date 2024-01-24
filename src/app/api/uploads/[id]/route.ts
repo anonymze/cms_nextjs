@@ -6,6 +6,8 @@ export async function DELETE(req: Request) {
   // get uuid form url
   const uuid = req.url.split("/").at(-1);
 
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   // get the file from the database
   const file = await prisma.upload.findUnique({
     where: { uuid },

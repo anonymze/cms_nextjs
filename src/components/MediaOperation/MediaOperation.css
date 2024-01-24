@@ -4,13 +4,10 @@
   position: relative;
   height: fit-content;
   padding-inline: 2rem;
-  background: repeating-conic-gradient(
-      rgb(24, 24, 38) 0%,
+  background: repeating-conic-gradient(rgb(24, 24, 38) 0%,
       rgb(24, 24, 38) 25%,
       transparent 0%,
-      transparent 50%
-    )
-    50% center / 20px 20px;
+      transparent 50%) 50% center / 20px 20px;
   object-fit: cover;
   box-shadow: 1px 1px 10px rgba(3, 3, 5, 0.2);
   border-radius: var(--radius);
@@ -21,11 +18,6 @@
 
 .media-operation:hover img {
   filter: brightness(0.7) blur(0.5px);
-}
-
-.media-operation:hover figcaption {
-  opacity: 1;
-  transform: translate(-50%, -50%);
 }
 
 .media-operation img {
@@ -46,4 +38,14 @@
   transition:
     opacity var(--transition),
     transform var(--transition);
+
+    &.action {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+}
+
+.media-operation:hover figcaption {
+  opacity: 1;
+  transform: translate(-50%, -50%);
 }
