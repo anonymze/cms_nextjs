@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
   return jsonResponsePost(users);
 }
 
-export async function P(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, userCreationSchema);
 
   if (error) return jsonResponseBadRequest(messageError);

@@ -30,7 +30,7 @@ const AuthForm = () => {
     // if we get an info we are aware of, we can display a toast
     switch (info) {
       case LoginStateInfo.CREATED:
-        // weird case here i don't understand, if i call toast.xxx directly in the main thread, it doesn't work (maybe he is not loaded yet?)
+        // weird case here, if i call toast directly in the main thread, it doesn't work (maybe it is not loaded yet?)
         Promise.resolve().then(() =>
           toast.info(
             "Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter avec la même méthode de connexion",
