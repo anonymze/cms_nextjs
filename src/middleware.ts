@@ -32,7 +32,8 @@ export default authMiddleware({
       // if we got a valid token api in the request, we skip the clerk authentication with next()
       if (hasValidToken(req)) return NextResponse.next();
 
-      return NextResponse.redirect(new URL("/401", req.url));
+      // else we return a 401 unauthorized
+      return new Response(undefined, { status: 401 });
     }
 
     return;
@@ -41,14 +42,8 @@ export default authMiddleware({
 
 const hasValidToken = (request: NextRequest) => {
   const tokenCookie = request.cookies.get("token")?.value;
-
-  // 2 authentications authorized, if we get the token by cookies
-  if (tokenCookie === ENV_SERVER.API_KEY) return true;
-
   const tokenAuth = request.headers.get("authorization");
 
-  // or if we get the token by authorization header
-  if (tokenAuth === ENV_SERVER.API_KEY) return true;
-
-  return false;
+    // 2 authentications authorized, if we get the token by cookies or by authorization header
+  return tokenCookie === ENV_SERVER.API_KEY || tokenAuth === ENV_SERVER.API_KEY;
 };
