@@ -29,6 +29,7 @@ export const queryClient = new QueryClient({
         return;
       }
 
+      console.log({err});
       toast.error("Erreur inconnue, contactez l'administrateur");
     },
     onSuccess: (data, variables, context, mutation) => {

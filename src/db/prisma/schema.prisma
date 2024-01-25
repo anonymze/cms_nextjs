@@ -28,7 +28,14 @@ model Article_I18n {
 
     @@index(fields: [lang])
 }
-model Page {
+model Media {
+    id        Int     @id @default(autoincrement())
+    uuid      String  @unique @default(uuid())
+    filepath_public  String
+    filetype  String
+
+    @@index(fields: [uuid])
+}model Page {
     id        Int         @id @default(autoincrement())
     uuid      String      @unique @default(uuid())
     i18n_id   Int?        @map("i18n") @ignore
@@ -48,14 +55,7 @@ model Page_I18n {
 
     @@index(fields: [lang])
 }
-model Upload {
-    id        Int     @id @default(autoincrement())
-    uuid      String  @unique @default(uuid())
-    filepath_public  String
-    filetype  String
-
-    @@index(fields: [uuid])
-}model User {
+model User {
     id        Int      @id @default(autoincrement())
     uuid      String   @unique @default(uuid())
     isActive  Boolean  @default(false)

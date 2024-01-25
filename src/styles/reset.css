@@ -17,6 +17,8 @@
   }
 
   body {
+      /* native margin removed */
+      margin: 0;
       /** Ensure that the body fill the en entiere view port (vh dynamic) **/
       min-height: 100dvh;
   }

@@ -1,4 +1,4 @@
-model Upload {
+model Media {
     id        Int     @id @default(autoincrement())
     uuid      String  @unique @default(uuid())
     filepath_public  String

@@ -6,9 +6,9 @@ import { Dialog, DialogBody, DialogFooter, DialogHeader } from "@/components/Dia
 import { PlusCircleIcon } from "lucide-react";
 import { useRef } from "react";
 import { useFilesStore } from "@/contexts/store_files_context";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUploadQuery } from "@/api/queries/uploadQueries";
-import type { PropsWithChildren, FormEvent } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { createMediaQuery } from "@/api/queries/mediaQueries";
+import type { FormEvent } from "react";
 
 export default function Content({ hideActionButton }: { hideActionButton: boolean }) {
   // files from context
@@ -17,8 +17,8 @@ export default function Content({ hideActionButton }: { hideActionButton: boolea
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const createMutation = useMutation({
-    mutationFn: createUploadQuery,
-    mutationKey: ["uploads"],
+    mutationFn: createMediaQuery,
+    mutationKey: ["media"],
     meta: {
       message: "Le média a été ajouté",
     },

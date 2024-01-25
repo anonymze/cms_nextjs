@@ -9,16 +9,18 @@ export async function DELETE(req: Request) {
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
   // get the file from the database
-  const file = await prisma.upload.findUnique({
+  const file = await prisma.media.findUnique({
     where: { uuid },
   });
 
   if (!file) return Response.json("Fichier non trouvé", { status: 404 });
 
-  // delete the file from the public folder
-  fs.unlinkSync(path.join("public", file.filepath_public));
+  // delete the file from the public/media folder
+  try {
+    fs.unlinkSync(path.join("public", file.filepath_public));
+  } catch (_) {}
 
-  await prisma.upload.delete({
+  await prisma.media.delete({
     where: { uuid },
   });
 

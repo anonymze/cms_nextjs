@@ -1,4 +1,4 @@
-import { uploadSchema } from "@/types/upload";
+import { mediaSchema } from "@/types/media";
 import { manageFiles } from "@/utils/api/file_resolving";
 import { processRequest } from "@/utils/api/responses/response";
 import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
@@ -10,7 +10,7 @@ const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
 
 export async function GET() {
   return jsonResponsePost(
-    await prisma.upload.findMany({
+    await prisma.media.findMany({
       select: {
         uuid: true,
         filepath_public: true,
@@ -21,7 +21,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, uploadSchema);
+  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, mediaSchema);
 
   if (error) return jsonResponseBadRequest(messageError);
 

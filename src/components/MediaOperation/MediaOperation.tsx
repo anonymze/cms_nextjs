@@ -2,21 +2,21 @@
 
 import { Trash2Icon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-import { deleteUploadQuery } from "@/api/queries/uploadQueries";
-import type { HTMLAttributes } from "react";
-import type { Upload } from "@prisma/client";
-import "./MediaOperation.css";
 import { SpinnerLoader } from "../ui/Loader/Loader";
 import { cn } from "@/utils/libs/tailwind/merge";
+import { deleteMediaQuery } from "@/api/queries/mediaQueries";
+import type { HTMLAttributes } from "react";
+import type { Media } from "@prisma/client";
+import "./MediaOperation.css";
 
 interface Props extends HTMLAttributes<HTMLElement> {
-  removeFileFromApi: Upload["uuid"] | false;
+  removeFileFromApi: Media["uuid"] | false;
 }
 
 export default function MediaOperation({ removeFileFromApi, children, ...props }: Props) {
   const deleteMutation = useMutation({
-    mutationFn: deleteUploadQuery,
-    mutationKey: ["uploads"],
+    mutationFn: deleteMediaQuery,
+    mutationKey: ["media"],
     meta: {
       message: "Le média a été supprimé",
     },
