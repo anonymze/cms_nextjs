@@ -33,7 +33,7 @@ export default function MediaOperation({ removeFileFromApi, children, ...props }
     >
       {children}
       <figcaption className={cn(deleteMutation.isPending && "action")}>
-        {deleteMutation.isPending ? <SpinnerLoader /> : <Trash2Icon className="w-8 h-8" />}
+        {deleteMutation.isSuccess || deleteMutation.isPending ? <SpinnerLoader className="w-8 h-8" /> : <Trash2Icon className="w-8 h-8" />}
       </figcaption>
     </figure>
   );
