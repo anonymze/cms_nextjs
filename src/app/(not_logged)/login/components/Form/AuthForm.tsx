@@ -111,6 +111,8 @@ const AuthForm = () => {
               setIsLoading(false);
               toast.error(err.errors[0].message);
             });
+        } else {
+          toast.error(err.message);
         }
       } else if (isClerkAPIResponseError(err)) {
         toast.error(err.errors?.[0]?.message);

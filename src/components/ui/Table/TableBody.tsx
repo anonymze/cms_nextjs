@@ -13,7 +13,7 @@ function TableBody({ data, actions }: { data: Table["data"]; actions?: TAction[]
         <tr className="border-b last:border-b-0" key={idx}>
           {dataKeys.map((key) => (
             <td align="left" className="px-4 py-3 text-sm" key={key}>
-              <p title={trimmedString(field[key])} className="max-w-24 truncate lg:max-w-36">{trimmedString(field[key])}</p>
+              <p title={trimmedVal(field[key])} className="max-w-24 truncate lg:max-w-36">{trimmedVal(field[key])}</p>
             </td>
           ))}
           {actions?.length ? (
@@ -27,7 +27,7 @@ function TableBody({ data, actions }: { data: Table["data"]; actions?: TAction[]
   );
 }
 
-const trimmedString = (val: TValue) => {
+const trimmedVal = (val: TValue) => {
   // == type coercion checks for null and undefined
   if (val == null) return;
   if (typeof val === "boolean") return val ? "Oui" : "Non";
