@@ -2,8 +2,6 @@ import { useMemo } from "react";
 import { TableActions, type TAction } from "./TableActions";
 import type { Table } from "./Table";
 
-const MAX_LENGTH_VALUE = 20;
-
 export type TValue = string | number | Date | boolean | null | undefined;
 
 function TableBody({ data, actions }: { data: Table["data"]; actions?: TAction[] }) {
@@ -14,8 +12,8 @@ function TableBody({ data, actions }: { data: Table["data"]; actions?: TAction[]
       {data.map((field, idx) => (
         <tr className="border-b last:border-b-0" key={idx}>
           {dataKeys.map((key) => (
-            <td align="left" className="px-4 py-3 text-sm whitespace-nowrap" key={key}>
-              {trimmedString(field[key])}
+            <td align="left" className="px-4 py-3 text-sm" key={key}>
+              <p title={trimmedString(field[key])} className="max-w-24 truncate lg:max-w-36">{trimmedString(field[key])}</p>
             </td>
           ))}
           {actions?.length ? (
@@ -32,13 +30,8 @@ function TableBody({ data, actions }: { data: Table["data"]; actions?: TAction[]
 const trimmedString = (val: TValue) => {
   // == type coercion checks for null and undefined
   if (val == null) return;
-
   if (typeof val === "boolean") return val ? "Oui" : "Non";
-
-  val = val.toString();
-
-  // if value superior to the max length, we trim the string
-  return val.length > MAX_LENGTH_VALUE ? val.substring(0, MAX_LENGTH_VALUE - 3) + "..." : val;
+  return val.toString().trim();
 };
 
 export default TableBody;
