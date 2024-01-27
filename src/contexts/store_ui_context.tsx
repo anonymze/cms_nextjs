@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
 type StateTheme = {
-  theme: "light" | "dark";
+	theme: "light" | "dark";
 };
 
 type ActionTheme = {
-  setTheme: (theme: StateTheme["theme"]) => void;
+	setTheme: (theme: StateTheme["theme"]) => void;
 };
 
 export const useThemeStore = create<StateTheme & ActionTheme>()((set) => ({
-  theme: "dark",
-  setTheme: (theme) => set((_) => ({ theme })),
+	theme: "dark",
+	setTheme: (theme) => set((_) => ({ theme })),
 }));

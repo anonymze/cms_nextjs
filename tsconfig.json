@@ -22,10 +22,9 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
-    // TODO
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "noUnusedLocals": false,
     /* If NOT transpiling with TypeScript: */
     "jsx": "preserve",

@@ -3,16 +3,16 @@ import { getArticleQuery } from "@/api/queries/articleQueries";
 import Content from "./components/Content";
 
 export default async function Page({ params }: { params: { uuid: string } }) {
-  const queryClient = new QueryClient();
+	const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["article", { slug: params.uuid }],
-    queryFn: getArticleQuery,
-  });
+	await queryClient.prefetchQuery({
+		queryKey: ["article", { slug: params.uuid }],
+		queryFn: getArticleQuery,
+	});
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Content uuid={params.uuid} />
-    </HydrationBoundary>
-  );
+	return (
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<Content uuid={params.uuid} />
+		</HydrationBoundary>
+	);
 }

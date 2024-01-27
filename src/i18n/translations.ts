@@ -6,9 +6,9 @@ import es_ES from "./fr_FR";
 // if you add a language, don't forget to add the svg in the assets flags folder
 // or await import()... will throw an incontrollable error
 const i18n: Record<I18n, object> = {
-  en_US,
-  fr_FR,
-  es_ES,
+	en_US,
+	fr_FR,
+	es_ES,
 };
 
 export { i18n };

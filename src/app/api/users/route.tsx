@@ -10,40 +10,48 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET(req: NextRequest) {
-   const users = await findManyWithDefaults(prisma.user, {
-    select: {
-      uuid: true,
-      isActive: true,
-      name: true,
-      email: true,
-    },
-  }, req.nextUrl.searchParams);
+	const users = await findManyWithDefaults(
+		prisma.user,
+		{
+			select: {
+				uuid: true,
+				isActive: true,
+				name: true,
+				email: true,
+			},
+		},
+		req.nextUrl.searchParams,
+	);
 
-  return jsonResponsePost(users);
+	return jsonResponsePost(users);
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, userCreationSchema);
+	const { error, messageError, data } = await processRequest(
+		req,
+		ACCEPTED_CONTENT_TYPE,
+		userCreationSchema,
+	);
 
-  if (error) return jsonResponseBadRequest(messageError);
+	if (error) return jsonResponseBadRequest(messageError);
 
-  try {
-    const userClerk = await clerkClient.users.getUser(data.clerkUserId);
-    const email = userClerk.emailAddresses[0]?.emailAddress;
+	try {
+		const userClerk = await clerkClient.users.getUser(data.clerkUserId);
+		const email = userClerk.emailAddresses[0]?.emailAddress;
 
-    if (!email) {
-      return jsonResponseBadRequest("Email not found from auth service");
-    }
+		if (!email) {
+			return jsonResponseBadRequest("Email not found from auth service");
+		}
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        name: "",
-      },
-    });
+		const user = await prisma.user.create({
+			data: {
+				email,
+				name: "",
+			},
+		});
 
-    return jsonResponsePost(user);
-  } catch (err) {
-    return jsonResponseBadRequest("User not found");
-  }
+		return jsonResponsePost(user);
+	} catch (err) {
+		return jsonResponseBadRequest("User not found");
+	}
 }

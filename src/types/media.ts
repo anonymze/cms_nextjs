@@ -5,5 +5,5 @@ import { z } from "zod";
 export type MediaZopType = z.infer<typeof mediaSchema>;
 
 export const mediaSchema = z.object({
-  files: z.array(FileSchema),
+	files: z.array(FileSchema),
 });

@@ -5,29 +5,26 @@ import { useRouter } from "next/navigation";
 import { Button } from "../../ui/Button";
 import { useThemeStore } from "@/contexts/store_ui_context";
 
+const TopNavbar: React.FC = () => {
+	const router = useRouter();
+	const setTheme = useThemeStore((theme) => theme.setTheme);
 
-interface Props {}
+	const changeTheme = (checked: boolean) => {
+		if (checked) {
+			setTheme("light");
+			return;
+		}
 
-const TopNavbar: React.FC<Props> = () => {
-  const router = useRouter();
-  const setTheme = useThemeStore((theme) => theme.setTheme);
-
-  const changeTheme = (checked: boolean) => {
-    if (checked) {
-      setTheme("light");
-      return;
-    }
-
-    setTheme("dark");
-    return;
-  };
-  return (
-    <nav className="flex justify-between items-center pb-8">
-      <Button onClick={() => router.back()}>
-        <ArrowLeft className="h-5 w-5 mr-1" /> Retour
-      </Button>
-    </nav>
-  );
+		setTheme("dark");
+		return;
+	};
+	return (
+		<nav className="flex justify-between items-center pb-8">
+			<Button onClick={() => router.back()}>
+				<ArrowLeft className="h-5 w-5 mr-1" /> Retour
+			</Button>
+		</nav>
+	);
 };
 
 export default TopNavbar;

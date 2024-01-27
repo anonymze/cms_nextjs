@@ -7,30 +7,30 @@ import { getPageQuery } from "@/api/queries/pageQueries";
 import type { Page } from "@prisma/client";
 
 export default function Content({ uuid }: { uuid: Page["uuid"] }) {
-  const {
-    data: page,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["page", { slug: uuid }],
-    queryFn: getPageQuery,
-  });
+	const {
+		data: page,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["page", { slug: uuid }],
+		queryFn: getPageQuery,
+	});
 
-  if (!isLoading) {
-    return <div>Chargement...</div>;
-  }
+	if (!isLoading) {
+		return <div>Chargement...</div>;
+	}
 
-  if (isError) {
-    return <div>Erreur...</div>;
-  }
+	if (isError) {
+		return <div>Erreur...</div>;
+	}
 
-  if (!page) {
-    return <div>Article non trouvé</div>;
-  }
+	if (!page) {
+		return <div>Article non trouvé</div>;
+	}
 
-  return (
-    <ContentFormI18n>
-      <FormPage page={page} />
-    </ContentFormI18n>
-  );
+	return (
+		<ContentFormI18n>
+			<FormPage page={page} />
+		</ContentFormI18n>
+	);
 }

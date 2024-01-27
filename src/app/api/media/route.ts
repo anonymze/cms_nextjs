@@ -9,25 +9,29 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
 
 export async function GET() {
-  return jsonResponsePost(
-    await prisma.media.findMany({
-      select: {
-        uuid: true,
-        filepath_public: true,
-        filetype: true,
-      }
-    }),
-  );
+	return jsonResponsePost(
+		await prisma.media.findMany({
+			select: {
+				uuid: true,
+				filepath_public: true,
+				filetype: true,
+			},
+		}),
+	);
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(req, ACCEPTED_CONTENT_TYPE, mediaSchema);
+	const { error, messageError, data } = await processRequest(
+		req,
+		ACCEPTED_CONTENT_TYPE,
+		mediaSchema,
+	);
 
-  if (error) return jsonResponseBadRequest(messageError);
+	if (error) return jsonResponseBadRequest(messageError);
 
-  const { error: errorFile, filesEntity } = await manageFiles(data.files);
+	const { error: errorFile, filesEntity } = await manageFiles(data.files);
 
-  if (errorFile) return jsonResponseBadRequest("Un des fichiers n'a pas pu être créé");
+	if (errorFile) return jsonResponseBadRequest("Un des fichiers n'a pas pu être créé");
 
-  return jsonResponsePost(filesEntity);
+	return jsonResponsePost(filesEntity);
 }

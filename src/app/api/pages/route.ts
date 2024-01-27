@@ -10,56 +10,62 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET(req: NextRequest) {
-  const pages = (await findManyWithDefaults(prisma.page, {
-    select: {
-      uuid: true,
-      i18n: {
-        select: {
-          title: true,
-          description: true,
-          subtitle: true,
-        },
-      },
-    },
-    where: {
-      i18n: {
-        some: {
-          // TODO we will get locale from the request
-          lang: I18n.DEFAULT,
-        },
-      },
-    },
-  }, req.nextUrl.searchParams)).map((page) => ({
-    uuid: page.uuid,
-    title: page.i18n[0]?.title,
-    description: page.i18n[0]?.description,
-    subtitle: page.i18n[0]?.subtitle,
-  }));
+	const pages = (
+		await findManyWithDefaults(
+			prisma.page,
+			{
+				select: {
+					uuid: true,
+					i18n: {
+						select: {
+							title: true,
+							description: true,
+							subtitle: true,
+						},
+					},
+				},
+				where: {
+					i18n: {
+						some: {
+							// TODO we will get locale from the request
+							lang: I18n.DEFAULT,
+						},
+					},
+				},
+			},
+			req.nextUrl.searchParams,
+		)
+	).map((page) => ({
+		uuid: page.uuid,
+		title: page.i18n[0]?.title,
+		description: page.i18n[0]?.description,
+		subtitle: page.i18n[0]?.subtitle,
+	}));
 
-  return jsonResponsePost(pages);
+	return jsonResponsePost(pages);
 }
 
 export async function POST(req: NextRequest) {
-  const { error, messageError, data } = await processRequest(
-    req,
-    ACCEPTED_CONTENT_TYPE,
-    formCreatePageSchema,
-  );
+	const { error, messageError, data } = await processRequest(
+		req,
+		ACCEPTED_CONTENT_TYPE,
+		formCreatePageSchema,
+	);
 
-  if (error) return jsonResponseBadRequest(messageError);
+	if (error) return jsonResponseBadRequest(messageError);
 
-  const page = await prisma.page.create({
-    data: {
-      i18n: {
-        create: {
-          description: data.description,
-          subtitle: data.subtitle,
-          title: data.title,
-          lang: data.lang || I18n.DEFAULT,
-        },
-      },
-    },
-  });
+	const page = await prisma.page.create({
+		data: {
+			i18n: {
+				create: {
+					description: data.description,
+					subtitle: data.subtitle,
+					title: data.title,
+					lang: data.lang || I18n.DEFAULT,
+				},
+			},
+		},
+	});
 
-  return jsonResponsePost(page);
+	return jsonResponsePost(page);
 }

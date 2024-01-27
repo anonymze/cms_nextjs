@@ -9,13 +9,13 @@ import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQue
 import dynamic from "next/dynamic";
 import { SkeletonCard } from "@/components/ui/Skeleton/Skeleton";
 import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  Form,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormControl,
+	FormDescription,
+	FormMessage,
+	Form,
 } from "@/components/ui/Form/Form";
 import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
@@ -24,154 +24,157 @@ import { I18n } from "@/types/i18n";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  langForm?: I18n;
-  article?: ArticleI18ns;
+	langForm?: I18n;
+	article?: ArticleI18ns;
 }
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
 const TiptapDynamic = dynamic(() => import("@/components/RichText/Tiptap"), {
-  loading: () => (
-    <>
-      <SkeletonCard animated height="2.2rem" />
-      <SkeletonCard animated height="9rem" />
-    </>
-  ),
+	loading: () => (
+		<>
+			<SkeletonCard animated height="2.2rem" />
+			<SkeletonCard animated height="9rem" />
+		</>
+	),
 });
 
 const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
-  const router = useRouter();
+	const router = useRouter();
 
-  const createMutation = useMutation({
-    mutationFn: createArticleQuery,
-    mutationKey: ["articles"],
-    meta: {
-      action: "create",
-      message: "Article créé",
-    },
-  });
+	const createMutation = useMutation({
+		mutationFn: createArticleQuery,
+		mutationKey: ["articles"],
+		meta: {
+			action: "create",
+			message: "Article créé",
+		},
+	});
 
-  const updateMutation = useMutation({
-    mutationFn: updateArticleQuery,
-    mutationKey: ["article", { slug: article?.uuid }],
-    meta: {
-      action: "update",
-      message: "Article modifié",
-    },
-  });
+	const updateMutation = useMutation({
+		mutationFn: updateArticleQuery,
+		mutationKey: ["article", { slug: article?.uuid }],
+		meta: {
+			action: "update",
+			message: "Article modifié",
+		},
+	});
 
-  const articleI18n = article?.i18n.find((articleI18n) => articleI18n.lang === langForm);
+	const articleI18n = article?.i18n.find((articleI18n) => articleI18n.lang === langForm);
 
-  const form = useForm<z.infer<typeof formCreateArticleSchema>>({
-    resolver: zodResolver(formCreateArticleSchema),
-    mode: "onSubmit",
-    // default values is needed if controller used
-    defaultValues: {
-      title: articleI18n?.title || "",
-      // because we use tiptap, we need to pass an empty paragraph to the editor
-      content: articleI18n?.content || "<p></p>",
-      description: articleI18n?.description || "",
-      conclusion: articleI18n?.conclusion || "",
-      lang: langForm,
-    },
-  });
+	const form = useForm<z.infer<typeof formCreateArticleSchema>>({
+		resolver: zodResolver(formCreateArticleSchema),
+		mode: "onSubmit",
+		// default values is needed if controller used
+		defaultValues: {
+			title: articleI18n?.title || "",
+			// because we use tiptap, we need to pass an empty paragraph to the editor
+			content: articleI18n?.content || "<p></p>",
+			description: articleI18n?.description || "",
+			conclusion: articleI18n?.conclusion || "",
+			lang: langForm,
+		},
+	});
 
-  // values are typesafe
-  const onSubmit = async (values: z.infer<typeof formCreateArticleSchema>) => {
-    // if uuid is present then we update the entity
-    if (article?.uuid) return updateMutation.mutate({ ...values, uuid: article.uuid });
+	// values are typesafe
+	const onSubmit = async (values: z.infer<typeof formCreateArticleSchema>) => {
+		// if uuid is present then we update the entity
+		if (article?.uuid) return updateMutation.mutate({ ...values, uuid: article.uuid });
 
-    const articleCreated = await createMutation.mutateAsync(values);
+		const articleCreated = await createMutation.mutateAsync(values);
 
-    // if article is created then we redirect to the form with the uuid (to be in an updating state)
-    if (articleCreated) router.push(`/creation-contenu/article/${articleCreated.uuid}`);
-  };
+		// if article is created then we redirect to the form with the uuid (to be in an updating state)
+		if (articleCreated) router.push(`/creation-contenu/article/${articleCreated.uuid}`);
+	};
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* TITLE */}
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Titre *</FormLabel>
-              <FormControl>
-                <Input placeholder="" {...field} />
-              </FormControl>
-              <FormDescription>Le titre de l&apos;article</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+	return (
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+				{/* TITLE */}
+				<FormField
+					control={form.control}
+					name="title"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Titre *</FormLabel>
+							<FormControl>
+								<Input placeholder="" {...field} />
+							</FormControl>
+							<FormDescription>Le titre de l&apos;article</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-        {/* PRESENTATION */}
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Présentation</FormLabel>
-              <FormControl>
-                <Textarea placeholder="" {...field} />
-              </FormControl>
-              <FormDescription>Une brève description de l&apos;article</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+				{/* PRESENTATION */}
+				<FormField
+					control={form.control}
+					name="description"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Présentation</FormLabel>
+							<FormControl>
+								<Textarea placeholder="" {...field} />
+							</FormControl>
+							<FormDescription>Une brève description de l&apos;article</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-        {/* CONTENT */}
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contenu *</FormLabel>
-              <FormControl>
-                <TiptapDynamic description={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormDescription>Le contenu de l&apos;article</FormDescription>
-              {/* @ts-ignore need to fix this */}
-              {form.formState.isSubmitted && form.formState.errors[""] && (
-                /* @ts-ignore need to fix this */
-                <FormMessage>{form.formState.errors[""].message}</FormMessage>
-              )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+				{/* CONTENT */}
+				<FormField
+					control={form.control}
+					name="content"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Contenu *</FormLabel>
+							<FormControl>
+								<TiptapDynamic description={field.value} onChange={field.onChange} />
+							</FormControl>
+							<FormDescription>Le contenu de l&apos;article</FormDescription>
+							// TODO need to be fixed
+							{form.formState.isSubmitted && form.formState.errors[""] && (
+								<FormMessage>{form.formState.errors[""].message}</FormMessage>
+							)}
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-        {/* CONCLUSION */}
-        <FormField
-          control={form.control}
-          name="conclusion"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Conclusion</FormLabel>
-              <FormControl>
-                <Textarea placeholder="" {...field} />
-              </FormControl>
-              <FormDescription>Une brève conclusion de l&apos;article</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+				{/* CONCLUSION */}
+				<FormField
+					control={form.control}
+					name="conclusion"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Conclusion</FormLabel>
+							<FormControl>
+								<Textarea placeholder="" {...field} />
+							</FormControl>
+							<FormDescription>Une brève conclusion de l&apos;article</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-        <FormField
-          control={form.control}
-          name="lang"
-          render={({ field }) => <input type="hidden" {...field} />}
-        />
+				<FormField
+					control={form.control}
+					name="lang"
+					render={({ field }) => <input type="hidden" {...field} />}
+				/>
 
-        <p className="pt-5 text-xs">* champs obligatoires</p>
+				<p className="pt-5 text-xs">* champs obligatoires</p>
 
-        <Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
-          Enregistrer
-        </Button>
-      </form>
-    </Form>
-  );
+				<Button
+					disabled={createMutation.isPending}
+					isLoading={createMutation.isPending}
+					type="submit"
+				>
+					Enregistrer
+				</Button>
+			</form>
+		</Form>
+	);
 };
 
 export default FormArticle;

@@ -1,8 +1,7 @@
-
 export default function Page() {
-  return (
-    <>
-      <h1>documentation</h1>
-    </>
-  );
-};
+	return (
+		<>
+			<h1>documentation</h1>
+		</>
+	);
+}
