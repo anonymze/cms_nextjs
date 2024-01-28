@@ -40,7 +40,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/ui/Skeleton/Skeleton.tsx"
   ],
   "exclude": ["node_modules"]
 }

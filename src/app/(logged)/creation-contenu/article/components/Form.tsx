@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/Button";
 
+import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { type ArticleI18ns, formCreateArticleSchema } from "@/types/article";
@@ -59,8 +59,8 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 		},
 	});
 
-	const articleI18n = article?.i18n.find((articleI18n) => articleI18n.lang === langForm);
-
+	const articleI18n = article?.i18n?.find((articleI18n) => articleI18n.lang === langForm);
+	
 	const form = useForm<z.infer<typeof formCreateArticleSchema>>({
 		resolver: zodResolver(formCreateArticleSchema),
 		mode: "onSubmit",
@@ -132,7 +132,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 								<TiptapDynamic description={field.value} onChange={field.onChange} />
 							</FormControl>
 							<FormDescription>Le contenu de l&apos;article</FormDescription>
-							// TODO need to be fixed
+							{/* TODO need to be fixed */}
 							{form.formState.isSubmitted && form.formState.errors[""] && (
 								<FormMessage>{form.formState.errors[""].message}</FormMessage>
 							)}

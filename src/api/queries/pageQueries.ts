@@ -33,7 +33,10 @@ export async function deletePageQuery(articleId: Page["uuid"]) {
 	return result.data;
 }
 
-export async function updatePageQuery(articleId: Page["uuid"]) {
-	const result = await api.patch(`pages/${articleId}`);
+export async function updatePageQuery(
+	page: { uuid: Page["uuid"] } & z.infer<typeof formCreatePageSchema>,
+) {
+	const { uuid, ...data } = page;
+	const result = await api.patch(`pages/${uuid}`, data);
 	return result.data;
 }

@@ -18,7 +18,7 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 
 	if (!uuid) return jsonResponseNotFound("Article not found");
 
-	const article = await prisma.article.findUnique({
+	const article = await prisma.article.findUniqueOrThrow({
 		select: {
 			uuid: true,
 			i18n: {
@@ -36,12 +36,12 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 		},
 	});
 
+	if (!article) return jsonResponseNotFound("Article not found");
+
 	return jsonResponsePost(article);
 }
 
 export async function DELETE(_: NextRequest, { params }: { params: { uuid: string } }) {
-	console.log("cicicic");
-	console.log(params);
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 

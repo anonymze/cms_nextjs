@@ -35,6 +35,8 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 		},
 	});
 
+	if (!page) return jsonResponseNotFound("Page not found");
+
 	return jsonResponsePost(page);
 }
 

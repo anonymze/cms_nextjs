@@ -2,7 +2,7 @@
 
 import { deleteArticleQuery, getArticlesQuery } from "@/api/queries/articleQueries";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Table from "../../../../components/ui/Table/Table";
+import Table from "../../../../../components/ui/Table/Table";
 import { getKeysTypedObject } from "@/utils/helper";
 import { useRouter, useSearchParams } from "next/navigation";
 

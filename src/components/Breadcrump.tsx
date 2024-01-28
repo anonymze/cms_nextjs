@@ -45,9 +45,12 @@ const Breadcrump: React.FC = () => {
 		<div className="mb-3 text-sm italic" role="navigation">
 			{pathnames.map((pathname, idx) => (
 				<React.Fragment key={pathname}>
-					{" - "}
+					{"  -  "}
 					<Link
-						className={cn({ underline: idx === currentIdxPathname })}
+						title={convertPathnameToReadableString(pathname)}
+						className={cn("inline-block max-w-40 truncate align-bottom", {
+							underline: idx === currentIdxPathname,
+						})}
 						href={constructURL(pathnames, idx)}
 					>
 						{convertPathnameToReadableString(pathname)}

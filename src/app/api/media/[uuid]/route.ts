@@ -1,10 +1,13 @@
+import { jsonResponseNotFound } from "@/utils/api/responses/response_error";
 import prisma from "@/utils/libs/prisma/single_instance";
 import fs from "fs";
 import path from "path";
+import { responseDelete } from "@/utils/api/responses/response_success";
+import type { NextRequest } from "next/server";
 
-export async function DELETE(req: Request) {
-	// get uuid form url
-	const uuid = req.url.split("/").at(-1);
+export async function DELETE(_: NextRequest, { params }: { params: { uuid: string } }) {
+	// we get the UUID from the URL params
+	const uuid = params.uuid;
 
 	await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -13,7 +16,7 @@ export async function DELETE(req: Request) {
 		where: { uuid },
 	});
 
-	if (!file) return Response.json("Fichier non trouvé", { status: 404 });
+	if (!file) return jsonResponseNotFound("Fichier non");
 
 	// delete the file from the public/media folder
 	try {
@@ -24,5 +27,5 @@ export async function DELETE(req: Request) {
 		where: { uuid },
 	});
 
-	return Response.json("Ok", { status: 200 });
+	return responseDelete();
 }

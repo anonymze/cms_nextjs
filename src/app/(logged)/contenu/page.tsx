@@ -1,20 +1,10 @@
-import Content from "./components/Content";
-import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
-import { getArticlesQuery } from "@/api/queries/articleQueries";
+import { CardContentManager } from "@/components/ui/Card/CardContent";
 
-// get the data from the server then hydrate it on children
-// or you can props drilling with initial data (i use this if only 1 layer of props drilling)
 export default async function Page() {
-	const queryClient = new QueryClient();
-
-	await queryClient.prefetchQuery({
-		queryKey: ["articles"],
-		queryFn: getArticlesQuery,
-	});
-
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Content />
-		</HydrationBoundary>
+		<div className="flex flex-col gap-y-6 justify-center items-center">
+			<CardContentManager redirect="/contenu/articles" title="Voir les articles" />
+			<CardContentManager redirect="/contenu/pages" title="Voir les pages" />
+		</div>
 	);
 }

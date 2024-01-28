@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formCreatePageSchema, type PageI18ns } from "@/types/page";
 import { useMutation } from "@tanstack/react-query";
-import { createPageQuery } from "@/api/queries/pageQueries";
+import { createPageQuery, updatePageQuery } from "@/api/queries/pageQueries";
 import {
 	FormField,
 	FormItem,
@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/Form/Textarea";
 import { Input } from "@/components/ui/Form/Input";
 import type { z } from "zod";
 import type { I18n } from "@/types/i18n";
+import { useRouter } from "next/navigation";
 
 interface Props {
 	langForm?: I18n;
@@ -26,6 +27,8 @@ interface Props {
 }
 
 const FormPage: React.FC<Props> = ({ langForm, page }) => {
+	const router = useRouter();
+
 	const createMutation = useMutation({
 		mutationFn: createPageQuery,
 		mutationKey: ["pages"],
@@ -35,21 +38,38 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		},
 	});
 
+	const updateMutation = useMutation({
+		mutationFn: updatePageQuery,
+		mutationKey: ["page", { slug: page?.uuid }],
+		meta: {
+			action: "update",
+			message: "Page modifiée",
+		},
+	});
+
+	const pageI18n = page?.i18n?.find((pageI18n) => pageI18n.lang === langForm);
+
 	const form = useForm<z.infer<typeof formCreatePageSchema>>({
 		resolver: zodResolver(formCreatePageSchema),
 		mode: "onSubmit",
 		// default values is needed if controller used
 		defaultValues: {
-			title: "",
-			subtitle: "",
-			description: "",
+			title: pageI18n?.title || "",
+			subtitle: pageI18n?.subtitle || "",
+			description: pageI18n?.description || "",
 			lang: langForm,
 		},
 	});
 
 	// values are typesafe
 	async function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
-		createMutation.mutate(values);
+		// if uuid is present then we update the entity
+		if (page?.uuid) return updateMutation.mutate({ ...values, uuid: page.uuid });
+
+		const pageCreated = await createMutation.mutateAsync(values);
+
+		// if page is created then we redirect to the form with the uuid (to be in an updating state)
+		if (pageCreated) router.push(`/creation-contenu/page/${pageCreated.uuid}`);
 	}
 
 	return (
