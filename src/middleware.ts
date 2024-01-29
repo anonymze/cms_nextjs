@@ -29,11 +29,12 @@ export default authMiddleware({
 		}
 
 		if (req.nextUrl.pathname.startsWith("/api")) {
-			// if we got a valid token api in the request, we skip the clerk authentication with next()
-			if (hasValidToken(req)) return NextResponse.next();
+			// invalid token return 401
+			if (!hasValidToken(req)) return new Response(undefined, { status: 401 });
 
-			// else we return a 401 unauthorized
-			return new Response(undefined, { status: 401 });
+			// TODO invalid role return 401 (like "GUEST")			
+
+			return NextResponse.next();
 		}
 
 		return;

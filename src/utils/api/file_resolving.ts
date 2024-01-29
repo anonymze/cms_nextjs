@@ -1,10 +1,10 @@
 import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 import { MAX_FILE_SIZE, isValidFileType } from "../file_resolving";
 import path from "path";
 import prisma from "../libs/prisma/single_instance";
 import type { Media } from "@prisma/client";
+import { randomUUID } from "crypto";
 
 const FOLDER_MEDIA = "media";
 
@@ -27,7 +27,7 @@ type ManagedFiles = { error: false; filesEntity: Media[] } | { error: true };
 
 export async function manageFiles(files: File[]) {
 	try {
-		const mediaFiles = [];
+		const mediaFiles = new Array();
 
 		for await (const file of files) {
 			const createdFile = await createFileLocally(file);
@@ -49,7 +49,7 @@ export async function manageFiles(files: File[]) {
 
 const createFileLocally = async (file: File) => {
 	// unique hash for the name of the file
-	const hash = uuidv4();
+	const hash = randomUUID();
 	const repertoryMedia = path.join("public", FOLDER_MEDIA);
 	const fileExtension = getFileExtension(file.type);
 	// slash is needed at the start for nextjs images

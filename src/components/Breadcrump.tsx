@@ -5,10 +5,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/utils/libs/tailwind/merge";
 import { Button } from "./ui/Button";
-import { ArrowBigLeft, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const convertPathnameToReadableString = (pathname: string) => {
-	return pathname.replaceAll("-", " ").replace(/^./, pathname[0]!.toUpperCase());
+	return pathname.replaceAll("-", " ");
 };
 
 const constructURL = (pathnames: string[], currentIndex: number) => {
@@ -48,7 +48,7 @@ const Breadcrump: React.FC = () => {
 					{"  -  "}
 					<Link
 						title={convertPathnameToReadableString(pathname)}
-						className={cn("inline-block max-w-40 truncate align-bottom", {
+						className={cn("inline-block max-w-32 truncate align-bottom first-letter:uppercase lg:max-w-40", {
 							underline: idx === currentIdxPathname,
 						})}
 						href={constructURL(pathnames, idx)}

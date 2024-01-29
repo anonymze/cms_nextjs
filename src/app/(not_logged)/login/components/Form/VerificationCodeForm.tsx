@@ -15,7 +15,7 @@ export default function VerificationCodeForm() {
 	const router = useRouter();
 	const { isLoaded: isClerkLoaded, signUp } = useSignUp();
 
-	const onSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
+	const verificationCode = async (ev: React.FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		setIsLoading(true);
 
@@ -53,7 +53,7 @@ export default function VerificationCodeForm() {
 	};
 
 	return (
-		<form onSubmit={onSubmit} autoComplete="off">
+		<form onSubmit={verificationCode} autoComplete="off">
 			<div className="grid gap-2">
 				<div className="grid gap-1">
 					<Label className="sr-only" htmlFor="code">

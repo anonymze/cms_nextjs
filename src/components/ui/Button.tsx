@@ -45,6 +45,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					className,
 				)}
 				disabled={disabled}
+				aria-disabled={disabled}
 				{...props}
 			>
 				{isLoading && <SpinnerLoader className="mr-2" />}

@@ -26,7 +26,7 @@ export const optionsNavigation = [
 		initial: "H",
 		current: false,
 	},
-	{ id: 2, name: "Documentation", href: "/documentation", initial: "T", current: false },
+	{ id: 2, name: "Configuration", href: "/configuration", initial: "T", current: false },
 ] satisfies Array<{
 	id: number;
 	name: string;

@@ -76,7 +76,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 	});
 
 	// values are typesafe
-	const onSubmit = async (values: z.infer<typeof formCreateArticleSchema>) => {
+	const createOrUpdateArticle = async (values: z.infer<typeof formCreateArticleSchema>) => {
 		// if uuid is present then we update the entity
 		if (article?.uuid) return updateMutation.mutate({ ...values, uuid: article.uuid });
 
@@ -88,7 +88,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+			<form onSubmit={form.handleSubmit(createOrUpdateArticle)} className="space-y-6">
 				{/* TITLE */}
 				<FormField
 					control={form.control}

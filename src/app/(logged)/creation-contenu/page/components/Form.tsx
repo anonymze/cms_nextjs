@@ -62,7 +62,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 	});
 
 	// values are typesafe
-	async function onSubmit(values: z.infer<typeof formCreatePageSchema>) {
+	async function createOrUpdatePage(values: z.infer<typeof formCreatePageSchema>) {
 		// if uuid is present then we update the entity
 		if (page?.uuid) return updateMutation.mutate({ ...values, uuid: page.uuid });
 
@@ -74,7 +74,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+			<form onSubmit={form.handleSubmit(createOrUpdatePage)} className="space-y-6">
 				{/* TITLE */}
 				<FormField
 					control={form.control}
