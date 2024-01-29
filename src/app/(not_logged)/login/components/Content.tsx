@@ -3,9 +3,9 @@
 import { Activity } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import VerificationCodeForm from "./Form/VerificationCodeForm";
-import AuthForm from "./Form/AuthForm";
+import AuthForm, { type AuthServices } from "./Form/AuthForm";
 
-export default function Content() {
+export default function Content(props: AuthServices) {
 	const searchParams = useSearchParams();
 
 	return (
@@ -43,7 +43,7 @@ export default function Content() {
 						)}
 					</p>
 				</div>
-				{searchParams.get("verifying") ? <VerificationCodeForm /> : <AuthForm />}
+				{searchParams.get("verifying") ? <VerificationCodeForm /> : <AuthForm {...props} />}
 			</div>
 		</div>
 	);

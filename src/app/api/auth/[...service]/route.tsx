@@ -32,7 +32,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 		return new Response(errorDescription);
 	}
 
-	if (!code || state !== "1234") {
+	if (!code || state !== ENV_SERVER.GITHUB_ASK_AUTHORIZATION_URL) {
 		return new Response("Oauth invalid data");
 	}
 
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest, { params }: { params: { service: str
 		const accessToken = await api.post(
 			ENV_SERVER.GITHUB_ACCESS_TOKEN_URL as string,
 			{
-				client_id: ENV_SERVER.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+				client_id: ENV_SERVER.GITHUB_PUBLIC_CLIENT_ID,
 				client_secret: ENV_SERVER.GITHUB_CLIENT_SECRET,
 				redirect_uri: ENV_SERVER.GITHUB_REDIRECT_URL,
 				code,
@@ -144,24 +144,32 @@ function verifyEnvVariables(service: string): void {
 
 	// clerk
 	if (!ENV_SERVER.CLERK_MAGIC_LINK_URL) {
-		throw new Error("URL magic link clerk is not set in your env");
+		throw new Error("URL magic link clerk is not set");
 	}
 }
 
 function verifyGithubEnvVariables(): void {
-	if (!ENV_SERVER.NEXT_PUBLIC_GITHUB_CLIENT_ID) {
-		throw new Error("Client ID is not set in your env");
+	if (!ENV_SERVER.GITHUB_PUBLIC_CLIENT_ID) {
+		throw new Error("Github client ID is not set");
 	}
 
-	if (!ENV_SERVER.NEXT_PUBLIC_GITHUB_CLIENT_ID) {
-		throw new Error("Client secret is not set in your env");
+	if (!ENV_SERVER.GITHUB_CLIENT_SECRET) {
+		throw new Error("Github client secret is not set");
+	}
+
+	if (!ENV_SERVER.GITHUB_STATE) {
+		throw new Error("Github client state is not set");
 	}
 
 	if (!ENV_SERVER.GITHUB_ACCESS_TOKEN_URL) {
-		throw new Error("Github URL access token is not set in your env");
+		throw new Error("Github access token URL is not set");
+	}
+
+	if (!ENV_SERVER.GITHUB_REDIRECT_URL) {
+		throw new Error("Github redirect URL is not set");
 	}
 
 	if (!ENV_SERVER.GITHUB_USER_URL) {
-		throw new Error("URL user github is not set in your env");
+		throw new Error("Github user URL is not set");
 	}
 }

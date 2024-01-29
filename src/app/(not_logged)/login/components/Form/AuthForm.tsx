@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
 import { SpinnerLoader } from "@/components/ui/Loader/Loader";
-import { ENV_CLIENT } from "@/env/client";
 import { isClerkAPIResponseError, useClerk, useSignIn, useSignUp } from "@clerk/nextjs";
 import { GithubIcon } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +14,16 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { LoginStateInfo } from "@/types/user";
 
-const AuthForm = () => {
+export type AuthServices = {
+	githubAuth?: {
+		url: string
+	};
+	googleAuth?: {
+		url: string
+	};
+};
+
+const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
 	const { signOut } = useClerk();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -178,21 +186,20 @@ const AuthForm = () => {
 				</div>
 			</div>
 			<div className="flex flex-wrap justify-around gap-2">
-				{ENV_CLIENT.NEXT_PUBLIC_GITHUB_CLIENT_ID &&
-					ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL && (
-						<a
-							onClick={(ev) => {
-								if (isLoading) return ev.preventDefault();
-								setIsLoading(true);
-							}}
-							aria-disabled={isLoading}
-							className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-primary/10"
-							href={ENV_CLIENT.NEXT_PUBLIC_GITHUB_ASK_AUTHORIZATION_URL}
-							title="Github connexion"
-						>
-							{isLoading ? <SpinnerLoader className="mr-0" /> : <GithubIcon className="size-5" />}
-						</a>
-					)}
+				{githubAuth?.url && (
+					<a
+						onClick={(ev) => {
+							if (isLoading) return ev.preventDefault();
+							setIsLoading(true);
+						}}
+						aria-disabled={isLoading}
+						className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-primary/10"
+						href={githubAuth.url}
+						title="Github connexion"
+					>
+						{isLoading ? <SpinnerLoader className="mr-0" /> : <GithubIcon className="size-5" />}
+					</a>
+				)}
 			</div>
 			<p className="px-8 text-center text-sm text-muted-foreground">
 				En vous connectant, vous agréez aux{" "}

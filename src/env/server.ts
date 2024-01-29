@@ -10,9 +10,11 @@ const envServerSchema = z.object({
 	NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string(),
 	NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string(),
 	// GITHUB
-	NEXT_PUBLIC_GITHUB_CLIENT_ID: z.string().optional(),
+	GITHUB_PUBLIC_CLIENT_ID: z.string().optional(),
 	GITHUB_CLIENT_SECRET: z.string().optional(),
 	GITHUB_REDIRECT_URL: z.string().url().optional(),
+	GITHUB_STATE: z.string().optional(),
+	GITHUB_ASK_AUTHORIZATION_URL: z.string().url().optional(),
 	GITHUB_ACCESS_TOKEN_URL: z.string().url().optional(),
 	GITHUB_USER_URL: z.string().url().optional(),
 });
