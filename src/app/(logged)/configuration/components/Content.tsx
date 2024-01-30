@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { generateAndWriteApiKey } from "../server/action";
+import { generateAndWriteApiKey, writeGithubKeys } from "../server/action";
 import ApiForm from "./form/ApiForm";
 import GithubForm from "./form/GithubForm";
 import GoogleForm from "./form/GoogleForm";
@@ -11,8 +11,16 @@ export type StateConfigurationApiForm = {
 	error: boolean;
 };
 
+export type StateConfigurationGithubForm = {
+	clientId: string;
+	clientSecret: string;
+	error: boolean
+};
+
 type Configuration = {
 	apiKey: StateConfigurationApiForm["apiKey"];
+	githubClientId: StateConfigurationGithubForm["clientId"];
+	githubClientSecret: StateConfigurationGithubForm["clientSecret"];
 };
 
 export default function Content({ configuration }: { configuration: Configuration }) {
@@ -21,8 +29,9 @@ export default function Content({ configuration }: { configuration: Configuratio
 		error: false,
 	});
 
-    const [stateGithub, formActionGithub] = useFormState(generateAndWriteApiKey, {
-		apiKey: configuration.apiKey,
+    const [stateGithub, formActionGithub] = useFormState(writeGithubKeys, {
+		clientId: configuration.githubClientId,
+		clientSecret: configuration.githubClientSecret,
 		error: false,
 	});
 
@@ -39,7 +48,7 @@ export default function Content({ configuration }: { configuration: Configuratio
 
 			<details name="config" className="mb-6">
 				<summary>Github</summary>
-				<form action={formActionApi} className="mb-8">
+				<form action={formActionGithub} className="mb-8">
 					<GithubForm state={stateGithub} />
 				</form>
 			</details>

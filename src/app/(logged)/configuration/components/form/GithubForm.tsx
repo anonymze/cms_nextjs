@@ -3,26 +3,25 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Form/Input";
 import { Label } from "@/components/ui/Form/Label";
-import { cn } from "@/utils/libs/tailwind/merge";
-import { RotateCwIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import type { StateConfigurationApiForm } from "../Content";
+import type { StateConfigurationGithubForm } from "../Content";
 
-export default function GithubForm({ state }: { state: StateConfigurationApiForm }) {
+export default function GithubForm({ state }: { state: StateConfigurationGithubForm }) {
 	const { pending } = useFormStatus();
 
 	return (
-		<>
-			<Label htmlFor="apiKey">Clé API</Label>
-			<div className="flex items-center gap-x-2 mt-2">
-				<Input type="text" id="apiKey" name="apiKey" defaultValue={state.apiKey} />
-				<Button type="submit" disabled={pending}>
-					<RotateCwIcon
-						className={cn("flex-shrink-0 w-4 h-4 mr-2", pending && "animate-spin")}
-					/>
-					Générer
-				</Button>
+		<div className="mt-4">
+			<div className="mb-5">
+				<Label htmlFor="clientId">Client ID</Label>
+				<Input required className="mt-2" type="text" id="clientId" name="clientId" defaultValue={state.clientId} />
 			</div>
-		</>
+			<div className="mb-5">
+				<Label htmlFor="clientSecret">Client Secret</Label>
+				<Input required className="mt-2" type="text" id="clientSecret" name="clientSecret" defaultValue={state.clientSecret} />
+			</div>
+			<Button type="submit" disabled={pending}>
+				Enregistrer
+			</Button>
+		</div>
 	);
 }

@@ -1,10 +1,14 @@
 "use server";
 
-import { formCreateConfigurationSchema } from "@/types/configuration";
+
 import { randomUUID } from "crypto";
 import fs from "fs";
-import type { StateConfigurationApiForm } from "../components/Content";
 
+import type {
+	StateConfigurationApiForm,
+	StateConfigurationGithubForm,
+} from "../components/Content";
+import { formCreateConfigurationApiSchema, formCreateConfigurationGithubSchema } from "@/types/configuration";
 
 const FILE_TO_WRITE = ".env.local";
 /* api */
@@ -12,9 +16,11 @@ const ENV_API_KEY = "API_KEY=";
 /* github */
 const ENV_GITHUB_CLIENT_SECRET = "GITHUB_CLIENT_SECRET=";
 const ENV_GITHUB_PUBLIC_CLIENT_ID = "GITHUB_PUBLIC_CLIENT_ID=";
+const ENV_GITHUB_STATE = "GITHUB_STATE=";
+/* google */
 
 export async function generateAndWriteApiKey(_: StateConfigurationApiForm, __: FormData) {
-	const result = formCreateConfigurationSchema.safeParse({ apiKey: randomUUID() });
+	const result = formCreateConfigurationApiSchema.safeParse({ apiKey: randomUUID() });
 
 	if (!result.success) return { apiKey: "", error: true };
 
@@ -30,21 +36,20 @@ export async function generateAndWriteApiKey(_: StateConfigurationApiForm, __: F
 	};
 }
 
-export async function writeGithubKeys(_: StateConfigurationApiForm, __: FormData) {
-	const result = formCreateConfigurationSchema.safeParse({ apiKey: randomUUID() });
+export async function writeGithubKeys(_: StateConfigurationGithubForm, form: FormData) {
+	const result = formCreateConfigurationGithubSchema.safeParse({ clientId: form.get('clientId'), clientSecret: form.get('clientSecret')});
 
-	if (!result.success) return { apiKey: "", error: true };
+	if (!result.success) return { clientId: "", clientSecret: "", error: true };
 
 	try {
-		writeEnvKey(ENV_API_KEY, result.data.apiKey);
+		writeEnvKey(ENV_GITHUB_PUBLIC_CLIENT_ID, result.data.clientId);
+		writeEnvKey(ENV_GITHUB_CLIENT_SECRET, result.data.clientSecret);
+		writeEnvKey(ENV_GITHUB_STATE, randomUUID());
 	} catch (err) {
-		return { apiKey: "", error: true };
+		return { clientId: "", clientSecret: "", error: true };
 	}
 
-	return {
-		apiKey: result.data.apiKey,
-		error: false,
-	};
+	return { clientId: result.data.clientId, clientSecret: result.data.clientSecret, error: false };
 }
 
 const writeEnvKey = (keyName: string, content: string) => {
