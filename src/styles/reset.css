@@ -21,6 +21,9 @@
       margin: 0;
       /** Ensure that the body fill the en entiere view port (vh dynamic) **/
       min-height: 100dvh;
+      /** smooth font rendering **/
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
   }
 
   h1,

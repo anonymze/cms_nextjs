@@ -8,6 +8,7 @@ import { Button } from "./ui/Button";
 import { ArrowLeft } from "lucide-react";
 
 const convertPathnameToReadableString = (pathname: string) => {
+	console.log(pathname);
 	return pathname.replaceAll("-", " ");
 };
 
@@ -48,7 +49,7 @@ const Breadcrump: React.FC = () => {
 					{"  -  "}
 					<Link
 						title={convertPathnameToReadableString(pathname)}
-						className={cn("inline-block max-w-32 truncate align-bottom first-letter:uppercase lg:max-w-40", {
+						className={cn("inline-block max-w-32 pr-[0.5px] truncate align-bottom first-letter:uppercase lg:max-w-40", {
 							underline: idx === currentIdxPathname,
 						})}
 						href={constructURL(pathnames, idx)}

@@ -7,10 +7,8 @@ _npm run knip to detect unused dependencies, files, and more..._
 * vérifier clé api pas leak
 * add images in page/article form
 * add an update page per image, with description, tag etc... with i18n handled
-* options generate a random api key for api
-* options add config github oauth
+* configuration google
 * add google
-* add apple
 * admin actions (delete, update)
 * traduction globale
 * moidifier role
