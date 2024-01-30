@@ -16,4 +16,6 @@ _npm run knip to detect unused dependencies, files, and more..._
 * moidifier role
 * locale + changer from default
 * GUEST ROLE
+* refacto global css
 * doc
+* my little cms

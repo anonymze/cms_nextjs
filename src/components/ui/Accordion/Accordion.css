@@ -1,0 +1,26 @@
+details {
+    border-width: 1px;
+    border-radius: theme("borderRadius.md");
+    padding: 1rem;
+    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    opacity: 0.8;
+
+    :is(&[open], &:hover) {
+        opacity: 1;
+    }
+
+    summary {
+        position: relative;
+        cursor: pointer;
+
+        &::marker {
+            content: "";
+        }
+
+        &::after {
+            content: "+";
+            position: absolute;
+            right: 0;
+        }
+    }
+}
