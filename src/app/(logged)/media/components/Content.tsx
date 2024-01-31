@@ -25,16 +25,16 @@ export default function Content({ hideActionButton }: { hideActionButton: boolea
 	});
 
 	const sendFilesToApi = (ev: FormEvent<HTMLFormElement>) => {
-		// prevent button with role cancel any action
-		if ((ev.nativeEvent as SubmitEvent)?.submitter?.role === "cancel") return;
+		if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel") return;
+		if (files.length <= 0) return;
 		createMutation.mutate(files);
 	};
 
 	return (
 		<>
 			<Dialog
-				// on close we reset the UI after the transition time
-				onClose={() => setTimeout(() => setFiles([]), 150)}
+				// on close we reset the UI after the transition time of closing the dialog
+				onClose={() => setTimeout(() => setFiles([]), 250)}
 				onSubmitForm={sendFilesToApi}
 				ref={dialogRef}
 			>

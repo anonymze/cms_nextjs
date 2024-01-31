@@ -7,13 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getMediaQuery } from "@/api/queries/mediaQueries";
 import { cn } from "@/utils/libs/tailwind/merge";
 import Content from "./Content";
-import { useId } from "react";
 
 const COUNT_CARD_SKELETONS = 6;
 
 const Media: React.FC = () => {
-	const id = useId();
-
 	const { data: media } = useQuery({
 		queryKey: ["media"],
 		queryFn: getMediaQuery,
@@ -49,8 +46,8 @@ const Media: React.FC = () => {
 			) : (
 				<>
 					{/* else we show the placeholders */}
-					{[...Array(COUNT_CARD_SKELETONS)].map((_) => (
-						<SkeletonCard key={id} />
+					{[...Array(COUNT_CARD_SKELETONS)].map((nbr) => (
+						<SkeletonCard key={nbr} />
 					))}
 				</>
 			)}

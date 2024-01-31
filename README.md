@@ -17,3 +17,4 @@ _npm run knip to detect unused dependencies, files, and more..._
 * refacto global css
 * doc
 * my little cms
+* media ajouté sur annulation

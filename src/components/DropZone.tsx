@@ -3,11 +3,10 @@ import { Button } from "./ui/Button";
 import MediaOperation from "./MediaOperation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/file_resolving";
-import { type DragEvent, type ChangeEvent } from "react";
 import { CloudLightningIcon } from "lucide-react";
+import { type DragEvent, type ChangeEvent } from "react";
 
 export default function DropZone() {
-	const id = useId();
 	const [isDraggedOver, setIsDraggedOver] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	// files from context
@@ -42,9 +41,12 @@ export default function DropZone() {
 			const setupFiles = new Array();
 
 			for await (const file of fileList) {
+				const base64File = await convertFileToBaseType<string>(file, "base64");
+
 				setupFiles.push({
+					id: Math.random().toString(36).substring(2, 9),
 					file,
-					base64: await convertFileToBaseType<string>(file, "base64"),
+					base64: base64File,
 				});
 			}
 
@@ -95,13 +97,12 @@ export default function DropZone() {
 				</div>
 			) : (
 				<div className="flex flex-wrap gap-4 min-h-48">
-					{files.map((fileTypeStore, idx) => (
+					{files.map((fileTypeStore) => (
 						<MediaOperation
 							removeFileFromApi={false}
-							key={id}
+							key={fileTypeStore.id}
 							onClick={() => removeFile(fileTypeStore.file)}
 						>
-							{/* eslint-disable-next-line @next/next/no-img-element */}
 							<img src={fileTypeStore.base64} alt="" />
 						</MediaOperation>
 					))}

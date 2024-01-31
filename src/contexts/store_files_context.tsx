@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 export type FileTypeStore = {
+	// id in case of looping
+	id: string;
 	file: File;
 	base64: string;
 };
