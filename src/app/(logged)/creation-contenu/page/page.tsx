@@ -2,7 +2,7 @@
 "use client";
 
 import { ContentFormI18n } from "@/components/ContentFormI18n";
-import FormPage from "./components/Form";
+import FormPage from "./_components/Form";
 
 export default function Page() {
 	return (

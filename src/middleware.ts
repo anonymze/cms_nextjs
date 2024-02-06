@@ -17,7 +17,7 @@ export const config = {
 		 * - api/users/verify/* && api/auth/*  (some api routes are not verified at all)
 		 * - test (in case you wanna make a test route)
 		 */
-		"/((?!_next/static|_next/image|favicon.ico|test|login.*|register.*|politique-de-confidentialite|cgu|api/users/verify/*|api/users/verify/*|api/auth/*).*)",
+		"/((?!_next/static|_next/image|favicon.ico|test|login.*|register.*|politique-de-confidentialite|cgu|api/users/verify/*|api/auth/*).*)",
 	],
 };
 
@@ -30,7 +30,7 @@ export default authMiddleware({
 
 		if (req.nextUrl.pathname.startsWith("/api")) {
 			// invalid token return 401
-			if (!hasValidToken(req)) return new Response(undefined, { status: 401 });
+			if (!hasValidToken(req)) return new Response(undefined, { status: 401, statusText: "API KEYS NOT SET OR INCORRECT" });
 
 			// TODO invalid role return 401 (like "GUEST")			
 

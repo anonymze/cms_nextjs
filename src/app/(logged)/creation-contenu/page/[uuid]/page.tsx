@@ -1,6 +1,6 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
-import Content from "./components/Content";
 import { getPageQuery } from "@/api/queries/pageQueries";
+import Content from "./_components/Content";
 
 export default async function Page({ params }: { params: { uuid: string } }) {
 	const queryClient = new QueryClient();

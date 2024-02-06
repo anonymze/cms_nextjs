@@ -1,4 +1,4 @@
-import Content from "./components/Content";
+import Content from "./_components/Content";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 import { getUsersQuery } from "@/api/queries/userQueries";
 

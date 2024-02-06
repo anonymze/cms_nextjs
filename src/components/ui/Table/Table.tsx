@@ -4,7 +4,7 @@ import { memo } from "react";
 import TableBody, { type TValue } from "./TableBody";
 import { TableHead, type THead } from "./TableHead";
 import { useSearchParams } from "next/navigation";
-import { PaginationComponent } from "../Pagination/PaginationComponent";
+import { PaginationComponent } from "../pagination/PaginationComponent";
 import type { TAction } from "./TableActions";
 
 export interface ITable {

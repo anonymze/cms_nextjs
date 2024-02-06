@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/libs/tailwind/merge";
 import Link from "next/link";
-import { mainNavigation, optionsNavigation } from "./navLinks";
+import { mainNavigation, optionsNavigation } from "./NavLinks";
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";

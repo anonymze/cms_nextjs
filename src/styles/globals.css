@@ -15,22 +15,22 @@
   }
 
   h1 {
-    font-size: theme("fontSize.xl");
+    font-size: theme("fontSize.lg");
     font-weight: 600;
   }
 
   h2 {
-    font-size: theme("fontSize.lg");
-    font-weight: 500;
-  }
-
-  h3 {
     font-size: theme("fontSize.md");
     font-weight: 500;
   }
 
-  p {
+  h3 {
     font-size: theme("fontSize.base");
+    font-weight: 500;
+  }
+
+  p {
+    font-size: theme("fontSize.sm");
   }
 
   a {

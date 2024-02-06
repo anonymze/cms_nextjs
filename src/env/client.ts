@@ -14,7 +14,6 @@ export const envClientTyped: { [Key in keyof EnvClientType]: EnvClientType[Key] 
 	NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
 };
 
-/**
- * public envs are passed to the client after build time
- */
+
+// public envs are passed to the client after build time
 export const ENV_CLIENT = envClientSchema.parse(envClientTyped);

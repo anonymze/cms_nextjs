@@ -1,4 +1,4 @@
-import { CardContentManager } from "@/components/ui/Card/CardContent";
+import { CardContentManager } from "@/components/ui/Card";
 
 export default async function Page() {
 	return (

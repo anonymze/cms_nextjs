@@ -3,7 +3,7 @@ import Layout from "@/components/layout/Layout";
 import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/tailwind/merge";
 import { Providers } from "@/utils/libs/providers";
-import { Toaster } from "@/components/ui/Toaster/Sonner";
+import { Toaster } from "@/components/ui/toaster/Sonner";
 import type { Metadata } from "next";
 
 const fontSans = Inter({

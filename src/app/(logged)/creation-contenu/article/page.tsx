@@ -1,5 +1,5 @@
 import { ContentFormI18n } from "@/components/ContentFormI18n";
-import FormArticle from "./components/Form";
+import FormArticle from "./_components/Form";
 
 export default async function Page() {
 	return (
