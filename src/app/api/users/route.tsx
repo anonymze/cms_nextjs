@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
 				isActive: true,
 				name: true,
 				email: true,
+				role: true
 			},
 		},
 		req.nextUrl.searchParams,

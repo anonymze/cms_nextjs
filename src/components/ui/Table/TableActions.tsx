@@ -14,7 +14,8 @@ import { CheckIcon, MoreHorizontal } from "lucide-react";
 import React from "react";
 import { Button } from "../Button";
 
-interface SubMenuActions extends Omit<TAction, "subMenu" | "showMarkerOnDisabled"> {}
+interface SubMenuActions
+  extends Omit<TAction, "subMenu" | "showMarkerOnDisabled"> {}
 
 export interface TAction {
   label: string;
@@ -52,17 +53,20 @@ export function TableActions({
                 // your disabled function should return a boolean
                 disabled={!action.disabled ? false : !!action.disabled(entity)}
               >
-                {action.label} {!action.disabled ? null : !!action.disabled(entity) && action.showMarkerOnDisabled ? <CheckIcon className="w-4 h-4" /> : null}
+                {action.label}{" "}
+                {!action.disabled ? null : !!action.disabled(entity) &&
+                  action.showMarkerOnDisabled ? (
+                  <CheckIcon className="w-4 h-4 ml-2" />
+                ) : null}
               </DropdownMenuItem>
             ) : (
               <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  {action.label}
-                </DropdownMenuSubTrigger>
+                <DropdownMenuSubTrigger>{action.label}</DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
-                  {action.subMenu.items.map((subAction) => (
-                    <DropdownMenuSubContent key={subAction.label}>
+                  <DropdownMenuSubContent>
+                    {action.subMenu.items.map((subAction) => (
                       <DropdownMenuItem
+                        key={subAction.label}
                         // you return the entity in action function, and do whatever you want with it in the parent
                         onClick={() => subAction.action?.(entity?.uuid || "")}
                         // your function disabled should return a boolean
@@ -72,10 +76,14 @@ export function TableActions({
                             : !!subAction.disabled(entity)
                         }
                       >
-                        {subAction.label} {!action.disabled ? null : !!action.disabled(entity) && action.showMarkerOnDisabled ? <CheckIcon className="w-4 h-4" /> : null}
+                        {subAction.label}{" "}
+                        {!subAction.disabled ? null : !!subAction.disabled(entity) &&
+                          action.showMarkerOnDisabled ? (
+                          <CheckIcon className="w-4 h-4 ml-2" />
+                        ) : null}
                       </DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  ))}
+                    ))}
+                  </DropdownMenuSubContent>
                 </DropdownMenuPortal>
               </DropdownMenuSub>
             )}
