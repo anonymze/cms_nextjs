@@ -16,4 +16,4 @@ _npm run knip to detect unused dependencies, files, and more..._
 * doc
 * my little cms
 
-* rename _components
+* css
