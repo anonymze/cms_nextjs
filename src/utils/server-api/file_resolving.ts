@@ -1,6 +1,6 @@
 import fs from "fs";
 import { z } from "zod";
-import { MAX_FILE_SIZE, isValidFileType } from "../file_resolving";
+import { MAX_FILE_SIZE, isValidFileType } from "../web-api/file_resolving";
 import path from "path";
 import prisma from "../libs/prisma/single_instance";
 import type { Media } from "@prisma/client";

@@ -1,8 +1,8 @@
 import { mediaSchema } from "@/types/media";
-import { manageFiles } from "@/utils/api/file_resolving";
-import { processRequest } from "@/utils/api/responses/response";
-import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
-import { jsonResponsePost } from "@/utils/api/responses/response_success";
+import { manageFiles } from "@/utils/server-api/file_resolving";
+import { processRequest } from "@/utils/server-api/responses/response";
+import { jsonResponseBadRequest } from "@/utils/server-api/responses/response_error";
+import { jsonResponsePost } from "@/utils/server-api/responses/response_success";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
 

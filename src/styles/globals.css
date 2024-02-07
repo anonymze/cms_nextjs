@@ -39,6 +39,13 @@
 }
 
 
+/* 
+  i'm putting css variables this way because i want to see the colors here with my IDE
+  if i put hsl directly in tailwind.config instead i can't see them here (i think ?)
+  but doing this this with way may lose some of the tailwind features like the color opacity ex: bg-primary/10
+  but if you set correctly all your variables you should not need to use them
+  but be careful you may have to modify some shadcn components yourself in depends of your configuration
+ */
 @layer base {
   :root {
     --background: hsl(0 0% 100%);

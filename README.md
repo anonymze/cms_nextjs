@@ -11,9 +11,6 @@ _npm run knip to detect unused dependencies, files, and more..._
 * admin actions (delete, update)
 * traduction globale
 * moidifier role
-* locale + changer from default
 * GUEST ROLE
 * doc
 * my little cms
-
-* css

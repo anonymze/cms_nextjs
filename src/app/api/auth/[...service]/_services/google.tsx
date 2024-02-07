@@ -1,7 +1,7 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
 import { NextRequest } from "next/server";
-import { handleClerkLogicAndReturnResponse } from "../route";
+import { handleClerkLoginAndReturnResponse } from "../route";
 
 export async function responseGoogleAuthLogic(req: NextRequest) {
 	const searchParams = req.nextUrl.searchParams;
@@ -35,7 +35,7 @@ export async function responseGoogleAuthLogic(req: NextRequest) {
 		// userGoogle.data.verified;
 		// userGoogle.data.picture;
 
-		return handleClerkLogicAndReturnResponse(req, userGoogle.data.email, userGoogle.data.name)
+		return handleClerkLoginAndReturnResponse(req, userGoogle.data.email, userGoogle.data.name)
 	} catch (error) {
 		if (error instanceof Response) {
 			return new Response(error.statusText, { status: error.status });

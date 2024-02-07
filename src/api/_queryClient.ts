@@ -2,6 +2,7 @@ import "@tanstack/react-query";
 import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
+import type { I18n } from "@/types/i18n";
 
 // we use axios so we declare the type error returned
 declare module "@tanstack/react-query" {
@@ -15,7 +16,7 @@ declare module "@tanstack/react-query" {
 	}
 
 	interface QueryFunctionContext {
-		queryKey: [string, { page?: string; slug?: string }];
+		queryKey: [string, { page?: string; slug?: string, lang?: I18n }];
 	}
 }
 

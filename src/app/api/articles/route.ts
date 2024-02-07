@@ -1,8 +1,8 @@
 import { articleSchema, type ArticleI18n } from "@/types/article";
 import { I18n } from "@/types/i18n";
-import { processRequest } from "@/utils/api/responses/response";
-import { jsonResponseBadRequest } from "@/utils/api/responses/response_error";
-import { jsonResponsePost } from "@/utils/api/responses/response_success";
+import { processRequest } from "@/utils/server-api/responses/response";
+import { jsonResponseBadRequest } from "@/utils/server-api/responses/response_error";
+import { jsonResponsePost } from "@/utils/server-api/responses/response_success";
 import { findManyWithDefaults } from "@/utils/libs/prisma/find_many_defaults";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { Article } from "@prisma/client";

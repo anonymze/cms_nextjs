@@ -1,7 +1,7 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
 import { NextRequest } from "next/server";
-import { handleClerkLogicAndReturnResponse } from "../route";
+import { handleClerkLoginAndReturnResponse } from "../route";
 
 export async function responseGithubAuthLogic(req: NextRequest) {
 	const searchParams = req.nextUrl.searchParams;
@@ -44,7 +44,7 @@ export async function responseGithubAuthLogic(req: NextRequest) {
 			headers: { Authorization: `Bearer ${accessToken.data.access_token}` },
 		});
 
-		return handleClerkLogicAndReturnResponse(req, userGithub.data.email, userGithub.data.name)
+		return handleClerkLoginAndReturnResponse(req, userGithub.data.email, userGithub.data.name)
 	} catch (error) {
 		if (error instanceof Response) return new Response(error.statusText, { status: error.status });
 

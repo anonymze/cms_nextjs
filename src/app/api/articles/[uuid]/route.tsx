@@ -1,12 +1,12 @@
 import { formCreateArticleSchema } from "@/types/article";
 import { I18n } from "@/types/i18n";
-import { processRequest } from "@/utils/api/responses/response";
-import { jsonResponseBadRequest, jsonResponseNotFound } from "@/utils/api/responses/response_error";
+import { processRequest } from "@/utils/server-api/responses/response";
+import { jsonResponseBadRequest, jsonResponseNotFound } from "@/utils/server-api/responses/response_error";
 import {
 	jsonResponsePatch,
 	jsonResponsePost,
 	responseDelete,
-} from "@/utils/api/responses/response_success";
+} from "@/utils/server-api/responses/response_success";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
 

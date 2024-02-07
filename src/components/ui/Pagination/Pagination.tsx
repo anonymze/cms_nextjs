@@ -53,10 +53,10 @@ const PaginationLink = ({
       aria-current={isActive ? "page" : undefined}
       className={cn(
         "flex items-center px-3 py-1 border rounded-sm",
-        {
-          isActive: "bg-primary/5 cursor-default",
-          isDisabled: "bg-secondary cursor-not-allowed",
-        },
+
+        isActive && "bg-primary/5 cursor-default",
+        isDisabled && "bg-secondary cursor-not-allowed",
+
         !isDisabled && "hover:bg-primary/10",
         className
       )}
