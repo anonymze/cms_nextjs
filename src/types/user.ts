@@ -8,7 +8,7 @@ export enum UserRole {
 }
 
 // less score has more rights
-export const HierarchyRole = {
+export const HierarchyRole: { [K in UserRole]: number} = {
 	ADMIN: 0,
 	USER: 1,
 	GUEST: 2,

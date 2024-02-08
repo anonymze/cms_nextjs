@@ -7,9 +7,9 @@ _npm run knip to detect unused dependencies, files, and more..._
 * vérifier clé api pas leak
 * add images in page/article form
 * add an update page per image, with description, tag etc... with i18n handled
-* admin actions (delete, update)
 * traduction globale
 * moidifier role
 * GUEST ROLE
 * doc
 * my little cms
+* description all functions + rights on TODO

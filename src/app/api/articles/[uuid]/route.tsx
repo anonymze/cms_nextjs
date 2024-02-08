@@ -6,7 +6,6 @@ import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized 
 import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
 import { isActionAuthorizedByRole } from "@/utils/helper";
-import { HierarchyRole, UserRole } from "@/types/user";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -53,9 +52,8 @@ export async function DELETE(_: NextRequest, { params }: { params: { uuid: strin
 
 	if (!article) return jsonResponseNotFound("Article not found");
 
-	if (!isActionAuthorizedByRole(UserRole.GUEST)) {
-		return jsonResponseUnauthorized();	
-	}
+	// todo GET user clerk
+	if (!isActionAuthorizedByRole()) return jsonResponseUnauthorized();	
 
 	await prisma.article.delete({
 		where: {

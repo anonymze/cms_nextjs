@@ -1,4 +1,4 @@
-import { HierarchyRole, type UserRole } from "@/types/user";
+import { HierarchyRole, UserRole } from "@/types/user";
 
 // pause the thread for a given time
 export function sleep(time: number) {
@@ -29,12 +29,12 @@ export const getKeysTypedObject = Object.keys as <T extends object>(
 /**
  * @param currentRole - the role of the user
  * @param minimumRole - the minimum role required to perform the action
- * @description less score has more rights and minimumRole default is "Admin" if nothing is provided
+ * @description less score has more rights
+ * @description minimumRole default to "Admin" and currentRole default to GUEST
  */
 export function isActionAuthorizedByRole(
-  currentRole:  UserRole,
-  minimumRole: typeof HierarchyRole[keyof typeof HierarchyRole] = 0
+  currentRole: UserRole | null = UserRole.GUEST,
+  minimumRole: (typeof HierarchyRole)[keyof typeof HierarchyRole] = 0
 ) {
-  // authorized user need to be less or equal than minimum role
-  return HierarchyRole[currentRole] <= minimumRole;
+  return currentRole ? HierarchyRole[currentRole] <= minimumRole : false;
 }
