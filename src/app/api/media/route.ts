@@ -1,9 +1,9 @@
 import { mediaSchema } from "@/types/media";
-import { manageFiles } from "@/utils/server-api/file_resolving";
-import { processRequest } from "@/utils/server-api/responses/response";
-import { jsonResponseBadRequest } from "@/utils/server-api/responses/response_error";
-import { jsonResponsePost } from "@/utils/server-api/responses/response_success";
+import { manageFiles } from "@/utils/server_api/file_resolving";
+import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
+import { jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
+import { jsonResponsePost } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
@@ -21,7 +21,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-	const { error, messageError, data } = await processRequest(
+	const { error, messageError, data } = await validateRequest(
 		req,
 		ACCEPTED_CONTENT_TYPE,
 		mediaSchema,

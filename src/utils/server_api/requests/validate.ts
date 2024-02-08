@@ -1,8 +1,8 @@
 import type { z } from "zod";
-import { ParserRequest } from "./core_logic";
+import { ParserRequest } from "./parser";
 import type { NextRequest } from "next/server";
 
-type ProcessRequest<T> =
+type ExtractedDataRequest<T> =
 	| {
 			error: true;
 			messageError: string;
@@ -18,7 +18,7 @@ type ProcessRequest<T> =
  * @param acceptedContentType What type of data is accepted
  * @param dataSchema Validator schema
  */
-export async function processRequest<T>(
+export async function validateRequest<T>(
 	req: NextRequest,
 	acceptedContentType: "application/json" | "multipart/form-data",
 	dataSchema: z.ZodType<T>,
@@ -30,7 +30,7 @@ export async function processRequest<T>(
 		parserRequest.validContentType();
 
 	if (errorContentType)
-		return { error: true, messageError: messageErrorContentType } satisfies ProcessRequest<T>;
+		return { error: true, messageError: messageErrorContentType } satisfies ExtractedDataRequest<T>;
 
 	// we parse the body to get the data
 	const {
@@ -40,7 +40,7 @@ export async function processRequest<T>(
 	} = await parserRequest.parseBody();
 
 	if (errorParsing)
-		return { error: true, messageError: messageErrorParsing } satisfies ProcessRequest<T>;
+		return { error: true, messageError: messageErrorParsing } satisfies ExtractedDataRequest<T>;
 
 	// we verify the correctness of the data
 	const {
@@ -50,8 +50,8 @@ export async function processRequest<T>(
 	} = parserRequest.validData(dataParsed, dataSchema);
 
 	if (errorVerification)
-		return { error: true, messageError: messageErrorVerification } satisfies ProcessRequest<T>;
+		return { error: true, messageError: messageErrorVerification } satisfies ExtractedDataRequest<T>;
 
 	// we return the data typed correctly
-	return { error: false, data: dataVerified } satisfies ProcessRequest<T>;
+	return { error: false, data: dataVerified } satisfies ExtractedDataRequest<T>;
 }

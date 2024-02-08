@@ -1,10 +1,18 @@
 import { z } from "zod";
 
+// source of truths for roles
 export enum UserRole {
 	ADMIN = "ADMIN",
 	USER = "USER",
 	GUEST = "GUEST",
 }
+
+// less score has more rights
+export const HierarchyRole = {
+	ADMIN: 0,
+	USER: 1,
+	GUEST: 2,
+} as const;
 
 export enum LoginStateInfo {
 	CREATED = "created",

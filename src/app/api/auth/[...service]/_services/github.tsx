@@ -54,7 +54,7 @@ export async function responseGithubAuthLogic(req: NextRequest) {
 	}
 }
 
-export function verifyGithubEnvVariables(): void {
+export function verifyGithubEnvVariables() {
 	if (!ENV_SERVER.GITHUB_PUBLIC_CLIENT_ID) {
 		throw new Error("Github client ID is not set");
 	}

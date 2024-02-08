@@ -1,16 +1,16 @@
-import { processRequest } from "@/utils/server-api/responses/response";
-import { jsonResponseBadRequest } from "@/utils/server-api/responses/response_error";
-import { jsonResponsePost } from "@/utils/server-api/responses/response_success";
+import { validateRequest } from "@/utils/server_api/requests/validate";
 import { clerkClient } from "@clerk/nextjs";
 import { userCreationSchema } from "@/types/user";
 import prisma from "@/utils/libs/prisma/single_instance";
-import { findManyWithDefaults } from "@/utils/libs/prisma/find_many_defaults";
+import { findManyWithLimit } from "@/utils/libs/prisma/helper";
 import type { NextRequest } from "next/server";
+import { jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
+import { jsonResponsePost } from "@/utils/server_api/responses/successes";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET(req: NextRequest) {
-	const users = await findManyWithDefaults(
+	const users = await findManyWithLimit(
 		prisma.user,
 		{
 			select: {
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-	const { error, messageError, data } = await processRequest(
+	const { error, messageError, data } = await validateRequest(
 		req,
 		ACCEPTED_CONTENT_TYPE,
 		userCreationSchema,

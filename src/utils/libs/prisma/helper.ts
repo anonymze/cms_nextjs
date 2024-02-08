@@ -1,7 +1,7 @@
-export const DEFAULT_LENGTH_FIND_MANY = 10;
+export const DEFAULT_LIMIT_FIND_MANY = 10;
 
 // need to type correctly this sh**
-export async function findManyWithDefaults(
+export async function findManyWithLimit(
 	model: any,
 	options: any,
 	searchParams?: URLSearchParams,
@@ -12,8 +12,8 @@ export async function findManyWithDefaults(
 
 	return model.findMany({
 		// page 1 means we skip 0 entry
-		skip: (page - 1) * DEFAULT_LENGTH_FIND_MANY,
-		take: DEFAULT_LENGTH_FIND_MANY,
+		skip: (page - 1) * DEFAULT_LIMIT_FIND_MANY,
+		take: DEFAULT_LIMIT_FIND_MANY,
 		...options,
 	});
 }

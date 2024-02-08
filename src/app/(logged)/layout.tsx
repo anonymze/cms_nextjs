@@ -2,7 +2,7 @@ import App from "@/App";
 import Layout from "@/components/layout/Layout";
 import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/tailwind/merge";
-import { Providers } from "@/utils/libs/providers";
+import { Providers } from "@/utils/providers";
 import { Toaster } from "@/components/ui/toaster/Sonner";
 import type { Metadata } from "next";
 

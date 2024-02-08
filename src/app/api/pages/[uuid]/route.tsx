@@ -1,14 +1,10 @@
 import { I18n } from "@/types/i18n";
 import { formCreatePageSchema } from "@/types/page";
-import { processRequest } from "@/utils/server-api/responses/response";
-import { jsonResponseBadRequest, jsonResponseNotFound } from "@/utils/server-api/responses/response_error";
-import {
-	jsonResponsePatch,
-	jsonResponsePost,
-	responseDelete,
-} from "@/utils/server-api/responses/response_success";
+import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
+import { jsonResponseNotFound, jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
+import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -79,7 +75,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 
 	if (!page) return jsonResponseNotFound("Page not found");
 
-	const { error, messageError, data } = await processRequest(
+	const { error, messageError, data } = await validateRequest(
 		req,
 		ACCEPTED_CONTENT_TYPE,
 		formCreatePageSchema,

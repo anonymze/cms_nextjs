@@ -1,38 +1,12 @@
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 
-/** TYPING */
-type ParserRequestReturn<T = undefined> =
+type ParsedRequest<T = undefined> =
 	| { error: true; messageError: string }
 	| { error: false; [key: string]: T | boolean };
 
-interface JsonResponseCore {
-	status: number;
-	statusText: string;
-	headers?: HeadersInit;
-}
-
-interface JsonResponse extends JsonResponseCore {
-	body: unknown;
-}
-
 type ContentTypeAccepted = "multipart/form-data" | "application/json";
 
-/** MY JSON RESPONSE */
-export function jsonResponse({ body, status, statusText, headers }: JsonResponse) {
-	// in case there is a mistake we handle no content
-	if (status === 204) {
-		return new Response(null, { status, statusText, headers });
-	}
-
-	if (!body || typeof body === "string") {
-		return Response.json({ status, message: body || "OK" }, { status, statusText, headers });
-	}
-
-	return Response.json(body, { status, statusText, headers });
-}
-
-/** PARSER REQUEST */
 export class ParserRequest {
 	constructor(
 		readonly request: NextRequest,
@@ -44,13 +18,13 @@ export class ParserRequest {
 			return {
 				error: false,
 				contentType: this.contentType,
-			} satisfies ParserRequestReturn<ContentTypeAccepted>;
+			} satisfies ParsedRequest<ContentTypeAccepted>;
 		}
 
 		return {
 			error: true,
 			messageError: "Content-Type doit être de type multipart/form-data",
-		} satisfies ParserRequestReturn;
+		} satisfies ParsedRequest;
 	}
 
 	validData<T>(data: unknown, dataSchema: z.ZodType<T>) {
@@ -74,16 +48,16 @@ export class ParserRequest {
 			return {
 				error: false,
 				dataVerified: dataSchema.parse(dataToParse),
-			} satisfies ParserRequestReturn<T>;
+			} satisfies ParsedRequest<T>;
 		} catch (err) {
 			if (err instanceof Error) {
-				return { error: true, messageError: err.message } satisfies ParserRequestReturn;
+				return { error: true, messageError: err.message } satisfies ParsedRequest;
 			}
 
 			return {
 				error: true,
 				messageError: "Les données sont invalides",
-			} satisfies ParserRequestReturn;
+			} satisfies ParsedRequest;
 		}
 	}
 
@@ -93,18 +67,18 @@ export class ParserRequest {
 				return {
 					error: false,
 					dataParsed: await this.request.formData(),
-				} satisfies ParserRequestReturn<FormData>;
+				} satisfies ParsedRequest<FormData>;
 			}
 
 			return {
 				error: false,
 				dataParsed: await this.request.json(),
-			} satisfies ParserRequestReturn<any>;
+			} satisfies ParsedRequest<any>;
 		} catch (_) {
 			return {
 				error: true,
 				messageError: "Le contenu n'a pas pu être parsé",
-			} satisfies ParserRequestReturn;
+			} satisfies ParsedRequest;
 		}
 	}
 }

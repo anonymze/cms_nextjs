@@ -1,13 +1,9 @@
 import { userUpdateSchema } from "@/types/user";
-import { processRequest } from "@/utils/server-api/responses/response";
-import { jsonResponseBadRequest, jsonResponseNotFound } from "@/utils/server-api/responses/response_error";
-import {
-	jsonResponsePatch,
-	jsonResponsePost,
-	responseDelete,
-} from "@/utils/server-api/responses/response_success";
+import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
+import { jsonResponseNotFound, jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
+import { responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -50,7 +46,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 
 	if (!user) return jsonResponseNotFound("User not found");
 
-	const { error, messageError, data } = await processRequest(
+	const { error, messageError, data } = await validateRequest(
 		req,
 		ACCEPTED_CONTENT_TYPE,
 		userUpdateSchema,

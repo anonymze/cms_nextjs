@@ -1,4 +1,4 @@
-import { FileSchema } from "@/utils/server-api/file_resolving";
+import { FileSchema } from "@/utils/server_api/file_resolving";
 import { z } from "zod";
 
 // Zod schema

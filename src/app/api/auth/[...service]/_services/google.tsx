@@ -49,7 +49,7 @@ export async function responseGoogleAuthLogic(req: NextRequest) {
 	}
 }
 
-export function verifyGoogleEnvVariables(): void {
+export function verifyGoogleEnvVariables() {
 	if (!ENV_SERVER.GOOGLE_CLIENT_SECRET) {
 		throw new Error("Google client ID is not set");
 	}

@@ -1,5 +1,5 @@
-import { jsonResponse } from "@/utils/server-api/responses/core_logic";
-import { jsonResponseForbidden, jsonResponseNotFound } from "@/utils/server-api/responses/response_error";
+import { jsonResponse } from "@/utils/server_api/requests/parser";
+import { jsonResponseForbidden, jsonResponseNotFound } from "@/utils/server_api/responses/response_error";
 import prisma from "@/utils/libs/prisma/single_instance";
 import type { NextRequest } from "next/server";
 

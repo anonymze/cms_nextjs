@@ -1,7 +1,7 @@
-import { jsonResponse } from "./core_logic";
+import { jsonResponse } from "./json_response";
 
 export function jsonResponseUnauthorized(message = "Unauthorized") {
-	jsonResponse({ body: message, status: 401, statusText: "Unauthorized" });
+	return jsonResponse({ body: message, status: 401, statusText: "Unauthorized" });
 }
 
 export function jsonResponseBadRequest(message: string, statusText = "Bad Request") {

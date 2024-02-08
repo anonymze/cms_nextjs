@@ -1,14 +1,12 @@
 import { formCreateArticleSchema } from "@/types/article";
 import { I18n } from "@/types/i18n";
-import { processRequest } from "@/utils/server-api/responses/response";
-import { jsonResponseBadRequest, jsonResponseNotFound } from "@/utils/server-api/responses/response_error";
-import {
-	jsonResponsePatch,
-	jsonResponsePost,
-	responseDelete,
-} from "@/utils/server-api/responses/response_success";
+import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
+import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized } from "@/utils/server_api/responses/errors";
+import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
+import { isActionAuthorizedByRole } from "@/utils/helper";
+import { HierarchyRole, UserRole } from "@/types/user";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -55,7 +53,9 @@ export async function DELETE(_: NextRequest, { params }: { params: { uuid: strin
 
 	if (!article) return jsonResponseNotFound("Article not found");
 
-	// TODO setup rights, only admin should be able to delete users
+	if (!isActionAuthorizedByRole(UserRole.GUEST)) {
+		return jsonResponseUnauthorized();	
+	}
 
 	await prisma.article.delete({
 		where: {
@@ -80,7 +80,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 
 	if (!article) return jsonResponseNotFound("Article not found");
 
-	const { error, messageError, data } = await processRequest(
+	const { error, messageError, data } = await validateRequest(
 		req,
 		ACCEPTED_CONTENT_TYPE,
 		formCreateArticleSchema,

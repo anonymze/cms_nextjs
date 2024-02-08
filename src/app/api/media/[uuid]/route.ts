@@ -1,8 +1,8 @@
-import { jsonResponseNotFound } from "@/utils/server-api/responses/response_error";
+import { jsonResponseNotFound } from "@/utils/server_api/responses/response_error";
 import prisma from "@/utils/libs/prisma/single_instance";
 import fs from "fs";
 import path from "path";
-import { responseDelete } from "@/utils/server-api/responses/response_success";
+import { responseDelete } from "@/utils/server_api/responses/success";
 import type { NextRequest } from "next/server";
 
 export async function DELETE(_: NextRequest, { params }: { params: { uuid: string } }) {

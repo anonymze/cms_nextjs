@@ -8,7 +8,9 @@ import type {
 import type { z } from "zod";
 import type { QueryFunctionContext } from "@tanstack/react-query";
 import { I18n } from "@/types/i18n";
-import { LocalStorageKeys, getLocalStorageItem } from "@/utils/web-api/local_storage";
+import { LocalStorageKeys } from "@/types/local_storage";
+import { getLocalStorageItem } from "@/utils/web_api/local_storage";
+
 
 export async function getArticlesQuery({ queryKey }: QueryFunctionContext) {
   const searchParams = new URLSearchParams();
@@ -17,9 +19,9 @@ export async function getArticlesQuery({ queryKey }: QueryFunctionContext) {
   if (params?.page) searchParams.set("page", params.page);
 
   if (params?.lang) {
-    searchParams.set("lang", params.lang);
+    searchParams.set(LocalStorageKeys.LANG, params.lang);
   } else {
-    searchParams.set("lang", getLocalStorageItem(LocalStorageKeys.LANG) || I18n.DEFAULT);
+    searchParams.set(LocalStorageKeys.LANG, getLocalStorageItem(LocalStorageKeys.LANG) || I18n.DEFAULT);
   }
 
   const result = await api.get<ArticleI18n[]>(
@@ -35,9 +37,9 @@ export async function getArticleQuery({ queryKey }: QueryFunctionContext) {
   if (!params?.slug) throw new Error("Slug is required");
 
   if (params?.lang) {
-    searchParams.set("lang", params.lang);
+    searchParams.set(LocalStorageKeys.LANG, params.lang);
   } else {
-    searchParams.set("lang", localStorage.getItem(LocalStorageKeys.LANG) || I18n.DEFAULT);
+    searchParams.set(LocalStorageKeys.LANG, getLocalStorageItem(LocalStorageKeys.LANG) || I18n.DEFAULT);
   }
 
   const result = await api.get<ArticleI18ns>(
