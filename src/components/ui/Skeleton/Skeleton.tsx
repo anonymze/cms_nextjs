@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import "./Skeleton.css";
 
 type SuffixValueHeight = "%" | "px" | "rem" | "em" | "vh";

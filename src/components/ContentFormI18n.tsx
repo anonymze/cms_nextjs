@@ -3,7 +3,7 @@
 import React from "react";
 import Flags from "@/components/Flags";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { getKeysTypedObject } from "@/utils/helper";

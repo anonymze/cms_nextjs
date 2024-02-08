@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import { Button } from "./ui/Button";
 import { ArrowLeft } from "lucide-react";
 

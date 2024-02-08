@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

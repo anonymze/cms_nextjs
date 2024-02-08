@@ -2,17 +2,22 @@ import { I18n } from "@/types/i18n";
 import { formCreatePageSchema } from "@/types/page";
 import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
-import type { NextRequest } from "next/server";
-import { jsonResponseNotFound, jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
+import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized } from "@/utils/server_api/responses/errors";
 import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
+import { HierarchyRole } from "@/types/user";
+import { isActionAuthorized } from "@/utils/helper";
+import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
+import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
-export async function GET(_: NextRequest, { params }: { params: { uuid: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
 	if (!uuid) return jsonResponseNotFound("Page not found");
+
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	const page = await prisma.page.findUnique({
 		select: {
@@ -36,11 +41,13 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 	return jsonResponsePost(page);
 }
 
-export async function DELETE(_: NextRequest, { params }: { params: { uuid: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
 	if (!uuid) return jsonResponseNotFound("Page not found");
+	
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	const page = await prisma.page.findUnique({
 		where: {
@@ -50,7 +57,6 @@ export async function DELETE(_: NextRequest, { params }: { params: { uuid: strin
 
 	if (!page) return jsonResponseNotFound("Page not found");
 
-	// TODO setup rights, only admin should be able to delete users
 
 	await prisma.page.delete({
 		where: {
@@ -66,6 +72,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 	const uuid = params.uuid;
 
 	if (!uuid) return jsonResponseNotFound("Page not found");
+
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	const page = await prisma.page.findUnique({
 		where: {

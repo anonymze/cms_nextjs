@@ -1,6 +1,6 @@
 import App from "@/App";
 import { Inter } from "next/font/google";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster/Sonner";
 

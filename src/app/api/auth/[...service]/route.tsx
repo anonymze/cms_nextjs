@@ -12,6 +12,8 @@ import { api } from "@/api/_config";
 import prisma from "@/utils/libs/prisma/single_instance";
 import { clerkClient } from "@clerk/nextjs";
 import { LoginStateInfo } from "@/types/user";
+import { get } from "http";
+import { getUserWithEmail } from "@/utils/libs/prisma/server_helper";
 
 export async function GET(
   req: NextRequest,
@@ -61,9 +63,7 @@ export async function handleClerkLoginAndReturnResponse(
   email: string,
   name = ""
 ) {
-  const existingUserOurDb = await prisma.user.findUnique({
-    where: { email },
-  });
+  const existingUserOurDb = await getUserWithEmail(email);
 
   // if user does not exists in our database at all, we create it, he will be inactive by default
   if (!existingUserOurDb) {

@@ -4,9 +4,9 @@ import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
 import type { I18n } from "@/types/i18n";
 
-// we use axios so we declare the type error returned
 declare module "@tanstack/react-query" {
 	interface Register {
+		// we use axios so we declare the type error returned
 		defaultError: AxiosError;
 	}
 

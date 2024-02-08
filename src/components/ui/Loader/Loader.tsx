@@ -1,4 +1,4 @@
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
 	large?: boolean;

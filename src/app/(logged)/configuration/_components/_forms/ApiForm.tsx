@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/form/Input";
 import { Label } from "@/components/ui/form/Label";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import { RotateCwIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import type { StateConfigurationApiForm } from "../Content";

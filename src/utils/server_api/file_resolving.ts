@@ -25,6 +25,10 @@ export const FileSchema = z
 
 type ManagedFiles = { error: false; filesEntity: Media[] } | { error: true };
 
+/**
+ * 
+ * @description manage files given, create them locally and in the database
+ */
 export async function manageFiles(files: File[]) {
 	try {
 		const mediaFiles = new Array();
@@ -47,6 +51,10 @@ export async function manageFiles(files: File[]) {
 	}
 }
 
+/**
+ * 
+ * @description create a file locally in the public folder
+ */
 const createFileLocally = async (file: File) => {
 	// unique hash for the name of the file
 	const hash = randomUUID();

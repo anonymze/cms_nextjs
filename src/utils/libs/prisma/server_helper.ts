@@ -1,3 +1,5 @@
+import prisma from "./single_instance";
+
 export const DEFAULT_LIMIT_FIND_MANY = 10;
 
 // need to type correctly this sh**
@@ -17,3 +19,19 @@ export async function findManyWithLimit(
 		...options,
 	});
 }
+
+export async function getUserWithEmail(email: string) {
+	return prisma.user.findUnique({
+		where: {
+			email,
+		},
+	});
+};
+
+export async function getUserWithUuid(uuid: string) {
+	return prisma.user.findUnique({
+		where: {
+			uuid,
+		},
+	});
+};

@@ -2,10 +2,10 @@ import { validateRequest } from "@/utils/server_api/requests/validate";
 import { clerkClient } from "@clerk/nextjs";
 import { userCreationSchema } from "@/types/user";
 import prisma from "@/utils/libs/prisma/single_instance";
-import { findManyWithLimit } from "@/utils/libs/prisma/helper";
-import type { NextRequest } from "next/server";
+import { findManyWithLimit, getUserWithEmail } from "@/utils/libs/prisma/server_helper";
 import { jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
 import { jsonResponsePost } from "@/utils/server_api/responses/successes";
+import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -44,11 +44,7 @@ export async function POST(req: NextRequest) {
 			return jsonResponseBadRequest("Email not found from auth service");
 		}
 
-		const user = await prisma.user.findUnique({
-			where: {
-				email,
-			},
-		});
+		const user = await getUserWithEmail(email);
 	
 		if (!user) {
 			const userCreated = await prisma.user.create({

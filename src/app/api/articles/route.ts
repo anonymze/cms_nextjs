@@ -1,7 +1,7 @@
 import { articleSchema, type ArticleI18n } from "@/types/article";
 import { I18n } from "@/types/i18n";
 import { validateRequest } from "@/utils/server_api/requests/validate";
-import { findManyWithLimit } from "@/utils/libs/prisma/helper";
+import { findManyWithLimit } from "@/utils/libs/prisma/server_helper";
 import prisma from "@/utils/libs/prisma/single_instance";
 import { jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
 import { jsonResponsePost } from "@/utils/server_api/responses/successes";

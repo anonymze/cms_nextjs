@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import Link from "next/link";
 import type { ButtonProps } from "../Button";
 

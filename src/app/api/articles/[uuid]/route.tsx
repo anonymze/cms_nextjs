@@ -4,16 +4,20 @@ import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
 import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized } from "@/utils/server_api/responses/errors";
 import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
+import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
+import { isActionAuthorized } from "@/utils/helper";
 import type { NextRequest } from "next/server";
-import { isActionAuthorizedByRole } from "@/utils/helper";
+import { HierarchyRole } from "@/types/user";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
-export async function GET(_: NextRequest, { params }: { params: { uuid: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
 	if (!uuid) return jsonResponseNotFound("Article not found");
+
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	const article = await prisma.article.findUniqueOrThrow({
 		select: {
@@ -38,11 +42,13 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 	return jsonResponsePost(article);
 }
 
-export async function DELETE(_: NextRequest, { params }: { params: { uuid: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
 	if (!uuid) return jsonResponseNotFound("Article not found");
+
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	const article = await prisma.article.findUnique({
 		where: {
@@ -52,8 +58,6 @@ export async function DELETE(_: NextRequest, { params }: { params: { uuid: strin
 
 	if (!article) return jsonResponseNotFound("Article not found");
 
-	// todo GET user clerk
-	if (!isActionAuthorizedByRole()) return jsonResponseUnauthorized();	
 
 	await prisma.article.delete({
 		where: {
@@ -70,13 +74,16 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 
 	if (!uuid) return jsonResponseNotFound("Article not found");
 
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
+
 	const article = await prisma.article.findUnique({
 		where: {
 			uuid,
 		},
 	});
-
+w
 	if (!article) return jsonResponseNotFound("Article not found");
+
 
 	const { error, messageError, data } = await validateRequest(
 		req,

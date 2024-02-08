@@ -3,7 +3,7 @@
 import { Trash2Icon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { SpinnerLoader } from "../ui/loader/Loader";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import { deleteMediaQuery } from "@/api/queries/mediaQueries";
 import type { HTMLAttributes } from "react";
 import type { Media } from "@prisma/client";

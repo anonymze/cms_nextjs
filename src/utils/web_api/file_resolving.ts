@@ -8,6 +8,10 @@ export function isValidFileType(file: File) {
 }
 
 // TODO T should match typing type
+/**
+ * 
+ * @description convert a file to a defined type (binary, base64, arrayBuffer)
+ */
 export async function convertFileToBaseType<T = string | ArrayBuffer>(
 	file: File,
 	type: "binary" | "base64" | "arrayBuffer",

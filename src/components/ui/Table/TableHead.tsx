@@ -4,7 +4,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { SpinnerLoader } from "../loader/Loader";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import type { ITable } from "./Table";
 
 export type OrderBy = "asc" | "desc" | "reset";

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import Link from "next/link";
 import { mainNavigation, optionsNavigation } from "./NavLinks";
 import { useClerk } from "@clerk/nextjs";

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import { SpinnerLoader } from "./loader/Loader";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

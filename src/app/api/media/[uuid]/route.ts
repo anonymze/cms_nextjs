@@ -1,15 +1,19 @@
-import { jsonResponseNotFound } from "@/utils/server_api/responses/response_error";
+
 import prisma from "@/utils/libs/prisma/single_instance";
 import fs from "fs";
 import path from "path";
-import { responseDelete } from "@/utils/server_api/responses/success";
+import { jsonResponseNotFound, jsonResponseUnauthorized } from "@/utils/server_api/responses/errors";
+import { responseDelete } from "@/utils/server_api/responses/successes";
+import { HierarchyRole } from "@/types/user";
+import { isActionAuthorized } from "@/utils/helper";
+import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
 import type { NextRequest } from "next/server";
 
-export async function DELETE(_: NextRequest, { params }: { params: { uuid: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
-	await new Promise((resolve) => setTimeout(resolve, 3000));
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	// get the file from the database
 	const file = await prisma.media.findUnique({

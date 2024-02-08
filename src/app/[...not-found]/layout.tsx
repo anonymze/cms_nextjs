@@ -1,7 +1,7 @@
 "use client"
 
 import { Inter } from "next/font/google";
-import { cn } from "@/utils/libs/tailwind/merge";
+import { cn } from "@/utils/libs/tailwind/helper";
 import "@/styles/globals.css";
 import { useThemeStore } from "@/contexts/store_ui_context";
 
