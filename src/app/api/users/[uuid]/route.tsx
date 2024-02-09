@@ -14,19 +14,17 @@ export async function DELETE(req: NextRequest, { params }: { params: { uuid: str
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
-	if (!uuid) return jsonResponseNotFound("User not found");
+	// we check if the user is authorized to perform the action
+	if (!isActionAuthorized(await getCurrentUser(req.cookies))) return jsonResponseUnauthorized();	
 
-	const user = await getUserWithUuid(uuid);
-
-	if (!user) return jsonResponseNotFound("User not found");
-
-	if (!isActionAuthorized(user)) return jsonResponseUnauthorized();	
-
-	await prisma.user.delete({
+	const { count } = await prisma.user.deleteMany({
 		where: {
 			uuid,
 		},
 	});
+
+	// we delete the user (deleteMany does not throw if the user is not found)
+	if (count === 0) return jsonResponseNotFound("User not found");
 
 	return responseDelete();
 }
@@ -35,14 +33,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
-	if (!uuid) return jsonResponseNotFound("User not found");
+	// we check if the user is authorized to perform the action
+	if (!isActionAuthorized(await getCurrentUser(req.cookies))) return jsonResponseUnauthorized();	
 
-	const user = await getUserWithUuid(uuid);
-
-	if (!user) return jsonResponseNotFound("User not found");
-
-	if (!isActionAuthorized(user)) return jsonResponseUnauthorized();	
-
+	// we verify the request
 	const { error, messageError, data } = await validateRequest(
 		req,
 		ACCEPTED_CONTENT_TYPE,
@@ -50,6 +44,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 	);
 
 	if (error) return jsonResponseBadRequest(messageError);
+
+	// we verify the user exists
+	if (!(await getUserWithUuid(uuid))) return jsonResponseNotFound("User not found");
 
 	const userUpdated = await prisma.user.update({
 		where: {

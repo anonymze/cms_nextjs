@@ -13,6 +13,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { uuid: str
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
+	// we check if the user is authorized to perform the action
 	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	// get the file from the database
@@ -20,9 +21,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { uuid: str
 		where: { uuid },
 	});
 
-	if (!file) return jsonResponseNotFound("Fichier non");
+	if (!file) return jsonResponseNotFound("Fichier not found");
 
-	// delete the file from the public/media folder
+	// delete the file from the public/media folder and database
 	try {
 		fs.unlinkSync(path.join("public", file.filepath_public));
 	} catch (_) {}

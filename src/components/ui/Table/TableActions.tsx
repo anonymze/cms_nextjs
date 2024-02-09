@@ -68,7 +68,7 @@ export function TableActions({
                       <DropdownMenuItem
                         key={subAction.label}
                         // you return the entity in action function, and do whatever you want with it in the parent
-                        onClick={() => subAction.action?.(entity?.uuid || "")}
+                        onClick={() => subAction.action?.(entity)}
                         // your function disabled should return a boolean
                         disabled={
                           !subAction.disabled

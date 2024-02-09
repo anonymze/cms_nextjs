@@ -2,7 +2,11 @@ import { I18n } from "@/types/i18n";
 import { formCreatePageSchema } from "@/types/page";
 import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
-import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized } from "@/utils/server_api/responses/errors";
+import {
+	jsonResponseNotFound,
+	jsonResponseBadRequest,
+	jsonResponseUnauthorized,
+} from "@/utils/server_api/responses/errors";
 import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
 import { HierarchyRole } from "@/types/user";
 import { isActionAuthorized } from "@/utils/helper";
@@ -14,10 +18,6 @@ const ACCEPTED_CONTENT_TYPE = "application/json";
 export async function GET(req: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
-
-	if (!uuid) return jsonResponseNotFound("Page not found");
-
-	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
 
 	const page = await prisma.page.findUnique({
 		select: {
@@ -45,24 +45,17 @@ export async function DELETE(req: NextRequest, { params }: { params: { uuid: str
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
-	if (!uuid) return jsonResponseNotFound("Page not found");
-	
-	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
+	// we check if the user is authorized to perform the action
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();
 
-	const page = await prisma.page.findUnique({
+	// we delete the page (deleteMany does not throw if the page is not found)
+	const { count } = await prisma.page.deleteMany({
 		where: {
 			uuid,
 		},
 	});
 
-	if (!page) return jsonResponseNotFound("Page not found");
-
-
-	await prisma.page.delete({
-		where: {
-			uuid,
-		},
-	});
+	if (count === 0) return jsonResponseNotFound("Page not found");
 
 	return responseDelete();
 }
@@ -71,10 +64,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
-	if (!uuid) return jsonResponseNotFound("Page not found");
+	// we check if the user is authorized to perform the action
+	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();
 
-	if (!isActionAuthorized(await getCurrentUser(req.cookies), HierarchyRole.USER)) return jsonResponseUnauthorized();	
+	// we verify the request
+	const { error, messageError, data } = await validateRequest(req, ACCEPTED_CONTENT_TYPE, formCreatePageSchema);
 
+	if (error) return jsonResponseBadRequest(messageError);
+
+	// we verify the page exists
 	const page = await prisma.page.findUnique({
 		where: {
 			uuid,
@@ -82,14 +80,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 	});
 
 	if (!page) return jsonResponseNotFound("Page not found");
-
-	const { error, messageError, data } = await validateRequest(
-		req,
-		ACCEPTED_CONTENT_TYPE,
-		formCreatePageSchema,
-	);
-
-	if (error) return jsonResponseBadRequest(messageError);
 
 	let recordI18n = await prisma.page_I18n.findFirst({
 		where: {

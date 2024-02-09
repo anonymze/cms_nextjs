@@ -75,21 +75,28 @@ export default function Content() {
             items: [
               {
                 label: "Administrateur",
-                action: () => {},
+                action: (entity: User) => {
+                  console.log(entity);
+                  updateMutation.mutate({ uuid: entity.uuid, role: UserRole.ADMIN });
+                },
                 disabled: (entity: User) => {
                   return entity.role === UserRole.ADMIN;
                 },
               },
               {
                 label: "Utilisateur",
-                action: () => {},
+                action: (entity: User) => {
+                  updateMutation.mutate({ uuid: entity.uuid, role: UserRole.USER });
+                },
                 disabled: (entity: User) => {
                   return entity.role === UserRole.USER;
                 },
               },
               {
                 label: "Invité",
-                action: () => {},
+                action: (entity: User) => {
+                  updateMutation.mutate({ uuid: entity.uuid, role: UserRole.GUEST });
+                },
                 disabled: (entity: User) => {
                   return entity.role === UserRole.GUEST;
                 },
