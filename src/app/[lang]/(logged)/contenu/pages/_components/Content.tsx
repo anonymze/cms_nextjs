@@ -1,33 +1,33 @@
 "use client";
 
-import { deleteArticleQuery, getArticlesQuery } from "@/api/queries/articleQueries";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Table from "../../../../../components/ui/table/Table";
+import Table from "../../../../../../components/ui/table/Table";
 import { getKeysTypedObject } from "@/utils/helper";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { Article } from "@prisma/client";
+import { deletePageQuery, getPagesQuery } from "@/api/queries/pageQueries";
+import type { Page } from "@prisma/client";
 
 export default function Content() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const { data: articles, isLoading } = useQuery({
-		queryKey: ["articles", { page: searchParams.get("page") }],
-		queryFn: getArticlesQuery,
+	const { data: pages, isLoading } = useQuery({
+		queryKey: ["pages", { page: searchParams.get("page") }],
+		queryFn: getPagesQuery,
 	});
 
 	const deleteMutation = useMutation({
-		mutationFn: deleteArticleQuery,
-		mutationKey: ["articles"],
+		mutationFn: deletePageQuery,
+		mutationKey: ["pages"],
 		meta: {
 			action: "delete",
-			message: "Article supprimé",
+			message: "Page supprimée",
 		},
 	});
 
 	if (isLoading) return <div>Chargement...</div>;
 
-	if (!articles || !articles[0]) {
+	if (!pages || !pages[0]) {
 		return <div>Aucune donnée...</div>;
 	}
 
@@ -38,21 +38,21 @@ export default function Content() {
 			actions={[
 				{
 					label: "Modifier",
-					action: (entity: Article) => {
-						router.push(`/creation-contenu/article/${entity.uuid}`);
+					action: (entity: Page) => {
+						router.push(`/creation-contenu/page/${entity.uuid}`);
 					},
 				},
 
 				{
 					label: "Supprimer",
-					action: (entity: Article) => {
+					action: (entity: Page) => {
 						deleteMutation.mutate(entity.uuid);
 					},
 				},
 			]}
 			isLoading={false}
-			data={articles}
-			columns={getKeysTypedObject(articles[0])}
+			data={pages}
+			columns={getKeysTypedObject(pages[0])}
 		/>
 	);
 }

@@ -2,15 +2,15 @@
 
 import { Inter } from "next/font/google";
 import { cn } from "@/utils/libs/tailwind/helper";
-import "@/styles/globals.css";
 import { useThemeStore } from "@/contexts/store_ui_context";
+import "@/styles/globals.css";
+import type { PropsWithChildren } from "react";
 
 const fontSans = Inter({
 	subsets: ["latin"],
 });
 
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: PropsWithChildren) {
 	const theme = useThemeStore((state) => state.theme);
 
 	return (

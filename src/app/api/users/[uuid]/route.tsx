@@ -1,7 +1,7 @@
-import { HierarchyRole, userUpdateSchema } from "@/types/user";
+import { userUpdateSchema } from "@/types/user";
 import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
-import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized } from "@/utils/server_api/responses/errors";
+import { jsonResponseNotFound, jsonResponseBadRequest, jsonResponseUnauthorized, jsonResponseForbidden } from "@/utils/server_api/responses/errors";
 import { responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
 import { getUserWithUuid } from "@/utils/libs/prisma/server_helper";
 import { isActionAuthorized } from "@/utils/helper";
@@ -14,8 +14,13 @@ export async function DELETE(req: NextRequest, { params }: { params: { uuid: str
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
+	const currentUser = await getCurrentUser(req.cookies);
+
 	// we check if the user is authorized to perform the action
-	if (!isActionAuthorized(await getCurrentUser(req.cookies))) return jsonResponseUnauthorized();	
+	if (!isActionAuthorized(currentUser)) return jsonResponseUnauthorized();	
+
+	// we verify the current user is not the same user we want to delete
+	if (currentUser.uuid === uuid) return jsonResponseForbidden("You cannot delete yourself, ask another admin to do it");
 
 	const { count } = await prisma.user.deleteMany({
 		where: {

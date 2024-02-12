@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Table from "../../../../components/ui/table/Table";
+import Table from "../../../../../components/ui/table/Table";
 import {
   deleteUserQuery,
   getUsersQuery,

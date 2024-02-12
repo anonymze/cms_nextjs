@@ -6,7 +6,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Page() {
+export default function Page({ params : { lang } }) {
     const router = useRouter();
 	return (
 		<div className="flex flex-col min-h-screen">
@@ -32,7 +32,7 @@ export default function Page() {
                             "px-6 py-4 text-base",
                             "bg-primary text-primary-foreground hover:bg-primary/90"
                         )}
-						href="/dashboard"
+						href={`/${lang}/dashboard`}
 					>
 						Retourner à votre page d'accueil
 					</Link>

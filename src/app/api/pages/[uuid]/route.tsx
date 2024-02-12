@@ -15,7 +15,7 @@ import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
-export async function GET(req: NextRequest, { params }: { params: { uuid: string } }) {
+export async function GET(_: NextRequest, { params }: { params: { uuid: string } }) {
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 

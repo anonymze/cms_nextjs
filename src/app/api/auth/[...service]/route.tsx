@@ -94,6 +94,7 @@ export async function handleClerkLoginAndReturnResponse(
   // if not user
   if (!existingUserOurDb) {
     return NextResponse.redirect(
+      // TODO
       `${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}}`
     );
   }
@@ -101,6 +102,7 @@ export async function handleClerkLoginAndReturnResponse(
   // if not active
   if (!existingUserOurDb.isActive) {
     return NextResponse.redirect(
+      // TODO
       `${req.nextUrl.origin}/login/?info=${LoginStateInfo.INACTIVE}`
     );
   }
@@ -121,6 +123,7 @@ export async function handleClerkLoginAndReturnResponse(
 
   // external page will handle the magic link and log the user
   return NextResponse.redirect(
-    `${req.nextUrl.origin}/login/external?token=${magicLink.token}`
+    // TODO
+    `${req.nextUrl.origin}/en/login/external?token=${magicLink.token}`
   );
 }

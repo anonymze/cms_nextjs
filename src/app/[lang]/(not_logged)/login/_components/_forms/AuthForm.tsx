@@ -71,10 +71,10 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
 
 		// during the whole process, if something is wrong we land in the catch section
 		try {
-			await verifyUserQuery(email);
-
 			// we log out in case
 			await signOut();
+
+			await verifyUserQuery(email);
 
 			// at this point, the user exists in our database
 			// and we can try to sign in with Clerk's session

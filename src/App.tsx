@@ -1,19 +1,22 @@
-"use client";;
+"use client";
+
 import { useThemeStore } from "./contexts/store_ui_context";
 import { ClerkProvider } from "@clerk/nextjs";
-import { setLocaleLangFromNavigator } from "./utils/web_api/locale_lang";
 import { type PropsWithChildren } from "react";
 import "@/styles/globals.css";
 
-export default function App({ children }: PropsWithChildren) {
-	const theme = useThemeStore((state) => state.theme);
-	setLocaleLangFromNavigator();
+type PropsWithChildrenAndLang = PropsWithChildren & {
+  lang: string
+}
 
-	return (
-		<ClerkProvider>
-			<html lang="fr" className={theme}>
-				{children}
-			</html>
-		</ClerkProvider>
-	);
+export default function App({ lang = "en", children }: PropsWithChildrenAndLang) {
+  const theme = useThemeStore((state) => state.theme);
+
+  return (
+    <ClerkProvider>
+      <html lang={lang} className={theme}>
+        {children}
+      </html>
+    </ClerkProvider>
+  );
 }
