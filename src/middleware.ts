@@ -53,7 +53,7 @@ const hasValidToken = (req: NextRequest) => {
 const transformRequestToI18n = (req: NextRequest) => {
   // check if there is any supported locale in the pathname
   const { pathname } = req.nextUrl;
-  let localeRedirectToDashboard: string | boolean = false;
+  let localeRedirectToDashboard: string | undefined;
 
   const pathnameHasLocale = Object.keys(i18n).some((locale) => {
     if (pathname === `/${locale}`) {

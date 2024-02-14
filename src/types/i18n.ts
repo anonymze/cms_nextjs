@@ -2,6 +2,12 @@
 export enum I18n {
 	DEFAULT = "en",
 	EN = "en",
-	FR = "fr",
 	ES = "es",
+	FR = "fr",
+}
+
+export type PageParamsI18n = {
+	params : {
+		lang: I18n
+	}
 }
