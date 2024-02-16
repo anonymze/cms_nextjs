@@ -4,12 +4,16 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "../api/_queryClient";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { I18n } from "@/types/i18n";
 import { type PropsWithChildren } from "react";
 
-export const Providers: React.FC<PropsWithChildren> = ({
+export const LangContext = createContext<I18n>(I18n.DEFAULT);
+
+export const Providers: React.FC<PropsWithChildren & { lang: I18n }> = ({
   children,
+  lang,
 }) => {
   // we assure queryClient is only created once
   const [uniqueQueryClientInstance] = useState(() => queryClient);
@@ -18,7 +22,7 @@ export const Providers: React.FC<PropsWithChildren> = ({
     <ClerkProvider>
       <QueryClientProvider client={uniqueQueryClientInstance}>
         <ReactQueryDevtools initialIsOpen={false} />
-          {children}
+        <LangContext.Provider value={lang}>{children}</LangContext.Provider>
       </QueryClientProvider>
     </ClerkProvider>
   );

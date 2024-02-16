@@ -1,4 +1,6 @@
 import { HierarchyRole } from "@/types/user";
+import ReactDOMServer from "react-dom/server";
+import type { ReactElement, ReactNode } from "react";
 import type { User } from "@prisma/client";
 
 /**
@@ -48,9 +50,10 @@ export const isActionAuthorized = (
   return user.role ? HierarchyRole[user.role] <= minimumRole : false;
 };
 
-export const sprintf = (str: string, ...args: string[]) => {
-  return Object.values(args).reduce(
-    (acc, curr) => acc.replace(/%s/, curr),
-    str
-  );
+/**
+ * @description a text replacer for what accept a react node (string, number, node...)
+ * @returns - return a string with %s replaced by your values in order 
+ */
+export const sprintf = (str: string, ...args: Exclude<ReactNode, boolean | undefined>[]) => {
+  return args.map((str) => typeof str === "object" ? ReactDOMServer.renderToString(str) : str.toString()).reduce((acc, curr) => acc.replace(/%s/, curr), str);
 };

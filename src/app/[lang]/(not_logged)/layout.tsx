@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <App lang={lang}>
       <body className={cn("h-dvh", fontSans.className)}>
-        <Providers>{children}</Providers>
+        <Providers lang={lang}>{children}</Providers>
         <Toaster duration={4000} />
       </body>
     </App>

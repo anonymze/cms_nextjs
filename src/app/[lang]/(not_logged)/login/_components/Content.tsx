@@ -5,9 +5,11 @@ import { useSearchParams } from "next/navigation";
 import VerificationCodeForm from "./_forms/VerificationCodeForm";
 import AuthForm, { type AuthServices } from "./_forms/AuthForm";
 import { i18n } from "@/i18n/translations";
-import type { I18n } from "@/types/i18n";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
 
-export default function Content({lang, ...props}: AuthServices & { lang: I18n }) {
+export default function Content(props: AuthServices) {
+	const lang = useContext(LangContext);
 	const searchParams = useSearchParams();
 
 	return (
