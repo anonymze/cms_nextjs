@@ -4,8 +4,10 @@ import { Activity } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import VerificationCodeForm from "./_forms/VerificationCodeForm";
 import AuthForm, { type AuthServices } from "./_forms/AuthForm";
+import { i18n } from "@/i18n/translations";
+import type { I18n } from "@/types/i18n";
 
-export default function Content(props: AuthServices) {
+export default function Content({lang, ...props}: AuthServices & { lang: I18n }) {
 	const searchParams = useSearchParams();
 
 	return (
@@ -18,9 +20,7 @@ export default function Content(props: AuthServices) {
 				<div className="mt-auto">
 					<blockquote className="space-y-2">
 						<p className="text-base">
-							&ldquo;Bienvenue dans votre monde. Ici vous pourrez créer à votre guise et sans
-							limite. Découvrez la simplicité d&apos;un gestionnaire de contenu affiné pour
-							vous.&rdquo;
+							{i18n[lang]("WELCOME_TO_YOUR_WORLD")}
 						</p>
 						<footer className="text-sm">Yann M. | Ano</footer>
 					</blockquote>
@@ -28,17 +28,16 @@ export default function Content(props: AuthServices) {
 			</div>
 			<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 				<div className="flex flex-col space-y-2 text-center">
-					<h1 className="text-lg font-semibold tracking-tight">Authentification</h1>
+					<h1 className="text-lg font-semibold tracking-tight">{i18n[lang]("AUTHENTICATION")}</h1>
 					<p className="text-base text-muted-foreground">
 						{searchParams.get("verifying") ? (
-							"Entrez le code de vérification reçu"
+							<>{i18n[lang]("ENTER_VERIFICATION_CODE")}</>
 						) : (
 							<>
-								Entrez votre email et mot de passe
+								{i18n[lang]("ENTER_EMAIL_PASSWORD")}
 								<br />
 								<span className="inline-block mt-1 text-xs leading-1">
-									(si vous n&lsquo;avez pas de compte, il sera créé automatiquement et devra ensuite
-									être validé par un administrateur)
+									({i18n[lang]("ACCOUNT_CREATION_AUTOMATIC")})
 								</span>
 							</>
 						)}

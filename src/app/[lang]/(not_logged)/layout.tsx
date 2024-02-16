@@ -10,7 +10,7 @@ import type { PageParamsI18n } from "@/types/i18n";
 const fontSans = Inter({
   subsets: ["latin"],
   // prevent mismatch id with ssr
-  preload: false,
+  preload: true,
 });
 
 // export it and nextjs handle it
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <App lang={lang}>
       <body className={cn("h-dvh", fontSans.className)}>
-        <Providers lang={lang}>{children}</Providers>
+        <Providers>{children}</Providers>
         <Toaster duration={4000} />
       </body>
     </App>
