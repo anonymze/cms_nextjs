@@ -34,14 +34,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				className={cn(
 					"inline-flex items-center justify-center rounded-md",
-					"font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+					"font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
 					"disabled:pointer-events-none disabled:opacity-50 shadow",
 					large ? "px-6 py-4 text-base" : "px-4 py-2 text-sm",
 					fill
-						? "bg-primary text-primary-foreground hover:bg-primary/90"
-						: "bg-transparent text-secondary-foreground hover:bg-primary/10",
+						? "bg-primary text-primary-foreground hover:bg-muted-foreground"
+						: "bg-transparent text-secondary-foreground hover:bg-muted",
 					!fill && outline && "border-[2px]",
-					secondary ? "bg-secondary text-secondary-foreground hover:bg-secondary/90" : "",
+					secondary ? "bg-secondary text-secondary-foreground hover:bg-muted-foreground" : "",
 					className,
 				)}
 				disabled={disabled}

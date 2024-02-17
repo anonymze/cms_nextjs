@@ -17,10 +17,10 @@ export const config = {
      * - register (authentication routes)
      * - conditions utilisation cgu (legal routes)
      * - politique-confidentialite (legal routes)
-     * - api/users/verify/* && api/auth/*  (some api routes are not verified at all)
+     * - api/users/verify && api/auth/*  (some api routes are not verified at all)
      * - test (in case you wanna make a test route)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*/test|test|.*/login|.*/politique-de-confidentialite|/.*/cgu|api/users/verify|api/auth/.*).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*/test|test|.*/login|.*/politique-de-confidentialite|.*/cgu|api/users/verify|api/auth/).*)",
   ],
 };
 

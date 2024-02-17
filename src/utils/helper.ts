@@ -1,6 +1,6 @@
 import { HierarchyRole } from "@/types/user";
-import ReactDOMServer from "react-dom/server";
-import type { ReactElement, ReactNode } from "react";
+// import ReactDOMServer from "react-dom/server";
+import type { ReactNode } from "react";
 import type { User } from "@prisma/client";
 
 /**
@@ -54,6 +54,7 @@ export const isActionAuthorized = (
  * @description a text replacer for what accept a react node (string, number, node...)
  * @returns - return a string with %s replaced by your values in order 
  */
-export const sprintf = (str: string, ...args: Exclude<ReactNode, boolean | undefined>[]) => {
+export const sprintf = (str: string, ...args: Exclude<ReactNode, undefined>[]) => {
+  // @ts-ignore
   return args.map((str) => typeof str === "object" ? ReactDOMServer.renderToString(str) : str.toString()).reduce((acc, curr) => acc.replace(/%s/, curr), str);
 };

@@ -57,7 +57,7 @@ const PaginationLink = ({
         isActive && "bg-primary/5 cursor-default",
         isDisabled && "bg-secondary cursor-not-allowed",
 
-        !isDisabled && "hover:bg-primary/10",
+        !isDisabled && "hover:bg-muted",
         className
       )}
       {...props}

@@ -48,7 +48,7 @@ model Page_I18n {
     id          Int     @id @default(autoincrement())
     page_id     Int     @map("page")
     page        Page    @relation(fields: [page_id], references: [id], onDelete: Cascade)
-    lang        String
+    lang        String  
     title       String
     description String
     subtitle    String?

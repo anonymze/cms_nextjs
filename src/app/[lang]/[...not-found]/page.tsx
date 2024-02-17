@@ -1,13 +1,11 @@
-"use client";
-
+"use client";;
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/utils/libs/tailwind/helper";
-import { AlertCircle, AlertCircleIcon, ArrowLeftIcon } from "lucide-react";
+import { AlertCircleIcon, ArrowLeftIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { i18n } from "@/i18n/translations";
 import type { PageParamsI18n } from "@/types/i18n";
-import { Providers } from "@/utils/providers";
 
 export default function Page({ params: { lang } }: PageParamsI18n) {
   const router = useRouter();
@@ -33,7 +31,7 @@ export default function Page({ params: { lang } }: PageParamsI18n) {
                 "font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
                 "disabled:pointer-events-none disabled:opacity-50 shadow",
                 "px-6 py-4 text-base",
-                "bg-primary text-primary-foreground hover:bg-primary/90"
+                "bg-primary text-primary-foreground hover:bg-muted-foreground"
               )}
               href={`/${lang}/dashboard`}
             >

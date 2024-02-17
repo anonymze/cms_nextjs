@@ -200,7 +200,7 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
               setIsLoading(true);
             }}
             aria-disabled={isLoading}
-            className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-primary/10"
+            className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-muted"
             href={githubAuth.url}
             title="Github connexion"
           >
@@ -215,7 +215,7 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
               setIsLoading(true);
             }}
             aria-disabled={isLoading}
-            className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-primary/10"
+            className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-muted"
             href={googleAuth.url}
             title="Google connexion"
           >
@@ -227,27 +227,26 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
           </a>
         )}
       </div>
-      <p className="px-8 text-center text-sm text-muted-foreground">
-        <div
-          dangerouslySetInnerHTML={{
-            __html: i18n[lang](
-              "CONNECTION_AGREEMENTS",
-              <Link
-                href="/cgu"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Conditions d&apos;utilisation
-              </Link>,
-              <Link
-                href="/politique-de-confidentialite"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Politique de confidentialité
-              </Link>
-            ),
-          }}
-        />
-      </p>
+      <div
+        className="px-8 text-center text-sm text-muted-foreground"
+        dangerouslySetInnerHTML={{
+          __html: i18n[lang](
+            "CONNECTION_AGREEMENTS",
+            <Link
+              href={`/${lang}/cgu`}
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              {i18n[lang]("CGU")}
+            </Link>,
+            <Link
+              href={`/${lang}/politique-de-confidentialite`}
+              className="underline underline-offset-4 hover:text-primary"
+            >
+              {i18n[lang]("PRIVACY_POLICY")}
+            </Link>
+          ),
+        }}
+      />
     </>
   );
 };

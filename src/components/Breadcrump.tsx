@@ -8,7 +8,6 @@ import { Button } from "./ui/Button";
 import { ArrowLeft } from "lucide-react";
 
 const convertPathnameToReadableString = (pathname: string) => {
-	console.log(pathname);
 	return pathname.replaceAll("-", " ");
 };
 
@@ -22,9 +21,9 @@ const constructURL = (pathnames: string[], currentIndex: number) => {
 	return url;
 };
 
-const Breadcrump: React.FC = () => {
+const Breadcrump: React.FC<{ removeLangCrumb: boolean }> = ({ removeLangCrumb = true}) => {
 	const router = useRouter();
-	const pathnames = usePathname().split("/").filter(Boolean);
+	const pathnames = removeLangCrumb ? usePathname().split("/").filter(Boolean).slice(1) : usePathname().split("/").filter(Boolean);
 
 	//  if pathnames has less than 2 entry, we just show an arrow which goes back
 	if (pathnames.length < 2) {
