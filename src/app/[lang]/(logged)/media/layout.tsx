@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 	description: "Créé par Yann M.",
 };
 
-export default function Layout({ children, params }: { children: React.ReactNode } & PageParamsI18n) {
+export default function Layout({ children, params: { lang } }: { children: React.ReactNode } & PageParamsI18n) {
 	return (
 		<>
 			<Header>
-				<h1>Médiathèque</h1>
-				<ActionsButtons actionPopup={{ label: i18n[params.lang]("ADD") }} />
+				<h1>{i18n[lang]("MEDIA_LIBRARY")}</h1>
+				<ActionsButtons actionPopup={{ label: i18n[lang]("ADD") }} />
 			</Header>
-			<Suspense fallback={<div>Loading....</div>}>{children}</Suspense>
+			<Suspense fallback={<div>{i18n[lang]("LOADING")}...??!!!</div>}>{children}</Suspense>
 		</>
 	);
 }

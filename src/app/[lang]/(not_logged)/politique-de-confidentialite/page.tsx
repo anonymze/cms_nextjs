@@ -1,13 +1,15 @@
+import { i18n } from "@/i18n/translations";
+import type { PageParamsI18n } from "@/types/i18n";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default async function Page() {
+export default async function Page({ params : { lang }} : PageParamsI18n) {
 	return (
 		<div className="p-6">
 			<Link href="/dashboard">
 				<ArrowLeft className="size-8" />
 			</Link>
-			<h1 className="my-3">Politique de confidentialité.</h1>
+			<h1 className="my-3">{i18n[lang]("PRIVACY_POLICY")}</h1>
 			<p className="mb-4">
 				En utilisant notre système de gestion de contenu (CMS), vous acceptez et vous engagez à
 				respecter les conditions suivantes :
