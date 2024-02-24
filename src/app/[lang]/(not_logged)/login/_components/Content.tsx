@@ -17,13 +17,11 @@ export default function Content(props: AuthServices) {
 			<div className="h-full hidden flex-col bg-muted p-10 text-white lg:flex dark:border-r">
 				<div className="flex items-center text-md font-medium">
 					<Activity className="mr-1" />
-					Powered by Clerk
+					Powered by NextJs
 				</div>
 				<div className="mt-auto">
 					<blockquote className="space-y-2">
-						<p className="text-base">
-							{i18n[lang]("WELCOME_TO_YOUR_WORLD")}
-						</p>
+						<p className="text-base">{i18n[lang]("WELCOME_TO_YOUR_WORLD")}</p>
 						<footer className="text-sm">Yann M. | Ano</footer>
 					</blockquote>
 				</div>

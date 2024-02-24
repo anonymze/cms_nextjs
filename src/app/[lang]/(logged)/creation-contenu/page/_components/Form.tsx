@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/Button";
 
+import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formCreatePageSchema, type PageI18ns } from "@/types/page";
@@ -17,9 +17,12 @@ import {
 } from "@/components/ui/form/Form";
 import { Textarea } from "@/components/ui/form/Textarea";
 import { Input } from "@/components/ui/form/Input";
+import { useRouter } from "next/navigation";
+import { i18n } from "@/i18n/translations";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
 import type { z } from "zod";
 import type { I18n } from "@/types/i18n";
-import { useRouter } from "next/navigation";
 
 interface Props {
 	langForm?: I18n;
@@ -27,6 +30,7 @@ interface Props {
 }
 
 const FormPage: React.FC<Props> = ({ langForm, page }) => {
+	const lang = useContext(LangContext);
 	const router = useRouter();
 
 	const createMutation = useMutation({
@@ -34,7 +38,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		mutationKey: ["pages"],
 		meta: {
 			action: "create",
-			message: "Page créée",
+			message: i18n[lang]("PAGE_ADDED"),
 		},
 	});
 
@@ -43,7 +47,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		mutationKey: ["page", { slug: page?.uuid }],
 		meta: {
 			action: "update",
-			message: "Page modifiée",
+			message: i18n[lang]("PAGE_EDITED"),
 		},
 	});
 
@@ -81,11 +85,11 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Titre *</FormLabel>
+							<FormLabel>{i18n[lang]("TITLE")} *</FormLabel>
 							<FormControl>
 								<Input placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>Le titre de la page</FormDescription>
+							<FormDescription>{i18n[lang]("TITLE_PAGE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -97,11 +101,11 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					name="subtitle"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Sous-titre</FormLabel>
+							<FormLabel>{i18n[lang]("SUBTITLE")}</FormLabel>
 							<FormControl>
 								<Input placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>Le sous-titre de la page</FormDescription>
+							<FormDescription>{i18n[lang]("SUBTITLE_PAGE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -113,11 +117,11 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Description *</FormLabel>
+							<FormLabel>{i18n[lang]("DESCRIPTION")} *</FormLabel>
 							<FormControl>
 								<Textarea placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>Une brève description de la page</FormDescription>
+							<FormDescription>{i18n[lang]("DESCRIPTION_PAGE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -129,14 +133,14 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					render={({ field }) => <input type="hidden" {...field} />}
 				/>
 
-				<p className="pt-5 text-xs">* champs obligatoires</p>
+				<p className="pt-5 text-xs">* {i18n[lang]("MANDATORY_FIELDS")}</p>
 
 				<Button
 					disabled={createMutation.isPending}
 					isLoading={createMutation.isPending}
 					type="submit"
 				>
-					Enregistrer
+					{i18n[lang]("SAVE")}
 				</Button>
 			</form>
 		</Form>

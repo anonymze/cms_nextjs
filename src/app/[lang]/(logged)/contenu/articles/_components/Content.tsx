@@ -5,9 +5,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import Table from "../../../../../../components/ui/table/Table";
 import { getKeysTypedObject } from "@/utils/helper";
 import { useRouter, useSearchParams } from "next/navigation";
+import { LangContext } from "@/utils/providers";
+import { useContext } from "react";
+import { i18n } from "@/i18n/translations";
 import type { Article } from "@prisma/client";
 
 export default function Content() {
+	const lang = useContext(LangContext);
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
@@ -21,14 +25,14 @@ export default function Content() {
 		mutationKey: ["articles"],
 		meta: {
 			action: "delete",
-			message: "Article supprimé",
+			message: i18n[lang]("ARTICLE_DELETED"),
 		},
 	});
 
-	if (isLoading) return <div>Chargement...</div>;
+	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
 
 	if (!articles || !articles[0]) {
-		return <div>Aucune donnée...</div>;
+		return <div>{i18n[lang]("NO_DATA")}...</div>;
 	}
 
 	// for now the type with keys is not really useful,
@@ -37,14 +41,14 @@ export default function Content() {
 		<Table
 			actions={[
 				{
-					label: "Modifier",
+					label: i18n[lang]("EDIT"),
 					action: (entity: Article) => {
 						router.push(`/creation-contenu/article/${entity.uuid}`);
 					},
 				},
 
 				{
-					label: "Supprimer",
+					label: i18n[lang]("DELETE"),
 					action: (entity: Article) => {
 						deleteMutation.mutate(entity.uuid);
 					},

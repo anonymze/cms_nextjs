@@ -4,8 +4,7 @@ import type { PageParamsI18n } from "@/types/i18n";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CMS Nextjs",
-  description: "Créé par Yann M.",
+  title: "My little CMS",
 };
 
 export default function Layout({

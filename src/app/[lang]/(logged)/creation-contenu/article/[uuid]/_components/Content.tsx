@@ -4,18 +4,22 @@ import FormArticle from "../../_components/Form";
 import { getArticleQuery } from "@/api/queries/articleQueries";
 import { useQuery } from "@tanstack/react-query";
 import { ContentFormI18n } from "@/components/ContentFormI18n";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
 import type { Article } from "@prisma/client";
+import { i18n } from "@/i18n/translations";
 
 export default function Content({ uuid }: { uuid: Article["uuid"] }) {
+	const lang = useContext(LangContext);
 	const { data: article, isLoading } = useQuery({
 		queryKey: ["article", { slug: uuid }],
 		queryFn: getArticleQuery,
 	});
 
-	if (isLoading) return <div>Chargement...</div>;
+	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
 
 	if (!article) {
-		return <div>Article non trouvé</div>;
+		return <div>{i18n[lang]("NO_DATA")}</div>;
 	}
 
 	return (

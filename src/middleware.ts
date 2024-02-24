@@ -20,7 +20,7 @@ export const config = {
      * - api/users/verify && api/auth/*  (some api routes are not verified at all)
      * - test (in case you wanna make a test route)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*/test|test|.*/login|.*/politique-de-confidentialite|.*/cgu|api/users/verify|api/auth/).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*/test|test|.*/login|.*/politique-de-confidentialite|.*/conditions-generales|api/users/verify|api/auth/).*)",
   ],
 };
 

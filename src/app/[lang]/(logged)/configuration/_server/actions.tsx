@@ -1,13 +1,12 @@
 "use server";
 
-
 import { randomUUID } from "crypto";
 import fs from "fs";
+import { formCreateConfigurationApiSchema, formCreateConfigurationGithubSchema } from "@/types/configuration";
 import type {
 	StateConfigurationApiForm,
 	StateConfigurationGithubForm,
 } from "../_components/Content";
-import { formCreateConfigurationApiSchema, formCreateConfigurationGithubSchema } from "@/types/configuration";
 
 const FILE_TO_WRITE = ".env.local";
 /* api */

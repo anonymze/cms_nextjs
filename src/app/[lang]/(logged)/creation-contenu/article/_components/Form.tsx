@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { type ArticleI18ns, formCreateArticleSchema } from "@/types/article";
+import { formCreateArticleSchema } from "@/types/article";
 import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
@@ -19,9 +19,13 @@ import {
 } from "@/components/ui/form/Form";
 import { Textarea } from "@/components/ui/form/Textarea";
 import { Input } from "@/components/ui/form/Input";
-import type { z } from "zod";
 import { I18n } from "@/types/i18n";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
+import type { ArticleI18ns } from "@/types/article";
+import type { z } from "zod";
 
 interface Props {
 	langForm?: I18n;
@@ -39,6 +43,7 @@ const TiptapDynamic = dynamic(() => import("@/components/rich-text/Tiptap"), {
 });
 
 const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
+	const lang = useContext(LangContext);
 	const router = useRouter();
 
 	const createMutation = useMutation({
@@ -46,7 +51,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 		mutationKey: ["articles"],
 		meta: {
 			action: "create",
-			message: "Article créé",
+			message: i18n[lang]("ARTICLE_ADDED"),
 		},
 	});
 
@@ -55,7 +60,7 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 		mutationKey: ["article", { slug: article?.uuid }],
 		meta: {
 			action: "update",
-			message: "Article modifié",
+			message: i18n[lang]("ARTICLE_EDITED"),
 		},
 	});
 
@@ -95,11 +100,11 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Titre *</FormLabel>
+							<FormLabel>{i18n[lang]("TITLE")} *</FormLabel>
 							<FormControl>
 								<Input placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>Le titre de l&apos;article</FormDescription>
+							<FormDescription>{i18n[lang]("TITLE_ARTICLE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -111,11 +116,11 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Présentation</FormLabel>
+							<FormLabel>{i18n[lang]("DESCRIPTION")}</FormLabel>
 							<FormControl>
 								<Textarea placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>Une brève description de l&apos;article</FormDescription>
+							<FormDescription>{i18n[lang]("DESCRIPTION_ARTICLE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -127,11 +132,11 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 					name="content"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Contenu *</FormLabel>
+							<FormLabel>{i18n[lang]("CONTENT")} *</FormLabel>
 							<FormControl>
 								<TiptapDynamic description={field.value} onChange={field.onChange} />
 							</FormControl>
-							<FormDescription>Le contenu de l&apos;article</FormDescription>
+							<FormDescription>{i18n[lang]("CONTENT_ARTICLE")}</FormDescription>
 							{/* TODO need to be fixed */}
 							{form.formState.isSubmitted && form.formState.errors[""] && (
 								<FormMessage>{form.formState.errors[""].message}</FormMessage>
@@ -147,11 +152,11 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 					name="conclusion"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Conclusion</FormLabel>
+							<FormLabel>{i18n[lang]("CONCLUSION")}</FormLabel>
 							<FormControl>
 								<Textarea placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>Une brève conclusion de l&apos;article</FormDescription>
+							<FormDescription>{i18n[lang]("CONCLUSION_ARTICLE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -163,14 +168,14 @@ const FormArticle: React.FC<Props> = ({ article, langForm = I18n.DEFAULT }) => {
 					render={({ field }) => <input type="hidden" {...field} />}
 				/>
 
-				<p className="pt-5 text-xs">* champs obligatoires</p>
+				<p className="pt-5 text-xs">* {i18n[lang]("MANDATORY_FIELDS")}</p>
 
 				<Button
 					disabled={createMutation.isPending}
 					isLoading={createMutation.isPending}
 					type="submit"
 				>
-					Enregistrer
+					{i18n[lang]("SAVE")}
 				</Button>
 			</form>
 		</Form>

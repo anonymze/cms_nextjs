@@ -1,6 +1,16 @@
 import { CardContentManager } from "@/components/ui/Card";
 import { i18n } from "@/i18n/translations";
 import type { PageParamsI18n } from "@/types/i18n";
+import type { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(
+  { params: { lang } }: PageParamsI18n,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  return {
+    title: `${i18n[lang]("CONTENT_MANAGEMENT")} - ${(await parent).title?.absolute}`,
+  };
+}
 
 export default async function Page({ params: { lang } }: PageParamsI18n) {
   return (

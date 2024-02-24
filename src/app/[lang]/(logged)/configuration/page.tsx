@@ -4,11 +4,6 @@ import { i18n } from "@/i18n/translations";
 import type { PageParamsI18n } from "@/types/i18n";
 import type { Metadata, ResolvingMetadata } from "next";
 
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export async function generateMetadata(
   { params: { lang } }: PageParamsI18n,
   parent: ResolvingMetadata

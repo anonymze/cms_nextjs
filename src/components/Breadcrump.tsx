@@ -21,7 +21,7 @@ const constructURL = (pathnames: string[], currentIndex: number) => {
 	return url;
 };
 
-const Breadcrump: React.FC<{ removeLangCrumb: boolean }> = ({ removeLangCrumb = true}) => {
+const Breadcrump: React.FC<{ removeLangCrumb?: boolean }> = ({ removeLangCrumb = true}) => {
 	const router = useRouter();
 	const pathnames = removeLangCrumb ? usePathname().split("/").filter(Boolean).slice(1) : usePathname().split("/").filter(Boolean);
 

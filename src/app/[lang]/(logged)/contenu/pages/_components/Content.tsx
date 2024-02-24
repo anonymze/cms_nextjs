@@ -5,9 +5,13 @@ import Table from "../../../../../../components/ui/table/Table";
 import { getKeysTypedObject } from "@/utils/helper";
 import { useRouter, useSearchParams } from "next/navigation";
 import { deletePageQuery, getPagesQuery } from "@/api/queries/pageQueries";
+import { LangContext } from "@/utils/providers";
+import { useContext } from "react";
+import { i18n } from "@/i18n/translations";
 import type { Page } from "@prisma/client";
 
 export default function Content() {
+	const lang = useContext(LangContext);
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
@@ -21,14 +25,14 @@ export default function Content() {
 		mutationKey: ["pages"],
 		meta: {
 			action: "delete",
-			message: "Page supprimée",
+			message: i18n[lang]("PAGE_DELETED"),
 		},
 	});
 
-	if (isLoading) return <div>Chargement...</div>;
+	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
 
 	if (!pages || !pages[0]) {
-		return <div>Aucune donnée...</div>;
+		return <div>{i18n[lang]("NO_DATA")}...</div>;
 	}
 
 	// for now the type with keys is not really useful,
@@ -37,14 +41,14 @@ export default function Content() {
 		<Table
 			actions={[
 				{
-					label: "Modifier",
+					label: i18n[lang]("EDIT"),
 					action: (entity: Page) => {
 						router.push(`/creation-contenu/page/${entity.uuid}`);
 					},
 				},
 
 				{
-					label: "Supprimer",
+					label: i18n[lang]("DELETE"),
 					action: (entity: Page) => {
 						deleteMutation.mutate(entity.uuid);
 					},

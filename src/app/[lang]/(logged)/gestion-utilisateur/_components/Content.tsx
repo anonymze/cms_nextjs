@@ -9,10 +9,14 @@ import {
 } from "@/api/queries/userQueries";
 import { getKeysTypedObject } from "@/utils/helper";
 import { useSearchParams } from "next/navigation";
-import type { User } from "@prisma/client";
 import { UserRole } from "@/types/user";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
+import type { User } from "@prisma/client";
 
 export default function Content() {
+  const lang = useContext(LangContext);
   const searchParams = useSearchParams();
 
   const {
@@ -29,7 +33,7 @@ export default function Content() {
     mutationKey: ["users"],
     meta: {
       action: "delete",
-      message: "Utilisateur supprimé",
+      message: i18n[lang]("USER_DELETED"),
     },
   });
 
@@ -38,20 +42,20 @@ export default function Content() {
     mutationKey: ["users"],
     meta: {
       action: "update",
-      message: "Utilisateur mis à jour",
+      message: i18n[lang]("USER_EDITED"),
     },
   });
 
   if (isLoading) {
-    return <div>Chargement...</div>;
+    return <div>{i18n[lang]("LOADING")}...</div>;
   }
 
   if (isError) {
-    return <div>Erreur...</div>;
+    return <div>{i18n[lang]("ERROR")}...</div>;
   }
 
   if (!users || !users[0]) {
-    return <div>Aucune donnée...</div>;
+    return <div>{i18n[lang]("NO_DATA")}...</div>;
   }
 
   return (
@@ -59,7 +63,7 @@ export default function Content() {
       isLoading={deleteMutation.isPending || updateMutation.isPending}
       actions={[
         {
-          label: "Activer",
+          label: i18n[lang]("ENABLE"),
           showMarkerOnDisabled: true,
           action: (entity: User) => {
             updateMutation.mutate({ uuid: entity.uuid, isActive: true });
@@ -69,12 +73,12 @@ export default function Content() {
           },
         },
         {
-          label: "Rôle",
+          label: i18n[lang]("ROLE"),
           showMarkerOnDisabled: true,
           subMenu: {
             items: [
               {
-                label: "Administrateur",
+                label: i18n[lang]("ADMINISTRATOR"),
                 action: (entity: User) => {
                   console.log(entity);
                   updateMutation.mutate({ uuid: entity.uuid, role: UserRole.ADMIN });
@@ -84,7 +88,7 @@ export default function Content() {
                 },
               },
               {
-                label: "Utilisateur",
+                label: i18n[lang]("USER"),
                 action: (entity: User) => {
                   updateMutation.mutate({ uuid: entity.uuid, role: UserRole.USER });
                 },
@@ -93,7 +97,7 @@ export default function Content() {
                 },
               },
               {
-                label: "Invité",
+                label: i18n[lang]("GUEST"),
                 action: (entity: User) => {
                   updateMutation.mutate({ uuid: entity.uuid, role: UserRole.GUEST });
                 },
@@ -105,7 +109,7 @@ export default function Content() {
           },
         },
         {
-          label: "Supprimer",
+          label: i18n[lang]("DELETE"),
           action: (entity: User) => {
             deleteMutation.mutate(entity.uuid);
           },

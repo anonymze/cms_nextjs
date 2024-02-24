@@ -13,9 +13,9 @@ import { useContext, useRef } from "react";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { useMutation } from "@tanstack/react-query";
 import { createMediaQuery } from "@/api/queries/mediaQueries";
-import type { FormEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
+import type { FormEvent } from "react";
 
 export default function Content({
   hideActionButton,

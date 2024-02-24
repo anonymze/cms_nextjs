@@ -2,7 +2,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import { SpinnerLoader } from "../ui/loader/Loader";
 import { SkeletonCard } from "../ui/skeleton/Skeleton";
 
 interface Props {
@@ -17,7 +16,7 @@ const Tiptap: React.FC<Props> = ({ description, onChange }) => {
 			StarterKit.configure({
 				heading: {
 					HTMLAttributes: {
-						class: "text-xl font-bold",
+						class: "text-xl  font-bold",
 						levels: [3],
 					},
 				},

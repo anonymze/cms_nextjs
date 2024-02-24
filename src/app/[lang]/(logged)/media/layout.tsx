@@ -1,16 +1,13 @@
 import ActionsButtons from "@/components/ActionsButtons";
 import Header from "@/components/layout/Header";
 import { Suspense } from "react";
+import { i18n } from "@/i18n/translations";
 import type { Metadata } from "next";
 import type { PageParamsI18n } from "@/types/i18n";
-import { i18n } from "@/i18n/translations";
 
-// export it and nextjs handle it
 export const metadata: Metadata = {
-	title: "CMS Nextjs",
-	description: "Créé par Yann M.",
+  title: "My little CMS",
 };
-
 export default function Layout({ children, params: { lang } }: { children: React.ReactNode } & PageParamsI18n) {
 	return (
 		<>

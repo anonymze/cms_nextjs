@@ -1,5 +1,8 @@
 "use client"; // Error components must be Client Components
 
+import { Button } from "@/components/ui/Button";
+import { i18n } from "@/i18n/translations";
+import { I18n } from "@/types/i18n";
 import { useEffect } from "react";
 
 export default function ErrorNext({
@@ -16,16 +19,16 @@ export default function ErrorNext({
 
 	return (
 		<div>
-			<h2>Something went wrong!</h2>
-			<button
+			<h2>{i18n[I18n.DEFAULT]("SOMETHING_UNEXPECTED_HAPPENED")}</h2>
+			<Button
 				type="button"
 				onClick={
 					// Attempt to recover by trying to re-render the segment
 					() => reset()
 				}
 			>
-				Try again
-			</button>
+				{i18n[I18n.DEFAULT]("TRY_AGAIN")}
+			</Button>
 		</div>
 	);
 }

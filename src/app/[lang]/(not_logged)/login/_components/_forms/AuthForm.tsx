@@ -232,18 +232,8 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
         dangerouslySetInnerHTML={{
           __html: i18n[lang](
             "CONNECTION_AGREEMENTS",
-            <Link
-              href={`/${lang}/cgu`}
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              {i18n[lang]("CGU")}
-            </Link>,
-            <Link
-              href={`/${lang}/politique-de-confidentialite`}
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              {i18n[lang]("PRIVACY_POLICY")}
-            </Link>
+            "oki",
+            "oki"
           ),
         }}
       />

@@ -12,3 +12,4 @@ _npm run knip to detect unused dependencies, files, and more..._
 * hover btn
 * metadata
 * verifiy /api route
+* isLoading everywhere

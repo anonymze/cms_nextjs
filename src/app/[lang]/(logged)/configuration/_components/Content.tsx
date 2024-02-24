@@ -6,6 +6,9 @@ import ApiForm from "./_forms/ApiForm";
 import GithubForm from "./_forms/GithubForm";
 import GoogleForm from "./_forms/GoogleForm";
 import { Accordion } from "@/components/ui/accordion/Accordion";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
 
 export type StateConfigurationApiForm = {
 	apiKey: string;
@@ -33,6 +36,8 @@ type Configuration = {
 };
 
 export default function Content({ configuration }: { configuration: Configuration }) {
+	const lang = useContext(LangContext);
+
 	const [stateApi, formActionApi] = useFormState(generateAndWriteApiKey, {
 		apiKey: configuration.apiKey,
 		error: false,
@@ -57,7 +62,7 @@ export default function Content({ configuration }: { configuration: Configuratio
 				<ApiForm state={stateApi} />
 			</form>
 
-			<h2 className="mb-3">OAuth services</h2>
+			<h2 className="mb-3">{i18n[lang]("OAUTH_SERVICES")}</h2>
 
 			<Accordion className="mb-3" title="Github" name="auth">
 				<form action={formActionGithub}>
