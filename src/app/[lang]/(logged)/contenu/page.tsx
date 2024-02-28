@@ -16,11 +16,11 @@ export default async function Page({ params: { lang } }: PageParamsI18n) {
   return (
     <div className="flex flex-col gap-y-6 justify-center items-center">
       <CardContentManager
-        redirect={`${lang}/contenu/articles`}
+        redirect={`/${lang}/contenu/articles`}
         title={i18n[lang]("SEE_ARTICLES")}
       />
       <CardContentManager
-        redirect={`${lang}/contenu/pages`}
+        redirect={`/${lang}/contenu/pages`}
         title={i18n[lang]("SEE_PAGES")}
       />
     </div>

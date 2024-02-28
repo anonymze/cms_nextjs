@@ -34,16 +34,22 @@ export class ParserRequest {
 			if (this.contentType === "multipart/form-data") {
 				const dataFormData: Record<string, unknown> = {};
 				const files = (data as FormData).getAll("files[]");
-
+				console.log(files);
+				
 				dataFormData.files = files;
-
+				
 				for (const [key, value] of (data as FormData).entries()) {
 					if (key === "files[]") continue;
 					dataFormData[key] = value;
 				}
-
+				
 				dataToParse = dataFormData;
 			}
+
+			console.log('làààà');
+			dataSchema.parse(dataToParse)
+			console.log('làààà');
+			console.log(dataToParse);
 
 			return {
 				error: false,

@@ -1,5 +1,3 @@
-"use client";
-
 import type { LocalStorageKeys } from "@/types/local_storage";
 
 /**

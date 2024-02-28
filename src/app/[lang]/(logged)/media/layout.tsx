@@ -15,7 +15,7 @@ export default function Layout({ children, params: { lang } }: { children: React
 				<h1>{i18n[lang]("MEDIA_LIBRARY")}</h1>
 				<ActionsButtons actionPopup={{ label: i18n[lang]("ADD") }} />
 			</Header>
-			<Suspense fallback={<div>{i18n[lang]("LOADING")}...??!!!</div>}>{children}</Suspense>
+			<Suspense fallback={"!!!!!"}> {children}</Suspense>
 		</>
 	);
 }

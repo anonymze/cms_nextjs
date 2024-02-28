@@ -22,6 +22,7 @@ const Media: React.FC = () => {
     queryFn: getMediaQuery,
   });
 
+  // TODO
   if (isPending || isFetching) {
     return <div>{i18n[lang]("LOADING")}</div>;
   }
