@@ -33,7 +33,7 @@ export default function Page({ params: { lang } }: PageParamsI18n) {
                 "px-6 py-4 text-base",
                 "bg-primary text-primary-foreground hover:bg-muted-foreground"
               )}
-              href={`/${lang}/dashboard`}
+              href={'dashboard'}
             >
               {i18n[lang]("RETURN_HOME")}
             </Link>

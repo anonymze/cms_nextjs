@@ -12,11 +12,11 @@ export async function generateMetadata(
   };
 }
 
-export default async function Page({ params: { lang } }: PageParamsI18n) {
+export default async function Page() {
 	return (
 		<div className="flex flex-col gap-y-6 justify-center items-center">
-			<CardContentManager redirect={`/${lang}/creation-contenu/article`} title="Créer un article" />
-			<CardContentManager redirect={`/${lang}/creation-contenu/page`} title="Créer une page" />
+			<CardContentManager redirect={'creation-contenu/article'} title="Créer un article" />
+			<CardContentManager redirect={'creation-contenu/page'} title="Créer une page" />
 		</div>
 	);
 }
