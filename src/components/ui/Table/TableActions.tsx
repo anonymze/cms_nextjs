@@ -11,8 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import { CheckIcon, MoreHorizontal } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "../Button";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
 
 interface SubMenuActions
   extends Omit<TAction, "subMenu" | "showMarkerOnDisabled"> {}
@@ -34,16 +36,18 @@ export function TableActions({
   actions: TAction[];
   entity: { uuid: string; [key: string]: unknown };
 }) {
+  const lang = useContext(LangContext);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="h-8 w-8 p-0">
-          <span className="sr-only">Ouvrir menu actions</span>
+          <span className="sr-only">{i18n[lang]("OPEN_MENU_ACTIONS")}</span>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuLabel>{i18n[lang]("ACTIONS")}</DropdownMenuLabel>
         {actions.map((action) => (
           <React.Fragment key={action.label}>
             {!action.subMenu ? (

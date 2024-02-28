@@ -15,7 +15,7 @@ export default function Content() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const { data: articles, isLoading } = useQuery({
+	const { data: articles, isLoading, isFetching } = useQuery({
 		queryKey: ["articles", { page: searchParams.get("page") }],
 		queryFn: getArticlesQuery,
 	});
@@ -29,7 +29,7 @@ export default function Content() {
 		},
 	});
 
-	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
+	if (isLoading || isFetching) return <div>{i18n[lang]("LOADING")}...</div>;
 
 	if (!articles || !articles[0]) {
 		return <div>{i18n[lang]("NO_DATA")}...</div>;

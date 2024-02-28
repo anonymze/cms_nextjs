@@ -5,6 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { SpinnerLoader } from "../loader/Loader";
 import { cn } from "@/utils/libs/tailwind/helper";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
 import type { ITable } from "./Table";
 
 export type OrderBy = "asc" | "desc" | "reset";
@@ -16,6 +19,7 @@ export interface THead {
 }
 
 export function TableHead({ columns, hasActions, isLoading }: THead) {
+	const lang = useContext(LangContext);
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
@@ -47,7 +51,8 @@ export function TableHead({ columns, hasActions, isLoading }: THead) {
 							}
 						}}
 					>
-						{titleColumn} <ChevronsUpDown className="inline size-3" />
+						{/* @ts-expect-error */}
+						{i18n[lang](titleColumn.toUpperCase())} <ChevronsUpDown className="inline size-3" />
 					</th>
 				);
 			})}

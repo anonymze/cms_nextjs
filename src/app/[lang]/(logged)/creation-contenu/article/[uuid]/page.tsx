@@ -4,6 +4,7 @@ import Content from "./_components/Content";
 import { i18n } from "@/i18n/translations";
 import type { PageParamsI18n } from "@/types/i18n";
 import type { ResolvingMetadata, Metadata } from "next";
+import { useSearchParams } from "next/navigation";
 
 export async function generateMetadata(
   { params: { lang } }: PageParamsI18n,
@@ -18,7 +19,7 @@ export default async function Page({ params }: { params: { uuid: string } }) {
 	const queryClient = new QueryClient();
 	
 	await queryClient.prefetchQuery({
-		queryKey: ["article", { slug: params.uuid }],
+		queryKey: ["article", { slug: params.uuid}],
 		queryFn: getArticleQuery,
 	});
 	

@@ -6,10 +6,15 @@ import { mainNavigation, optionsNavigation } from "./NavLinks";
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { useContext } from "react";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
 
 export default function SideNavbar() {
-	const { signOut } = useClerk();
+	const lang = useContext(LangContext);
 	const router = useRouter();
+	const { signOut } = useClerk();
+
 	return (
 		<div className="flex grow flex-col gap-y-5 h-full overflow-y-auto">
 			<div className="flex h-16 shrink-0 items-center">
@@ -22,16 +27,14 @@ export default function SideNavbar() {
 			<nav className="flex flex-1 flex-col">
 				<ul className="flex flex-1 flex-col gap-y-7">
 					<li>
-						<div className="text-xs font-semibold leading-6 text-gray-400">Contenu</div>
+						<div className="text-xs font-semibold leading-6 text-gray-400">{i18n[lang]("CONTENT")}</div>
 						<menu className="mt-2 space-y-1">
-							{mainNavigation.map((item) => (
+							{mainNavigation(lang).map((item) => (
 								<li key={item.name}>
 									<Link
 										href={item.href}
 										className={cn(
-											item.current
-												? "bg-gray-800 text-white"
-												: "text-gray-400 hover:text-white hover:bg-gray-800",
+											item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
 											"group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold",
 										)}
 									>
@@ -51,16 +54,14 @@ export default function SideNavbar() {
 						</menu>
 					</li>
 					<li>
-						<div className="text-xs font-semibold leading-6 text-gray-400">Avancées</div>
+						<div className="text-xs font-semibold leading-6 text-gray-400">{i18n[lang]("ADVANCED")}</div>
 						<menu className="mt-2 space-y-1">
-							{optionsNavigation.map((team) => (
+							{optionsNavigation(lang).map((team) => (
 								<li key={team.name}>
 									<Link
 										href={team.href}
 										className={cn(
-											team.current
-												? "bg-gray-800 text-white"
-												: "text-gray-400 hover:text-white hover:bg-gray-800",
+											team.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
 											"group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold",
 										)}
 									>
@@ -83,7 +84,7 @@ export default function SideNavbar() {
 								src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
 								alt=""
 							/>
-							<span className="sr-only">Your profile</span>
+							<span className="sr-only">{i18n[lang]("YOUR_PROFILE")}</span>
 							<span aria-hidden="true">Tom Cook</span>
 						</Button>
 					</li>

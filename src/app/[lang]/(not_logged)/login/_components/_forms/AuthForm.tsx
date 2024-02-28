@@ -151,7 +151,7 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
               required
               name="email"
               id="email"
-              placeholder="nom@exemple.fr"
+              placeholder={i18n[lang]("EMAIL")}
               type="email"
               autoCapitalize="none"
               autoComplete="email"
@@ -168,7 +168,7 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
               minLength={10}
               name="password"
               id="password"
-              placeholder="mot de passe"
+              placeholder={i18n[lang]("PASSWORD")}
               type="password"
               autoCapitalize="none"
               autoComplete="new-password"
@@ -194,37 +194,39 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
       </div>
       <div className="flex flex-wrap justify-around gap-2">
         {githubAuth?.url && (
-          <a
+          <button
+            type="button"
             onClick={(ev) => {
               if (isLoading) return ev.preventDefault();
               setIsLoading(true);
+              router.push(githubAuth.url);
             }}
-            aria-disabled={isLoading}
+            disabled={isLoading}
             className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-muted"
-            href={githubAuth.url}
-            title="Github connexion"
+            title={i18n[lang]("GITHUB_CONNECTION")}
           >
             {isLoading ? <SpinnerLoader /> : <GithubIcon className="size-5" />}
-          </a>
+          </button>
         )}
 
         {googleAuth?.url && (
-          <a
+          <button
+            type="button"
             onClick={(ev) => {
               if (isLoading) return ev.preventDefault();
               setIsLoading(true);
+              router.push(googleAuth.url);
             }}
-            aria-disabled={isLoading}
+            disabled={isLoading}
             className="flex items-center justify-center size-12 border-2 rounded-md hover:bg-muted"
-            href={googleAuth.url}
-            title="Google connexion"
+            title={i18n[lang]("GOOGLE_CONNECTION")}
           >
             {isLoading ? (
               <SpinnerLoader />
             ) : (
               <img src={googleIcon.src} alt="google" />
             )}
-          </a>
+          </button>
         )}
       </div>
       <div
@@ -232,8 +234,8 @@ const AuthForm = ({ githubAuth, googleAuth }: AuthServices) => {
         dangerouslySetInnerHTML={{
           __html: i18n[lang](
             "CONNECTION_AGREEMENTS",
-            "oki",
-            "oki"
+            lang,
+            lang
           ),
         }}
       />

@@ -14,18 +14,15 @@ export default function Content({ uuid }: { uuid: Page["uuid"] }) {
 	const {
 		data: page,
 		isLoading,
-		isError,
 		isFetching,
+		isError
 	} = useQuery({
 		queryKey: ["page", { slug: uuid }],
 		queryFn: getPageQuery,
 	});
 
-	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
-
-	if (isError) {
-		return <div>{i18n[lang]("NO_DATA")}...</div>;
-	}
+	if (isLoading || isFetching) return <div>{i18n[lang]("LOADING")}...</div>;
+	if (isError) return <div>{i18n[lang]("NO_DATA")}</div>
 
 	return (
 		<ContentFormI18n>

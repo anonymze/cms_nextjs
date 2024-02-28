@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form/Form";
 import { Textarea } from "@/components/ui/form/Textarea";
 import { Input } from "@/components/ui/form/Input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { i18n } from "@/i18n/translations";
 import { useContext } from "react";
 import { LangContext } from "@/utils/providers";
@@ -30,7 +30,8 @@ interface Props {
 }
 
 const FormPage: React.FC<Props> = ({ langForm, page }) => {
-	const lang = useContext(LangContext);
+	const langContext = useContext(LangContext);
+	const langParam = useSearchParams().get("lang");
 	const router = useRouter();
 
 	const createMutation = useMutation({
@@ -38,7 +39,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		mutationKey: ["pages"],
 		meta: {
 			action: "create",
-			message: i18n[lang]("PAGE_ADDED"),
+			message: i18n[langContext]("PAGE_ADDED"),
 		},
 	});
 
@@ -47,11 +48,13 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		mutationKey: ["page", { slug: page?.uuid }],
 		meta: {
 			action: "update",
-			message: i18n[lang]("PAGE_EDITED"),
+			message: i18n[langContext]("PAGE_EDITED"),
 		},
 	});
 
 	const pageI18n = page?.i18n?.find((pageI18n) => pageI18n.lang === langForm);
+
+	console.log({langForm});
 
 	const form = useForm<z.infer<typeof formCreatePageSchema>>({
 		resolver: zodResolver(formCreatePageSchema),
@@ -73,7 +76,8 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		const pageCreated = await createMutation.mutateAsync(values);
 
 		// if page is created then we redirect to the form with the uuid (to be in an updating state)
-		if (pageCreated) router.push(`/creation-contenu/page/${pageCreated.uuid}`);
+
+		if (pageCreated) router.push(`/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
 	}
 
 	return (
@@ -85,11 +89,11 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{i18n[lang]("TITLE")} *</FormLabel>
+							<FormLabel>{i18n[langContext]("TITLE")} *</FormLabel>
 							<FormControl>
 								<Input placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>{i18n[lang]("TITLE_PAGE")}</FormDescription>
+							<FormDescription>{i18n[langContext]("TITLE_PAGE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -101,11 +105,11 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					name="subtitle"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{i18n[lang]("SUBTITLE")}</FormLabel>
+							<FormLabel>{i18n[langContext]("SUBTITLE")}</FormLabel>
 							<FormControl>
 								<Input placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>{i18n[lang]("SUBTITLE_PAGE")}</FormDescription>
+							<FormDescription>{i18n[langContext]("SUBTITLE_PAGE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -117,11 +121,11 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{i18n[lang]("DESCRIPTION")} *</FormLabel>
+							<FormLabel>{i18n[langContext]("DESCRIPTION")} *</FormLabel>
 							<FormControl>
 								<Textarea placeholder="" {...field} />
 							</FormControl>
-							<FormDescription>{i18n[lang]("DESCRIPTION_PAGE")}</FormDescription>
+							<FormDescription>{i18n[langContext]("DESCRIPTION_PAGE")}</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -133,14 +137,14 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					render={({ field }) => <input type="hidden" {...field} />}
 				/>
 
-				<p className="pt-5 text-xs">* {i18n[lang]("MANDATORY_FIELDS")}</p>
+				<p className="pt-5 text-xs">* {i18n[langContext]("MANDATORY_FIELDS")}</p>
 
 				<Button
 					disabled={createMutation.isPending}
 					isLoading={createMutation.isPending}
 					type="submit"
 				>
-					{i18n[lang]("SAVE")}
+					{i18n[langContext]("SAVE")}
 				</Button>
 			</form>
 		</Form>

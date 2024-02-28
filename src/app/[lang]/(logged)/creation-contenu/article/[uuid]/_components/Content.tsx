@@ -11,16 +11,13 @@ import { i18n } from "@/i18n/translations";
 
 export default function Content({ uuid }: { uuid: Article["uuid"] }) {
 	const lang = useContext(LangContext);
-	const { data: article, isLoading } = useQuery({
+	const { data: article, isLoading, isFetching, isError } = useQuery({
 		queryKey: ["article", { slug: uuid }],
 		queryFn: getArticleQuery,
 	});
 
-	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
-
-	if (!article) {
-		return <div>{i18n[lang]("NO_DATA")}</div>;
-	}
+	if (isLoading || isFetching) return <div>{i18n[lang]("LOADING")}...</div>;
+	if (isError) return <div>{i18n[lang]("NO_DATA")}</div>
 
 	return (
 		<ContentFormI18n>

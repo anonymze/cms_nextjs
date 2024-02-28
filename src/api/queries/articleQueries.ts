@@ -1,8 +1,5 @@
 import type { Article } from "@prisma/client";
 import { api } from "../_config";
-import { LocalStorageKeys } from "@/types/local_storage";
-import { I18n } from "@/types/i18n";
-import { getLocalStorageItem } from "@/utils/web_api/local_storage";
 import type {
   ArticleI18n,
   ArticleI18ns,
@@ -17,16 +14,9 @@ export async function getArticlesQuery({ queryKey }: QueryFunctionContext) {
   const [, params] = queryKey;
 
   if (params?.page) searchParams.set("page", params.page);
+  if (params?.lang) searchParams.set("lang", params.lang);
 
-  if (params?.lang) {
-    searchParams.set(LocalStorageKeys.LANG, params.lang);
-  } else {
-    searchParams.set(LocalStorageKeys.LANG, getLocalStorageItem(LocalStorageKeys.LANG) || I18n.DEFAULT);
-  }
-
-  const result = await api.get<ArticleI18n[]>(
-    `articles?${searchParams.toString()}`
-  );
+  const result = await api.get<ArticleI18n[]>(`articles?${searchParams.toString()}`);
   return result.data;
 }
 
@@ -35,12 +25,7 @@ export async function getArticleQuery({ queryKey }: QueryFunctionContext) {
   const [, params] = queryKey;
 
   if (!params?.slug) throw new Error("Slug is required");
-
-  if (params?.lang) {
-    searchParams.set(LocalStorageKeys.LANG, params.lang);
-  } else {
-    searchParams.set(LocalStorageKeys.LANG, getLocalStorageItem(LocalStorageKeys.LANG) || I18n.DEFAULT);
-  }
+  if (params?.lang) searchParams.set("lang", params.lang);
 
   const result = await api.get<ArticleI18ns>(
     `articles/${params.slug}?${searchParams.toString()}`

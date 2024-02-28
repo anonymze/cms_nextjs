@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import Flags from "@/components/Flags";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
 import { getKeysTypedObject } from "@/utils/helper";
+import { useSearchParams } from "next/navigation";
+import { LangContext } from "@/utils/providers";
+import { useRouter } from "next/navigation";
 
 type ChildComponentProps = { langForm: I18n };
 type ChildComponentType = React.FunctionComponent<ChildComponentProps>;
@@ -17,14 +20,13 @@ type ContentProps = {
 		| React.ReactElement<ChildComponentProps, ChildComponentType>[];
 };
 
-// we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
-// const IconDynamic = dynamic(() => import("@/components/ui/IconDynamic"), {
-//   loading: () => <span>...</span>,
-// });
-
 export function ContentFormI18n({ children }: ContentProps) {
+	const router = useRouter();
+	const langContext = useContext(LangContext);
+	const langParam = useSearchParams().get("lang");
+
 	return (
-		<Tabs defaultValue={I18n.DEFAULT}>
+		<Tabs defaultValue={langParam && Object.values(I18n).includes(langParam as I18n) ? langParam : langContext}>
 			<TabsList className="h-10 p-1 w-fit mb-8 rounded-md bg-muted text-muted-foreground">
 				{getKeysTypedObject(i18n).map((lang) => (
 					<React.Fragment key={lang}>
@@ -38,6 +40,7 @@ export function ContentFormI18n({ children }: ContentProps) {
 								"data-[state=active]:text-foreground data-[state=active]:shadow-sm",
 							)}
 							value={lang}
+							onClick={() => router.push(`?lang=${lang}`)}
 						>
 							<Flags flag={lang} />
 						</TabsTrigger>
@@ -48,12 +51,12 @@ export function ContentFormI18n({ children }: ContentProps) {
 				<React.Fragment key={lang}>
 					<TabsContent value={lang}>
 						{React.Children.map(children, (child) => {
-							if (React.isValidElement(child) && typeof child.type === "function") {
+							if (React.isValidElement(child)) {
 								return React.cloneElement(child, {
 									langForm: lang,
 								});
 							}
-							return child;
+							throw new Error("ContentFormI18n children must be a valid React element");
 						})}
 					</TabsContent>
 				</React.Fragment>

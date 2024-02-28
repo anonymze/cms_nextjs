@@ -22,7 +22,7 @@ export default function Content() {
   const {
     data: users,
     isLoading,
-    isError,
+    isFetching,
   } = useQuery({
     queryKey: ["users", { page: searchParams.get("page") }],
     queryFn: getUsersQuery,
@@ -46,12 +46,8 @@ export default function Content() {
     },
   });
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <div>{i18n[lang]("LOADING")}...</div>;
-  }
-
-  if (isError) {
-    return <div>{i18n[lang]("ERROR")}...</div>;
   }
 
   if (!users || !users[0]) {

@@ -1,15 +1,14 @@
 import Header from "@/components/layout/Header";
-import { LangContext } from "@/utils/providers";
-import { useContext } from "react";
 import { i18n } from "@/i18n/translations";
+import type { PropsWithChildren } from "react";
 import type { Metadata } from "next";
+import type { PageParamsI18n } from "@/types/i18n";
 
 export const metadata: Metadata = {
-  title: "My little CMS",
+	title: "My little CMS",
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-	const lang = useContext(LangContext);
+export default function Layout({ children, params: { lang } }: PropsWithChildren & PageParamsI18n) {
 	return (
 		<>
 			<Header>
