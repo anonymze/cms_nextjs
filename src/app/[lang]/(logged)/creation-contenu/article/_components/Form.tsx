@@ -33,7 +33,7 @@ interface Props {
 }
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
-const TiptapDynamic = dynamic(() => import("@/components/rich-text/Tiptap"), {
+const TiptapDynamic = dynamic(() => import("@/components/ui/rich-text/Tiptap"), {
 	loading: () => (
 		<>
 			<SkeletonCard animated height="2.2rem" />

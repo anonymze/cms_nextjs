@@ -1,6 +1,6 @@
 "use client";
 import type { Editor } from "@tiptap/react";
-import { Toggle } from "../ui/Toggle";
+import { Toggle } from "../Toggle";
 import { Bold, Heading3, Italic, List, ListOrdered, Strikethrough } from "lucide-react";
 
 interface Props {

@@ -10,7 +10,6 @@ import type { NextRequest } from "next/server";
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
 export async function GET(req: NextRequest) {
-	console.log(req.nextUrl.searchParams.get("lang"));
 	const articles = (
 		await findManyWithLimit(
 			prisma.article,

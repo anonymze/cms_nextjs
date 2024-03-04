@@ -16,7 +16,7 @@ export default function Content() {
 	const router = useRouter();
 
 	const { data: articles, isLoading, isFetching } = useQuery({
-		queryKey: ["articles", { page: searchParams.get("page") }],
+		queryKey: ["articles", { page: searchParams.get("page"), lang }],
 		queryFn: getArticlesQuery,
 	});
 

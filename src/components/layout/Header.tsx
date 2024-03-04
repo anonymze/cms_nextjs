@@ -1,4 +1,4 @@
-import Breadcrump from "../Breadcrump";
+import Breadcrump from "../ui/Breadcrump";
 import type { PropsWithChildren } from "react";
 
 export default function Header({

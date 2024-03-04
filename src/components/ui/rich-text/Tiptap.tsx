@@ -2,7 +2,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import { SkeletonCard } from "../ui/skeleton/Skeleton";
+import { SkeletonCard } from "../skeleton/Skeleton";
 
 interface Props {
 	description: string;

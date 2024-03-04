@@ -1,6 +1,6 @@
 import { useRef, useCallback, useState, useId } from "react";
-import { Button } from "./ui/Button";
-import MediaOperation from "./media-operation/MediaOperation";
+import { Button } from "./Button";
+import MediaOperation from "../media-operation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/web_api/file_resolving";
 import { CloudLightningIcon } from "lucide-react";

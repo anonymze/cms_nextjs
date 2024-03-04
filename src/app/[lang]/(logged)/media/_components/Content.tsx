@@ -1,13 +1,13 @@
 "use client";
 
-import DropZone from "@/components/DropZone";
+import DropZone from "@/components/ui/DropZone";
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,
   DialogBody,
   DialogFooter,
   DialogHeader,
-} from "@/components/Dialog";
+} from "@/components/ui/Dialog";
 import { PlusCircleIcon } from "lucide-react";
 import { useContext, useRef } from "react";
 import { useFilesStore } from "@/contexts/store_files_context";

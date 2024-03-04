@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
-import Flags from "@/components/Flags";
+import Flags from "@/components/ui/Flags";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { I18n } from "@/types/i18n";

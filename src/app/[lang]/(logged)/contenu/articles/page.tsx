@@ -17,11 +17,11 @@ export async function generateMetadata(
 
 // get the data from the server then hydrate it on children
 // or you can props drilling with initial data (i use this if only 1 layer of props drilling)
-export default async function Page() {
+export default async function Page({ params: { lang }}: PageParamsI18n) {
 	const queryClient = new QueryClient();
 
 	await queryClient.prefetchQuery({
-		queryKey: ["articles"],
+		queryKey: ["articles", { lang }],
 		queryFn: getArticlesQuery,
 	});
 

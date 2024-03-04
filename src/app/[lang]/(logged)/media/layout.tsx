@@ -1,4 +1,4 @@
-import ActionsButtons from "@/components/ActionsButtons";
+import ActionsButtons from "@/components/ui/ActionsButtons";
 import Header from "@/components/layout/Header";
 import { Suspense } from "react";
 import { i18n } from "@/i18n/translations";

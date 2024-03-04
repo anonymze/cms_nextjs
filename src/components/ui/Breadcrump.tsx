@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/utils/libs/tailwind/helper";
-import { Button } from "./ui/Button";
+import { Button } from "./Button";
 import { ArrowLeft } from "lucide-react";
 
 const convertPathnameToReadableString = (pathname: string) => {
@@ -32,7 +32,7 @@ const Breadcrump: React.FC<{ removeLangCrumb?: boolean }> = ({ removeLangCrumb =
 				onClick={() => router.back()}
 				outline={false}
 				fill={false}
-				className="mb-3 ml-[-1rem]"
+				className="mb-[0.3rem] ml-[-1rem] mt-[-0.5rem]"
 			>
 				<ArrowLeft className="w-5 h-5" />
 			</Button>
