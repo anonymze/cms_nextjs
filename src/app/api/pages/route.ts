@@ -22,11 +22,7 @@ export async function GET(req: NextRequest) {
 							description: true,
 							subtitle: true,
 						},
-					},
-				},
-				where: {
-					i18n: {
-						some: {
+						where: {
 							lang: req.nextUrl.searchParams.get("lang") || I18n.DEFAULT,
 						},
 					},

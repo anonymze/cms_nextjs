@@ -6,7 +6,7 @@ import Link from "next/link";
 export default async function Page({ params: { lang } }: PageParamsI18n) {
   return (
     <div className="p-6">
-      <Link href="/dashboard">
+      <Link href={`/${lang}/dashboard`}>
         <ArrowLeft className="size-8" />
       </Link>
       <h1 className="my-3">{i18n[lang]("PRIVACY_POLICY")}</h1>
