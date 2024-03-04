@@ -91,7 +91,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 		const articleCreated = await createMutation.mutateAsync(values);
 
 		// if article is created then we redirect to the form with the uuid (to be in an updating state)
-		if (articleCreated) router.push(`/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
+		if (articleCreated) router.push(`/${langParam}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
 	};
 
 	return (

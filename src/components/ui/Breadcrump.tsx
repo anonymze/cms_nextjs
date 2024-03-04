@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { Button } from "./Button";
 import { ArrowLeft } from "lucide-react";
+import { LangContext } from "@/utils/providers";
 
 const convertPathnameToReadableString = (pathname: string) => {
 	return pathname.replaceAll("-", " ");
@@ -23,6 +24,7 @@ const constructURL = (pathnames: string[], currentIndex: number) => {
 
 const Breadcrump: React.FC<{ removeLangCrumb?: boolean }> = ({ removeLangCrumb = true}) => {
 	const router = useRouter();
+	const lang = useContext(LangContext);
 	const pathnames = removeLangCrumb ? usePathname().split("/").filter(Boolean).slice(1) : usePathname().split("/").filter(Boolean);
 
 	//  if pathnames has less than 2 entry, we just show an arrow which goes back
@@ -51,7 +53,7 @@ const Breadcrump: React.FC<{ removeLangCrumb?: boolean }> = ({ removeLangCrumb =
 						className={cn("inline-block max-w-32 pr-[0.5px] truncate align-bottom first-letter:uppercase lg:max-w-40", {
 							underline: idx === currentIdxPathname,
 						})}
-						href={constructURL(pathnames, idx)}
+						href={`/${lang}/${constructURL(pathnames, idx)}`}
 					>
 						{convertPathnameToReadableString(pathname)}
 					</Link>

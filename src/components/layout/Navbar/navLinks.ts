@@ -6,7 +6,7 @@ export const mainNavigation = (lang: I18n) =>
 	[
 		{ name: i18n[lang]("CONTENT"), href: `/${lang}/contenu`, icon: Smile, count: "5", current: false },
 		{
-			name: "Gestion des contenus",
+			name: i18n[lang]("CONTENT_MANAGEMENT"),
 			href: `/${lang}/creation-contenu`,
 			icon: Smile,
 			count: "5",

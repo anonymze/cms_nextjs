@@ -77,7 +77,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 
 		// if page is created then we redirect to the form with the uuid (to be in an updating state)
 
-		if (pageCreated) router.push(`/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
+		if (pageCreated) router.push(`/${langParam}/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
 	}
 
 	return (

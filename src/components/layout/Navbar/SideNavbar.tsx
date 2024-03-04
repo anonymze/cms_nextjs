@@ -76,7 +76,7 @@ export default function SideNavbar() {
 					</li>
 					<li className="mt-auto">
 						<Button
-							onClick={() => signOut(() => router.push("/login"))}
+							onClick={() => signOut(() => router.push(`/${lang}/login`))}
 							className="flex items-center gap-x-4 py-3 text-sm font-semibold leading-6 text-white"
 						>
 							<img

@@ -42,7 +42,7 @@ export default function VerificationCodeForm() {
           clerkUserId: result.createdUserId || "",
         });
 
-        router.push("/login?info=created");
+        router.push(`/${lang}/login?info=created`);
       })
       .catch((err) => {
         if (isClerkAPIResponseError(err)) {

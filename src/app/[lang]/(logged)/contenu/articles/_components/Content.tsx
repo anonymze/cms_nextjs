@@ -43,7 +43,7 @@ export default function Content() {
 				{
 					label: i18n[lang]("EDIT"),
 					action: (entity: Article) => {
-						router.push(`/creation-contenu/article/${entity.uuid}`);
+						router.push(`/${lang}/creation-contenu/article/${entity.uuid}`);
 					},
 				},
 
