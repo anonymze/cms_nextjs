@@ -3,14 +3,20 @@ import type { PageParamsI18n } from "@/types/i18n";
 import type { ResolvingMetadata, Metadata } from "next";
 
 export async function generateMetadata(
-  { params: { lang } }: PageParamsI18n,
-  parent: ResolvingMetadata
+	{ params: { lang } }: PageParamsI18n,
+	parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  return {
-    title: `${i18n[lang]("DASHBOARD")} - ${(await parent).title?.absolute}`,
-  };
+	return {
+		title: `${i18n[lang]("DASHBOARD")} - ${(await parent).title?.absolute}`,
+	};
 }
 
-export default function Page() {
-	return <h1>Salut</h1>;
+export default async function Page() {
+  await new Promise((resolve) => setTimeout(resolve, 6000));
+
+	return (
+		<div>
+			<h1>salut</h1>
+		</div>
+	);
 }

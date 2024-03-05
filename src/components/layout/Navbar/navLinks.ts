@@ -4,6 +4,7 @@ import type { I18n } from "@/types/i18n";
 
 export const mainNavigation = (lang: I18n) =>
 	[
+		{ name: i18n[lang]("DASHBOARD"), href: `/${lang}/dashboard`, icon: Smile, count: "5", current: false },
 		{ name: i18n[lang]("CONTENT"), href: `/${lang}/contenu`, icon: Smile, count: "5", current: false },
 		{
 			name: i18n[lang]("CONTENT_MANAGEMENT"),

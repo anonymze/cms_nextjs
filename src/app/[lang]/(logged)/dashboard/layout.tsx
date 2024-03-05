@@ -4,6 +4,8 @@ export const metadata: Metadata = {
   title: "My little CMS",
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-	return children;
+export default async function Layout({children}) {
+	return (
+		children
+	);
 }
