@@ -1,5 +1,4 @@
 import { HierarchyRole } from "@/types/user";
-import type { ReactNode } from "react";
 import type { User } from "@prisma/client";
 
 /**

@@ -56,9 +56,9 @@ PaginationLink.displayName = "PaginationLink";
 const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => {
 	const lang = React.useContext(LangContext);
 	return (
-		<PaginationLink aria-label={i18n[lang]("GO_PREVIOUS_PAGE")} className={cn(className)} {...props}>
+		<PaginationLink aria-label={i18n[lang]("GO_PREVIOUS_PAGE")} className={className} {...props}>
 			<ChevronLeft className="h-4 w-4" />
-			<span>{i18n[lang]("PREVIOUS")}</span>
+			<span className="pl-[0.1rem]">{i18n[lang]("PREVIOUS")}</span>
 		</PaginationLink>
 	);
 };
@@ -67,8 +67,8 @@ PaginationPrevious.displayName = "PaginationPrevious";
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => {
   const lang= React.useContext(LangContext);
 	return (
-		<PaginationLink aria-label={i18n[lang]("GO_NEXT_PAGE")} className={cn(className)} {...props}>
-			<span>{i18n[lang]("NEXT")}</span>
+		<PaginationLink aria-label={i18n[lang]("GO_NEXT_PAGE")} className={className} {...props}>
+			<span className="pr-[0.1rem]">{i18n[lang]("NEXT")}</span>
 			<ChevronRight className="h-4 w-4" />
 		</PaginationLink>
 	);

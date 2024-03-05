@@ -16,6 +16,7 @@ import { createMediaQuery } from "@/api/queries/mediaQueries";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import type { FormEvent } from "react";
+import { sleep } from "@/utils/helper";
 
 export default function Content({
   hideActionButton,
@@ -46,7 +47,10 @@ export default function Content({
     <>
       <Dialog
         // on close we reset the UI after the transition time of closing the dialog
-        onClose={() => setTimeout(() => setFiles([]), 250)}
+        onClose={async () => {
+          await sleep(250);
+          setFiles([]);
+        }}
         onSubmitForm={sendFilesToApi}
         ref={dialogRef}
       >

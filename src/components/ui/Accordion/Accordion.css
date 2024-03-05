@@ -1,9 +1,10 @@
 details {
-    padding: 1rem;
+    padding-right: 1rem;
+    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
     border-width: 1px;
     border-radius: theme("borderRadius.md");
-    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
     opacity: 0.8;
+    cursor: pointer;
 
     :is(&[open], &:hover) {
         opacity: 1;
@@ -17,8 +18,8 @@ details {
 
     summary {
         position: relative;
+        padding : 1rem;
         font-size: theme("fontSize.sm");
-        cursor: pointer;
 
         &::marker {
             content: "";
@@ -29,5 +30,9 @@ details {
             position: absolute;
             right: 0;
         }
+    }
+
+    form {
+        padding: 0 1rem 1rem 1rem;
     }
 }

@@ -95,7 +95,7 @@ export async function handleClerkLoginAndReturnResponse(
   if (!existingUserOurDb) {
     return NextResponse.redirect(
       // TODO
-      `${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}}`
+      `${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}`
     );
   }
 
