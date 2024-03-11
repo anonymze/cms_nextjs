@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { ENV_SERVER } from "../env/server";
-import { clerkClient } from "@clerk/nextjs";
+import { clerkClient, isClerkAPIResponseError } from "@clerk/nextjs";
 
 // we just trigger the import to parse the envs
 ENV_SERVER;
+const prisma = new PrismaClient();
 
 process.stdout.write("\x1b[33mYou will create a new admin user\n\x1b[0m");
 process.stdout.write("Email: ");
@@ -19,26 +20,32 @@ for await (const line of console) {
 process.stdout.write("Password: ");
 
 for await (const line of console) {
-	await new PrismaClient().user.create({
-		data: {
-			email: mail,
-			name: "admin",
-		},
-	});
+	try {
+		await clerkClient.users.createUser({
+			emailAddress: [mail],
+			firstName: "admin",
+			password: line,
+		});
 
-	// we get the clerk user or create it
-	const usersClerk = await clerkClient.users.getUserList({
-		emailAddress: [mail],
-	});
+		await prisma.user.create({
+			data: {
+				email: mail,
+				name: "admin",
+				isActive: true,
+			},
+		});
+	} catch (e) {
+		if (isClerkAPIResponseError(e)) {
+			process.stdout.write(`\x1b[31mClerk error: ${e.errors[0]?.message}\n\x1b[0m`);
+			process.exit(1);
+		}
 
-	typeof usersClerk[0] !== "undefined"
-		? usersClerk[0]
-		: await clerkClient.users.createUser({
-				emailAddress: [mail],
-				firstName: "admin",
-				// generate random password (we don't care, it just needs to be strong)
-				password: line,
-		  });
+		if (e instanceof Error) {
+			// Handle known Prisma error
+			process.stdout.write(`\x1b[31mPrisma error: ${e.message}\n\x1b[0m`);
+			process.exit(1);
+		}
+	}
 	break;
 }
 
