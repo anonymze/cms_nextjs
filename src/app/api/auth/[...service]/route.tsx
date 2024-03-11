@@ -12,7 +12,6 @@ import { api } from "@/api/_config";
 import prisma from "@/utils/libs/prisma/single_instance";
 import { clerkClient } from "@clerk/nextjs";
 import { LoginStateInfo } from "@/types/user";
-import { get } from "http";
 import { getUserWithEmail } from "@/utils/libs/prisma/server_helper";
 
 export async function GET(
@@ -38,10 +37,7 @@ function verifyEnvVariablesAndReturnResponse(
   service: string,
   req: NextRequest
 ) {
-  // clerk
-  if (!ENV_SERVER.CLERK_MAGIC_LINK_URL) {
-    throw new Error("URL magic link clerk is not set");
-  }
+  verifyClerkEnvVariables();
 
   switch (service) {
     case "github":
@@ -95,7 +91,7 @@ export async function handleClerkLoginAndReturnResponse(
   if (!existingUserOurDb) {
     return NextResponse.redirect(
       // TODO
-      `${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}`
+      `${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}}`
     );
   }
 
@@ -126,4 +122,18 @@ export async function handleClerkLoginAndReturnResponse(
     // TODO
     `${req.nextUrl.origin}/en/login/external?token=${magicLink.token}`
   );
+}
+
+export function verifyClerkEnvVariables() {
+	if (!ENV_SERVER.CLERK_SECRET_KEY) {
+		throw new Error("Google client ID is not set");
+	}
+
+	if (!ENV_SERVER.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+		throw new Error("Google access token URL is not set");
+	}
+
+  if (!ENV_SERVER.CLERK_MAGIC_LINK_URL) {
+		throw new Error("Google client secret is not set");
+	}
 }
