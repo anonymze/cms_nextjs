@@ -23,6 +23,6 @@ export type PageI18ns = {
 export const formCreatePageSchema = z.object({
 	description: z.string().min(2).max(400).trim(),
 	lang: z.string().default(I18n.DEFAULT),
-	subtitle: z.string().min(2).max(30).trim().optional(),
-	title: z.string().min(2).max(30).trim(),
+	subtitle: z.string().max(40).trim().optional(),
+	title: z.string().min(2).max(40).trim(),
 });

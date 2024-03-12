@@ -2,28 +2,20 @@
 
 import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { formCreateArticleSchema } from "@/types/article";
 import { useMutation } from "@tanstack/react-query";
 import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
-import { SkeletonCard } from "@/components/ui/skeleton/Skeleton";
-import {
-	FormField,
-	FormItem,
-	FormLabel,
-	FormControl,
-	FormDescription,
-	FormMessage,
-	Form,
-} from "@/components/ui/form/Form";
-import { Textarea } from "@/components/ui/form/Textarea";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
+import { Textarea } from "@/components/ui/form/Textarea";
+import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form/Form";
+import { SkeletonCard } from "@/components/ui/skeleton/Skeleton";
 import type { ArticleI18ns } from "@/types/article";
 import type { z } from "zod";
 
@@ -67,8 +59,6 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 	const articleI18n = article?.i18n?.find((articleI18n) => articleI18n.lang === langForm);
 
-	console.log({langForm});
-	
 	const form = useForm<z.infer<typeof formCreateArticleSchema>>({
 		resolver: zodResolver(formCreateArticleSchema),
 		mode: "onSubmit",
@@ -90,8 +80,13 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 		const articleCreated = await createMutation.mutateAsync(values);
 
+		console.log({ langParam });
+
 		// if article is created then we redirect to the form with the uuid (to be in an updating state)
-		if (articleCreated) router.push(`/${langParam}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
+		if (articleCreated)
+			router.push(
+				`/${langContext}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`,
+			);
 	};
 
 	return (
@@ -165,19 +160,11 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 					)}
 				/>
 
-				<FormField
-					control={form.control}
-					name="lang"
-					render={({ field }) => <input type="hidden" {...field} />}
-				/>
+				<FormField control={form.control} name="lang" render={({ field }) => <input type="hidden" {...field} />} />
 
 				<p className="pt-5 text-xs">* {i18n[langContext]("MANDATORY_FIELDS")}</p>
 
-				<Button
-					disabled={createMutation.isPending}
-					isLoading={createMutation.isPending}
-					type="submit"
-				>
+				<Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
 					{i18n[langContext]("SAVE")}
 				</Button>
 			</form>

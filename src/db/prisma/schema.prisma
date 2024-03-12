@@ -8,50 +8,75 @@ datasource db {
 }
 
 model Article {
-    id        Int            @id @default(autoincrement())
-    uuid      String         @unique @default(uuid())
-    i18n_id   Int?           @map("i18n") @ignore
-    i18n      Article_I18n[]
-    createdAt DateTime       @default(now())
+    id              Int            @id @default(autoincrement())
+    uuid            String         @unique @default(uuid())
+    tag             String?
+    eventCreatedAt  DateTime?
+    eventFinishedAt DateTime?
+    i18n_id         Int?           @map("i18n") @ignore
+    i18n            Article_I18n[]
+    createdAt       DateTime       @default(now())
 
     @@index(fields: [uuid])
 }
 model Article_I18n {
-    id          Int     @id @default(autoincrement())
-    article_id  Int     @map("article")
-    article     Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
-    lang        String
-    title       String
-    content     String
-    description String?
-    conclusion  String?
+    id               Int             @id @default(autoincrement())
+    article_id       Int             @map("article")
+    article          Article         @relation(fields: [article_id], references: [id], onDelete: Cascade)
+    lang             String
+    title            String
+    content          String
+    description      String?
+    conclusion       String?
+    media_details_id Int?            @map("media_details") @ignore
+    media_details    Media_Details[]
 
     @@index(fields: [lang])
 }
 model Media {
-    id        Int     @id @default(autoincrement())
-    uuid      String  @unique @default(uuid())
+    id               Int             @id @default(autoincrement())
+    uuid             String          @unique @default(uuid())
     filepath_public  String
-    filetype  String
+    filetype         String
+    media_details_id Int?            @map("media_details") @ignore
+    media_details    Media_Details[]
 
     @@index(fields: [uuid])
-}model Page {
-    id        Int         @id @default(autoincrement())
-    uuid      String      @unique @default(uuid())
-    i18n_id   Int?        @map("i18n") @ignore
-    i18n      Page_I18n[] @relation()
-    createdAt DateTime    @default(now())
+}
+model Media_Details {
+    id              Int           @id @default(autoincrement())
+    title           String
+    legend          String?
+    tag             String?
+    media           Media         @relation(fields: [media_id], references: [id], onDelete: Cascade)
+    media_id        Int           @map("media")
+    page_i18n       Page_I18n?    @relation(fields: [page_i18n_id], references: [id], onDelete: Cascade)
+    page_i18n_id    Int?          @map("page_i18n")
+    article_i18n    Article_I18n? @relation(fields: [article_i18n_id], references: [id], onDelete: Cascade)
+    article_i18n_id Int?          @map("article_i18n")
+
+    createdAt DateTime @default(now())
+}
+model Page {
+    id              Int         @id @default(autoincrement())
+    uuid            String      @unique @default(uuid())
+    tag             String?
+    i18n_id         Int?        @map("i18n") @ignore
+    i18n            Page_I18n[] @relation()
+    createdAt       DateTime    @default(now())
 
     @@index(fields: [uuid])
 }
 model Page_I18n {
-    id          Int     @id @default(autoincrement())
-    page_id     Int     @map("page")
-    page        Page    @relation(fields: [page_id], references: [id], onDelete: Cascade)
-    lang        String  
-    title       String
-    description String
-    subtitle    String?
+    id               Int             @id @default(autoincrement())
+    page_id          Int             @map("page")
+    page             Page            @relation(fields: [page_id], references: [id], onDelete: Cascade)
+    lang             String
+    title            String
+    description      String
+    subtitle         String?
+    media_details_id Int?            @map("media_details") @ignore
+    media_details    Media_Details[]
 
     @@index(fields: [lang])
 }

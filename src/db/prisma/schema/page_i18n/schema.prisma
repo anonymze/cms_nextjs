@@ -1,11 +1,13 @@
 model Page_I18n {
-    id          Int     @id @default(autoincrement())
-    page_id     Int     @map("page")
-    page        Page    @relation(fields: [page_id], references: [id], onDelete: Cascade)
-    lang        String  
-    title       String
-    description String
-    subtitle    String?
+    id               Int             @id @default(autoincrement())
+    page_id          Int             @map("page")
+    page             Page            @relation(fields: [page_id], references: [id], onDelete: Cascade)
+    lang             String
+    title            String
+    description      String
+    subtitle         String?
+    media_details_id Int?            @map("media_details") @ignore
+    media_details    Media_Details[]
 
     @@index(fields: [lang])
 }

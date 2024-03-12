@@ -1,8 +1,10 @@
 model Media {
-    id        Int     @id @default(autoincrement())
-    uuid      String  @unique @default(uuid())
+    id               Int             @id @default(autoincrement())
+    uuid             String          @unique @default(uuid())
     filepath_public  String
-    filetype  String
+    filetype         String
+    media_details_id Int?            @map("media_details") @ignore
+    media_details    Media_Details[]
 
     @@index(fields: [uuid])
 }

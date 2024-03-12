@@ -26,7 +26,7 @@ export const articleSchema = z.object({
 	conclusion: z.string().max(400).trim().optional(),
 	content: z.string().min(2).trim(),
 	description: z.string().max(400).trim().optional(),
-	title: z.string().min(2).max(30).trim(),
+	title: z.string().min(2).max(40).trim(),
 	lang: z.string().default(I18n.DEFAULT),
 });
 

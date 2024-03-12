@@ -1,12 +1,14 @@
 model Article_I18n {
-    id          Int     @id @default(autoincrement())
-    article_id  Int     @map("article")
-    article     Article @relation(fields: [article_id], references: [id], onDelete: Cascade)
-    lang        String
-    title       String
-    content     String
-    description String?
-    conclusion  String?
+    id               Int             @id @default(autoincrement())
+    article_id       Int             @map("article")
+    article          Article         @relation(fields: [article_id], references: [id], onDelete: Cascade)
+    lang             String
+    title            String
+    content          String
+    description      String?
+    conclusion       String?
+    media_details_id Int?            @map("media_details") @ignore
+    media_details    Media_Details[]
 
     @@index(fields: [lang])
 }

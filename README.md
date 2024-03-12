@@ -9,6 +9,4 @@ _npm run knip to detect unused dependencies, files, and more..._
 * doc
 * add images in page/article form
 * loading state + aucune donnée nazze....
-* create admin
-* tag
-* date evenement
+
