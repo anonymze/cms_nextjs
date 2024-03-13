@@ -40,7 +40,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
+    ".next/types/**/*.ts", "src/i18n/langs/en.js", "src/i18n/langs/fr.js", "src/i18n/langs/es.js",
   ],
   "exclude": ["node_modules"]
 }
