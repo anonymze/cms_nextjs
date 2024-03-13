@@ -49,8 +49,7 @@ export const isActionAuthorized = (
 };
 
 /**
- * @description a text replacer for what accept a react node (string, number, node...)
- * @returns - return a string with %s replaced by your values in order 
+ * @description a text replacer which return a string with %s replaced by your values in order 
  */
 export const sprintf = (str: string, ...args: string[]) => {
   return args.reduce((acc, curr) => acc.replace(/%s/, curr), str);

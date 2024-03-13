@@ -1,4 +1,6 @@
-export default {
+import type en from "./en";
+
+const fr: typeof en = {
 	ACCOUNT_CREATED_NEED_VALIDATION:
 		"Votre compte a été créé avec succès, une fois celui-ci validé par un administrateur vous pourrez vous connecter avec la même méthode de connexion",
 	ACCOUNT_CREATION_AUTOMATIC:
@@ -130,3 +132,5 @@ export default {
 		"Bienvenue dans votre monde. Ici vous pourrez créer à votre guise et sans limite. Découvrez la simplicité d'un gestionnaire de contenu affiné pour vous.",
 		YOUR_PROFILE: "Ton profil",
 };
+
+export default fr;

@@ -1,3 +1,5 @@
+// this translation file is the source of truth of all translations
+
 export default {
 	ACCOUNT_CREATED_NEED_VALIDATION:
 		"Your account has been successfully created. Once it has been validated by an administrator, you can log in using the same login method",
