@@ -7,46 +7,35 @@ import { SkeletonCard } from "@/components/ui/skeleton/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { getMediaQuery } from "@/api/queries/mediaQueries";
 import { cn } from "@/utils/libs/tailwind/helper";
-import { i18n } from "@/i18n/translations";
-import { useContext } from "react";
-import { LangContext } from "@/utils/providers";
 
 const Media: React.FC = () => {
-	const lang = useContext(LangContext)
   const {
     data: media,
-    isPending,
-    isFetching,
   } = useQuery({
     queryKey: ["media"],
     queryFn: getMediaQuery,
   });
 
-  // TODO
-  if (isPending || isFetching) {
-    return <div>{i18n[lang]("LOADING")}</div>;
-  }
-
   return (
     <section
       className={cn(
         "relative min-h-[50vh]",
-        media && media.length > 0
+        media?.length
           ? "flex flex-wrap gap-4 content-baseline"
           : "grid grid-cols-wrap-lg gap-x-5 gap-y-10"
       )}
     >
-      {media && media.length > 0 ? (
+      {media?.length ? (
         <>
           {/* if data we show the medias */}
           {media.map((media) => (
-            <MediaOperation removeFileFromApi={media.uuid} key={media.uuid}>
+            <MediaOperation removeMediaFromApi={media.uuid} key={media.uuid}>
               <Image
                 placeholder="blur"
                 blurDataURL={"/placeholder-150x150.jpg"}
                 width={150}
                 height={150}
-                priority
+                priority={true}
                 key={media.uuid}
                 src={media.filepath_public}
                 alt=""

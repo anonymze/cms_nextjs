@@ -15,8 +15,8 @@ import { useMutation } from "@tanstack/react-query";
 import { createMediaQuery } from "@/api/queries/mediaQueries";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
-import type { FormEvent } from "react";
 import { sleep } from "@/utils/helper";
+import type { FormEvent } from "react";
 
 export default function Content({
   hideActionButton,
@@ -26,8 +26,8 @@ export default function Content({
   // files from context
   const files = useFilesStore((state) => state.files);
   const lang = useContext(LangContext);
-  const setFiles = useFilesStore((state) => state.setFiles);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const setFiles = useFilesStore((state) => state.setFiles);
 
   const createMutation = useMutation({
     mutationFn: createMediaQuery,

@@ -7,7 +7,7 @@ import {
 	jsonResponseBadRequest,
 	jsonResponseUnauthorized,
 } from "@/utils/server_api/responses/errors";
-import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
+import { jsonResponsePost, responseDelete, jsonResponsePatch, jsonResponseGet } from "@/utils/server_api/responses/successes";
 import { HierarchyRole } from "@/types/user";
 import { isActionAuthorized } from "@/utils/helper";
 import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
@@ -38,7 +38,7 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 
 	if (!page) return jsonResponseNotFound("Page not found");
 
-	return jsonResponsePost(page);
+	return jsonResponseGet(page);
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { uuid: string } }) {

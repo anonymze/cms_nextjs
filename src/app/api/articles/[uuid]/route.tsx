@@ -7,7 +7,7 @@ import {
 	jsonResponseBadRequest,
 	jsonResponseUnauthorized,
 } from "@/utils/server_api/responses/errors";
-import { jsonResponsePost, responseDelete, jsonResponsePatch } from "@/utils/server_api/responses/successes";
+import { jsonResponsePost, responseDelete, jsonResponsePatch, jsonResponseGet } from "@/utils/server_api/responses/successes";
 import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
 import { isActionAuthorized } from "@/utils/helper";
 import type { NextRequest } from "next/server";
@@ -39,7 +39,7 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 
 	if (!article) return jsonResponseNotFound("Article not found");
 
-	return jsonResponsePost(article);
+	return jsonResponseGet(article);
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { uuid: string } }) {

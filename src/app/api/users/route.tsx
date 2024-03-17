@@ -4,7 +4,7 @@ import { userCreationSchema } from "@/types/user";
 import prisma from "@/utils/libs/prisma/single_instance";
 import { findManyWithLimit, getUserWithEmail } from "@/utils/libs/prisma/server_helper";
 import { jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
-import { jsonResponsePost } from "@/utils/server_api/responses/successes";
+import { jsonResponseGet, jsonResponsePost } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 		req.nextUrl.searchParams,
 	);
 
-	return jsonResponsePost(users);
+	return jsonResponseGet(users);
 }
 
 export async function POST(req: NextRequest) {

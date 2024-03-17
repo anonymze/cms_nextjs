@@ -1,10 +1,10 @@
 import { ENV_SERVER } from "@/env/server";
 
-export function getResponseHeader(sendCookieApiToken: boolean) {
+export function getResponseHeader(getCookieApiToken: boolean) {
 	const headers = new Headers();
 	headers.append("Content-Type", "application/json");
 
-	if (sendCookieApiToken) {
+	if (getCookieApiToken) {
 		// 2592000 = 30 days
 		headers.append(
 			"set-cookie",

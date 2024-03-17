@@ -4,20 +4,35 @@ import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formCreateArticleSchema } from "@/types/article";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { Textarea } from "@/components/ui/form/Textarea";
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form/Form";
+import {
+	FormField,
+	FormItem,
+	FormLabel,
+	FormControl,
+	FormDescription,
+	FormMessage,
+	Form,
+} from "@/components/ui/form/Form";
 import { SkeletonCard } from "@/components/ui/skeleton/Skeleton";
 import type { ArticleI18ns } from "@/types/article";
 import type { z } from "zod";
+import { Dialog, DialogHeader, DialogBody, DialogFooter } from "@/components/ui/Dialog";
+import { PlusCircleIcon } from "lucide-react";
+import { getMediaQuery } from "@/api/queries/mediaQueries";
+import MediaOperation from "@/components/media-operation/MediaOperation";
+import Image from "next/image";
+import type { Media } from "@prisma/client";
+import { useFilesStore } from "@/contexts/store_files_context";
 
 interface Props {
 	langForm?: I18n;
@@ -35,9 +50,16 @@ const TiptapDynamic = dynamic(() => import("@/components/ui/rich-text/Tiptap"), 
 });
 
 const FormArticle: React.FC<Props> = ({ langForm, article }) => {
+	const dialogRef = useRef<HTMLDialogElement>(null);
 	const langContext = useContext(LangContext);
 	const langParam = useSearchParams().get("lang");
 	const router = useRouter();
+	const files = useFilesStore((state) => state.files);
+
+	const { data: media, isLoading: isMediaLoading } = useQuery({
+		queryKey: ["media"],
+		queryFn: getMediaQuery,
+	});
 
 	const createMutation = useMutation({
 		mutationFn: createArticleQuery,
@@ -90,85 +112,114 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	};
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(createOrUpdateArticle)} className="space-y-6">
-				{/* TITLE */}
-				<FormField
-					control={form.control}
-					name="title"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{i18n[langContext]("TITLE")} *</FormLabel>
-							<FormControl>
-								<Input placeholder="" {...field} />
-							</FormControl>
-							<FormDescription>{i18n[langContext]("TITLE_ARTICLE")}</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+		<>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(createOrUpdateArticle)} className="space-y-6">
+					{/* TITLE */}
+					<FormField
+						control={form.control}
+						name="title"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{i18n[langContext]("TITLE")} *</FormLabel>
+								<FormControl>
+									<Input placeholder="" {...field} />
+								</FormControl>
+								<FormDescription>{i18n[langContext]("TITLE_ARTICLE")}</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				{/* PRESENTATION */}
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{i18n[langContext]("DESCRIPTION")}</FormLabel>
-							<FormControl>
-								<Textarea placeholder="" {...field} />
-							</FormControl>
-							<FormDescription>{i18n[langContext]("DESCRIPTION_ARTICLE")}</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+					{/* PRESENTATION */}
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{i18n[langContext]("DESCRIPTION")}</FormLabel>
+								<FormControl>
+									<Textarea placeholder="" {...field} />
+								</FormControl>
+								<FormDescription>{i18n[langContext]("DESCRIPTION_ARTICLE")}</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				{/* CONTENT */}
-				<FormField
-					control={form.control}
-					name="content"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{i18n[langContext]("CONTENT")} *</FormLabel>
-							<FormControl>
-								<TiptapDynamic description={field.value} onChange={field.onChange} />
-							</FormControl>
-							<FormDescription>{i18n[langContext]("CONTENT_ARTICLE")}</FormDescription>
-							{/* TODO need to be fixed */}
-							{form.formState.isSubmitted && form.formState.errors[""] && (
-								<FormMessage>{form.formState.errors[""].message}</FormMessage>
-							)}
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+					{/* CONTENT */}
+					<FormField
+						control={form.control}
+						name="content"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{i18n[langContext]("CONTENT")} *</FormLabel>
+								<FormControl>
+									<TiptapDynamic description={field.value} onChange={field.onChange} />
+								</FormControl>
+								<FormDescription>{i18n[langContext]("CONTENT_ARTICLE")}</FormDescription>
+								{/* TODO need to be translated */}
+								{form.formState.isSubmitted && form.formState.errors[""] && (
+									<FormMessage>{form.formState.errors[""].message}</FormMessage>
+								)}
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				{/* CONCLUSION */}
-				<FormField
-					control={form.control}
-					name="conclusion"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{i18n[langContext]("CONCLUSION")}</FormLabel>
-							<FormControl>
-								<Textarea placeholder="" {...field} />
-							</FormControl>
-							<FormDescription>{i18n[langContext]("CONCLUSION_ARTICLE")}</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+					{/* CONCLUSION */}
+					<FormField
+						control={form.control}
+						name="conclusion"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{i18n[langContext]("CONCLUSION")}</FormLabel>
+								<FormControl>
+									<Textarea placeholder="" {...field} />
+								</FormControl>
+								<FormDescription>{i18n[langContext]("CONCLUSION_ARTICLE")}</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-				<FormField control={form.control} name="lang" render={({ field }) => <input type="hidden" {...field} />} />
+					<Button onClick={() => dialogRef.current?.show()}>
+						<PlusCircleIcon className="h-4 w-4 mr-2" /> Ajouter vos média
+					</Button>
 
-				<p className="pt-5 text-xs">* {i18n[langContext]("MANDATORY_FIELDS")}</p>
+					<FormField control={form.control} name="lang" render={({ field }) => <input type="hidden" {...field} />} />
 
-				<Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
-					{i18n[langContext]("SAVE")}
-				</Button>
-			</form>
-		</Form>
+					<p className="pt-5 text-xs">* {i18n[langContext]("MANDATORY_FIELDS")}</p>
+
+					<Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
+						{i18n[langContext]("SAVE")}
+					</Button>
+				</form>
+			</Form>
+
+			<Dialog ref={dialogRef} onSubmitForm={() => console.log(files)}>
+				<DialogHeader title={i18n[langContext]("SELECT_MEDIA")} />
+				<DialogBody>
+					<div className="flex flex-wrap gap-3 min-h-48">
+						{media?.map((file) => (
+							<MediaOperation selectMedia key={file.uuid} className="select-mode">
+								<Image
+									width={100}
+									height={100}
+									priority={false}
+									// id is required for selecting media
+									id={file.uuid}
+									key={file.uuid}
+									src={file.filepath_public}
+									alt=""
+								/>
+							</MediaOperation>
+						))}
+					</div>
+				</DialogBody>
+				<DialogFooter />
+			</Dialog>
+		</>
 	);
 };
 

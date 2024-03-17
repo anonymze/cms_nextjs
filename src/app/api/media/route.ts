@@ -3,13 +3,13 @@ import { manageFiles } from "@/utils/server_api/file_resolving";
 import { validateRequest } from "@/utils/server_api/requests/validate";
 import prisma from "@/utils/libs/prisma/single_instance";
 import { jsonResponseBadRequest } from "@/utils/server_api/responses/errors";
-import { jsonResponsePost } from "@/utils/server_api/responses/successes";
+import { jsonResponseGet, jsonResponsePost } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "multipart/form-data";
 
 export async function GET() {
-	return jsonResponsePost(
+	return jsonResponseGet(
 		await prisma.media.findMany({
 			select: {
 				uuid: true,

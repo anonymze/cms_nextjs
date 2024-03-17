@@ -1,12 +1,15 @@
-import { useRef, useCallback, useState, useId } from "react";
+import { useRef, useCallback, useState, useId, use, useContext } from "react";
 import { Button } from "./Button";
 import MediaOperation from "../media-operation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/web_api/file_resolving";
 import { CloudLightningIcon } from "lucide-react";
+import { LangContext } from "@/utils/providers";
+import { i18n } from "@/i18n/translations";
 import { type DragEvent, type ChangeEvent } from "react";
 
 export default function DropZone() {
+	const lang = useContext(LangContext);
 	const [isDraggedOver, setIsDraggedOver] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	// files from context
@@ -70,7 +73,7 @@ export default function DropZone() {
 						setIsDraggedOver(true);
 					}}
 					onDragLeave={(ev) => {
-						// Ignore event if we're entering a child element
+						// ignore event if we're entering a child element
 						if (ev.currentTarget.contains(ev.relatedTarget as Node)) return;
 						setIsDraggedOver(false);
 					}}
@@ -80,9 +83,9 @@ export default function DropZone() {
 						<CloudLightningIcon className="w-8 h-8 mx-auto" />
 					) : (
 						<p>
-							Déposer un fichier
+							{i18n[lang]("DROP_FILE")}
 							<br />
-							ou
+							{i18n[lang]("OR").toLocaleLowerCase()}
 							<br />
 							<Button
 								onClick={() => inputRef.current?.click()}
@@ -90,7 +93,7 @@ export default function DropZone() {
 								className="mt-1"
 								aria-label="Bouton utilisé pour ajouter un fichier local"
 							>
-								Cliquer ici pour sélectionner un fichier
+								{i18n[lang]("CLICK_HERE_DROP_FILE")}
 							</Button>
 						</p>
 					)}
@@ -99,9 +102,9 @@ export default function DropZone() {
 				<div className="flex flex-wrap gap-4 min-h-48">
 					{files.map((fileTypeStore) => (
 						<MediaOperation
-							removeFileFromApi={false}
+							removeMediaFromApi={false}
 							key={fileTypeStore.id}
-							onClick={() => removeFile(fileTypeStore.file)}
+							onClick={() => {if (fileTypeStore.file) removeFile(fileTypeStore.file)}}
 						>
 							<img src={fileTypeStore.base64} alt="" />
 						</MediaOperation>

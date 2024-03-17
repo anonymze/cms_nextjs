@@ -1,6 +1,6 @@
 import { getUserWithEmail } from "@/utils/libs/prisma/server_helper";
 import { jsonResponseNotFound, jsonResponseForbidden } from "@/utils/server_api/responses/errors";
-import { jsonResponse } from "@/utils/server_api/responses/json_response";
+import { jsonResponseGet } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: { email: string } }) {
@@ -14,9 +14,5 @@ export async function GET(req: NextRequest, { params }: { params: { email: strin
 	if (!user) return jsonResponseNotFound("User not found");
 	if (!user.isActive) return jsonResponseForbidden("User is not active");
 
-	return jsonResponse({
-		body: "Found",
-		status: 200,
-		statusText: "OK",
-	});
+	return jsonResponseGet("Found", false);
 }

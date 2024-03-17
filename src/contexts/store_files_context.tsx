@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
 export type FileTypeStore = {
-	// id in case of looping
+	// force to set an id even if you don't have one in case of looping
 	id: string;
-	file: File;
-	base64: string;
+	file?: File;
+	base64?: string;
 };
 
 type StateFiles = {

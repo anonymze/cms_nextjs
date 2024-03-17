@@ -1,13 +1,18 @@
 .media-operation {
   --size: 7rem;
   --transition: 0.2s ease-in-out;
+
+  &.select-mode {
+    --size: 5rem;
+  }
+
   position: relative;
   height: fit-content;
-  padding-inline: 2rem;
+  padding-inline: calc(var(--size) / 5);
   background: repeating-conic-gradient(rgb(24, 24, 38) 0%,
-      rgb(24, 24, 38) 25%,
-      transparent 0%,
-      transparent 50%) 50% center / 20px 20px;
+    rgb(24, 24, 38) 25%,
+    transparent 0%,
+    transparent 50%) 50% center / 20px 20px;
   object-fit: cover;
   box-shadow: 1px 1px 10px rgba(3, 3, 5, 0.2);
   border-radius: var(--radius);
@@ -20,12 +25,18 @@
   filter: brightness(0.7) blur(0.5px);
 }
 
+.media-operation:has(.action) img {
+  filter: brightness(0.7) blur(0.5px);
+}
+
 .media-operation img {
   width: var(--size);
   height: var(--size);
   object-fit: cover;
   transition: filter var(--transition);
 }
+
+
 
 .media-operation figcaption {
   position: absolute;
@@ -39,10 +50,10 @@
     opacity var(--transition),
     transform var(--transition);
 
-    &.action {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-    }
+  &.action {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .media-operation:hover figcaption {

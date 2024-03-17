@@ -3,6 +3,7 @@ import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
 import type { I18n } from "@/types/i18n";
+import { i18n } from "@/i18n/translations";
 
 declare module "@tanstack/react-query" {
 	interface Register {
@@ -31,7 +32,7 @@ export const queryClient = new QueryClient({
 			}
 
 			console.log({ err });
-			toast.error("Erreur inconnue, contactez l'administrateur");
+			toast.error(i18n.en("SOMETHING_UNEXPECTED_HAPPENED"));
 		},
 		onSuccess: (data, variables, context, mutation) => {
 			if (mutation.options.mutationKey) {
