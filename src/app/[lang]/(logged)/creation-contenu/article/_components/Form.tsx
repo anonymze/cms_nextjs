@@ -10,9 +10,10 @@ import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, type FormEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
+import { toast } from "sonner";
 import { Textarea } from "@/components/ui/form/Textarea";
 import {
 	FormField,
@@ -24,15 +25,15 @@ import {
 	Form,
 } from "@/components/ui/form/Form";
 import { SkeletonCard } from "@/components/ui/skeleton/Skeleton";
-import type { ArticleI18ns } from "@/types/article";
-import type { z } from "zod";
 import { Dialog, DialogHeader, DialogBody, DialogFooter } from "@/components/ui/Dialog";
-import { PlusCircleIcon } from "lucide-react";
+import { InfoIcon, PlusCircleIcon } from "lucide-react";
 import { getMediaQuery } from "@/api/queries/mediaQueries";
 import MediaOperation from "@/components/media-operation/MediaOperation";
 import Image from "next/image";
-import type { Media } from "@prisma/client";
 import { useFilesStore } from "@/contexts/store_files_context";
+import { sleep } from "@/utils/helper";
+import type { ArticleI18ns } from "@/types/article";
+import type { z } from "zod";
 
 interface Props {
 	langForm?: I18n;
@@ -55,6 +56,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	const langParam = useSearchParams().get("lang");
 	const router = useRouter();
 	const files = useFilesStore((state) => state.files);
+	const setFiles = useFilesStore((state) => state.setFiles);
 
 	const { data: media, isLoading: isMediaLoading } = useQuery({
 		queryKey: ["media"],
@@ -97,12 +99,10 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 	// values are typesafe
 	const createOrUpdateArticle = async (values: z.infer<typeof formCreateArticleSchema>) => {
-		// if uuid is present then we update the entity
-		if (article?.uuid) return updateMutation.mutate({ ...values, uuid: article.uuid });
+		// if an article is present then we just update it
+		if (article) return updateMutation.mutate({ ...values, uuid: article.uuid });
 
 		const articleCreated = await createMutation.mutateAsync(values);
-
-		console.log({ langParam });
 
 		// if article is created then we redirect to the form with the uuid (to be in an updating state)
 		if (articleCreated)
@@ -110,6 +110,16 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 				`/${langContext}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`,
 			);
 	};
+
+	const addMediaToForm = (ev: FormEvent<HTMLFormElement>) => {
+		// @ts-ignore
+		console.log(ev.nativeEvent);
+    if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
+		if (!article || !articleI18n) return toast.info(i18n[langContext]("CREATE_CONTENT_FIRST"));
+
+		return updateMutation.mutate({ uuid: article.uuid, ...articleI18n  });
+  };
+
 
 	return (
 		<>
@@ -183,9 +193,12 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						)}
 					/>
 
-					<Button onClick={() => dialogRef.current?.show()}>
-						<PlusCircleIcon className="h-4 w-4 mr-2" /> Ajouter vos média
-					</Button>
+					<div className="flex items-center gap-x-2" title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST"): undefined}>
+						<Button disabled={!article} onClick={() => dialogRef.current?.show()} aria-label={!article ? i18n[langContext]("CREATE_CONTENT_FIRST"): undefined}>
+							<PlusCircleIcon className="h-4 w-4 mr-2" /> {i18n[langContext]("ADD_MULTIPLE_MEDIA")}
+						</Button>
+						{!article && <InfoIcon className="h-5 w-5" />}
+					</div>
 
 					<FormField control={form.control} name="lang" render={({ field }) => <input type="hidden" {...field} />} />
 
@@ -197,7 +210,14 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 				</form>
 			</Form>
 
-			<Dialog ref={dialogRef} onSubmitForm={() => console.log(files)}>
+			<Dialog
+				ref={dialogRef}
+				onSubmitForm={addMediaToForm}
+				onClose={async () => {
+					await sleep(250);
+					setFiles([]);
+				}}
+			>
 				<DialogHeader title={i18n[langContext]("SELECT_MEDIA")} />
 				<DialogBody>
 					<div className="flex flex-wrap gap-3 min-h-48">
@@ -207,7 +227,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 									width={100}
 									height={100}
 									priority={false}
-									// id is required for selecting media
+									// id is needed here for selecting media
 									id={file.uuid}
 									key={file.uuid}
 									src={file.filepath_public}

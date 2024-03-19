@@ -11,12 +11,7 @@ export type PageI18n = {
 
 export type PageI18ns = {
 	uuid: Page["uuid"];
-	i18n: Array<{
-		lang: I18n;
-		description: string;
-		subtitle?: string;
-		title: string;
-	}>;
+	i18n: Array<Exclude<PageI18n, "uuid">>;
 };
 
 // Zod schema

@@ -37,9 +37,8 @@ export default function Content({
     },
   });
 
-  const sendFilesToApi = (ev: FormEvent<HTMLFormElement>) => {
-    if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel") return;
-    if (files.length <= 0) return;
+  const sendMediaToApi = (ev: FormEvent<HTMLFormElement>) => {
+    if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
     createMutation.mutate(files);
   };
 
@@ -51,7 +50,7 @@ export default function Content({
           await sleep(250);
           setFiles([]);
         }}
-        onSubmitForm={sendFilesToApi}
+        onSubmitForm={sendMediaToApi}
         ref={dialogRef}
       >
         <DialogHeader title={i18n[lang]("ADD_MEDIA")} />

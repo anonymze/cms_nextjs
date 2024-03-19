@@ -41,7 +41,7 @@ const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
 		<>
 			<div className="flex items-center justify-between pb-2">
 				<h3>{title}</h3>
-				<Button title={i18n[lang]("CANCEL")} outline={false} fill={false} type="submit" aria-label={i18n[lang]("CLOSE")} autoFocus>
+				<Button outline={false} fill={false} type="submit" aria-label={i18n[lang]("CLOSE")} autoFocus>
 					<X className="w-5 h-5 cursor-pointer" />
 				</Button>
 			</div>
@@ -59,7 +59,7 @@ const DialogFooter: React.FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<div className="flex items-center gap-2">
 			{children}
-			<Button title={i18n[lang]("CANCEL")} className="ml-auto" type="submit" fill={false} aria-label={i18n[lang]("CLOSE")}>
+			<Button className="ml-auto" type="submit" fill={false} aria-label={i18n[lang]("CLOSE")}>
 				{i18n[lang]("CANCEL")}
 			</Button>
 			<Button type="submit">{i18n[lang]("SAVE")}</Button>

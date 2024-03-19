@@ -104,7 +104,7 @@ export default function DropZone() {
 						<MediaOperation
 							removeMediaFromApi={false}
 							key={fileTypeStore.id}
-							onClick={() => {if (fileTypeStore.file) removeFile(fileTypeStore.file)}}
+							onClick={() => removeFile(fileTypeStore.file)}
 						>
 							<img src={fileTypeStore.base64} alt="" />
 						</MediaOperation>

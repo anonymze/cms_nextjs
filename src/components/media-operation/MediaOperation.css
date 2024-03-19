@@ -6,6 +6,10 @@
     --size: 5rem;
   }
 
+  &.edition-mode {
+    --size: 8rem;
+  }
+
   position: relative;
   height: fit-content;
   padding-inline: calc(var(--size) / 5);
@@ -21,11 +25,7 @@
   cursor: pointer;
 }
 
-.media-operation:hover img {
-  filter: brightness(0.7) blur(0.5px);
-}
-
-.media-operation:has(.action) img {
+.media-operation:has(.action) img, .media-operation:hover img {
   filter: brightness(0.7) blur(0.5px);
 }
 
@@ -35,8 +35,6 @@
   object-fit: cover;
   transition: filter var(--transition);
 }
-
-
 
 .media-operation figcaption {
   position: absolute;

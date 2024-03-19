@@ -7,7 +7,7 @@ import {
 	jsonResponseBadRequest,
 	jsonResponseUnauthorized,
 } from "@/utils/server_api/responses/errors";
-import { jsonResponsePost, responseDelete, jsonResponsePatch, jsonResponseGet } from "@/utils/server_api/responses/successes";
+import { responseDelete, jsonResponsePatch, jsonResponseGet } from "@/utils/server_api/responses/successes";
 import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
 import { isActionAuthorized } from "@/utils/helper";
 import type { NextRequest } from "next/server";

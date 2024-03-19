@@ -70,8 +70,8 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 
 	// values are typesafe
 	async function createOrUpdatePage(values: z.infer<typeof formCreatePageSchema>) {
-		// if uuid is present then we update the entity
-		if (page?.uuid) return updateMutation.mutate({ ...values, uuid: page.uuid });
+		// if a page is present then we just update it
+		if (page) return updateMutation.mutate({ ...values, uuid: page.uuid });
 
 		const pageCreated = await createMutation.mutateAsync(values);
 

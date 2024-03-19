@@ -2,7 +2,6 @@ import type { Article } from "@prisma/client";
 import { api } from "../_config";
 import type {
   ArticleI18n,
-  ArticleI18ns,
   formCreateArticleSchema,
 } from "@/types/article";
 import type { z } from "zod";
@@ -27,7 +26,7 @@ export async function getArticleQuery({ queryKey }: QueryFunctionContext) {
   if (!params?.slug) throw new Error("Slug is required");
   if (params?.lang) searchParams.set("lang", params.lang);
 
-  const result = await api.get<ArticleI18ns>(
+  const result = await api.get<ArticleI18n>(
     `articles/${params.slug}?${searchParams.toString()}`
   );
   return result.data;

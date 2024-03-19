@@ -1,15 +1,15 @@
 "use client";
 
-import { BoxSelect, CheckCheckIcon, CheckIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { CheckIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { SpinnerLoader } from "../ui/loader/Loader";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { deleteMediaQuery } from "@/api/queries/mediaQueries";
-import { useState, type HTMLAttributes, type PropsWithChildren } from "react";
+import { isValidElement } from "react";
+import type { HTMLAttributes } from "react";
+import { useFilesStore } from "@/contexts/store_files_context";
 import type { Media } from "@prisma/client";
 import "./MediaOperation.css";
-import { set } from "zod";
-import { useFilesStore } from "@/contexts/store_files_context";
 
 type Props = HTMLAttributes<HTMLElement> &
 	(
@@ -18,9 +18,21 @@ type Props = HTMLAttributes<HTMLElement> &
 		| { removeMediaFromApi?: never; selectMedia?: never; editionMedia: boolean }
 	);
 
-export default function MediaOperation({ removeMediaFromApi, selectMedia, editionMedia, children, className, ...props }: Props) {
+export default function MediaOperation({
+	removeMediaFromApi,
+	selectMedia,
+	editionMedia,
+	children,
+	className,
+	...props
+}: Props) {
+	if (!isValidElement(children) || !children.props.id)
+		throw new Error("The children must be a valid element with an id prop");
+
 	const setFiles = useFilesStore((state) => state.setFiles);
-	const [isSelected, setIsSelected] = useState(false);
+	const files = useFilesStore((state) => state.files);
+	const isSelected = files.some((file) => file.id === children.props.id);
+
 	const deleteMutation = useMutation({
 		mutationFn: deleteMediaQuery,
 		mutationKey: ["media"],
@@ -34,11 +46,8 @@ export default function MediaOperation({ removeMediaFromApi, selectMedia, editio
 			onClick={async () => {
 				if (removeMediaFromApi) deleteMutation.mutate(removeMediaFromApi);
 				if (selectMedia) {
-					// @ts-ignore
-					if (!children?.props?.id) throw new Error("The image must have an id");
-					setIsSelected(!isSelected);
-					// @ts-ignore
-					setFiles([{id: children.props.id}])
+					// we set fake data because we only need the id to manipulate the media
+					setFiles([{ id: children.props.id, base64: "", file: new File([""], "") }]);
 				}
 
 				if (editionMedia) {
@@ -49,7 +58,9 @@ export default function MediaOperation({ removeMediaFromApi, selectMedia, editio
 		>
 			{children}
 			{selectMedia ? (
-				<figcaption className={cn(isSelected && "action")}>{isSelected ? <CheckIcon className="w-8 h-8" /> : <PlusIcon className="w-8 h-8" />}</figcaption>
+				<figcaption className={cn(isSelected && "action")}>
+					{isSelected ? <CheckIcon className="w-8 h-8" /> : <PlusIcon className="w-8 h-8" />}
+				</figcaption>
 			) : (
 				<figcaption className={cn(deleteMutation.isPending && "action")}>
 					{deleteMutation.isSuccess || deleteMutation.isPending ? (

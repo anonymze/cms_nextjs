@@ -2,8 +2,8 @@ import "@tanstack/react-query";
 import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { isAxiosError, type AxiosError } from "axios";
-import type { I18n } from "@/types/i18n";
 import { i18n } from "@/i18n/translations";
+import type { I18n } from "@/types/i18n";
 
 declare module "@tanstack/react-query" {
 	interface Register {
