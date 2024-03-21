@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
 							title: true,
 							description: true,
 							subtitle: true,
+							lang: true
 						},
 						where: {
 							lang: req.nextUrl.searchParams.get("lang") || I18n.DEFAULT,
@@ -30,12 +31,7 @@ export async function GET(req: NextRequest) {
 			},
 			req.nextUrl.searchParams,
 		)
-	).map((page) => ({
-		uuid: page.uuid,
-		title: page.i18n[0]?.title,
-		description: page.i18n[0]?.description,
-		subtitle: page.i18n[0]?.subtitle,
-	}));
+	);
 
 	return jsonResponseGet(pages);
 }

@@ -3,7 +3,7 @@
 import { deleteArticleQuery, getArticlesQuery } from "@/api/queries/articleQueries";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Table from "../../../../../../components/ui/table/Table";
-import { getKeysTypedObject } from "@/utils/helper";
+import { flattenI18nEntities, getKeysTypedObject } from "@/utils/helper";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LangContext } from "@/utils/providers";
 import { useContext } from "react";
@@ -15,7 +15,11 @@ export default function Content() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const { data: articles, isLoading, isFetching } = useQuery({
+	const {
+		data: articles,
+		isLoading,
+		isFetching,
+	} = useQuery({
 		queryKey: ["articles", { page: searchParams.get("page"), lang }],
 		queryFn: getArticlesQuery,
 	});
@@ -34,6 +38,8 @@ export default function Content() {
 	if (!articles || !articles[0]) {
 		return <div>{i18n[lang]("NO_DATA")}...</div>;
 	}
+
+	const dataFlattened = flattenI18nEntities(articles);
 
 	// for now the type with keys is not really useful,
 	// but keep it ! We will upgrade the Table component when i'm better with Typescript
@@ -54,9 +60,10 @@ export default function Content() {
 					},
 				},
 			]}
-			isLoading={false}
-			data={articles}
-			columns={getKeysTypedObject(articles[0])}
+      isLoading={deleteMutation.isPending}
+			data={dataFlattened}
+			// @ts-expect-error
+			columns={getKeysTypedObject(dataFlattened[0])}
 		/>
 	);
 }

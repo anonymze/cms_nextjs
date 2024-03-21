@@ -23,7 +23,6 @@ export function TableHead({ columns, hasActions, isLoading }: THead) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
-
 	const orderBy = getOrderBy(searchParams.get("orderBy"));
 
 	return (
@@ -40,17 +39,18 @@ export function TableHead({ columns, hasActions, isLoading }: THead) {
 						key={titleColumn}
 						onClick={() =>
 							router.push(
-								`${pathname}?${getQueryParams(searchParams.get("column"), titleColumn, orderBy)}`,
+								`${pathname}?${getQueryParams(searchParams.get("column"), titleColumn.toString(), orderBy)}`,
 							)
 						}
 						onKeyDown={(event) => {
 							if (event.key === "Enter" || event.key === " ") {
 								router.push(
-									`${pathname}?${getQueryParams(searchParams.get("column"), titleColumn, orderBy)}`,
+									`${pathname}?${getQueryParams(searchParams.get("column"), titleColumn.toString(), orderBy)}`,
 								);
 							}
 						}}
 					>
+						{/* TODO */}
 						{/* @ts-expect-error */}
 						{i18n[lang](titleColumn.toUpperCase())} <ChevronsUpDown className="inline size-3" />
 					</th>
@@ -59,7 +59,7 @@ export function TableHead({ columns, hasActions, isLoading }: THead) {
 
 			{hasActions && (
 				<th className="px-4 py-3 text-muted-foreground cursor-pointer text-xs whitespace-nowrap first-letter:uppercase">
-					{isLoading && <SpinnerLoader />}
+					{isLoading && <SpinnerLoader className="mx-auto" />}
 				</th>
 			)}
 		</tr>

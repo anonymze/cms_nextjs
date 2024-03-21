@@ -10,12 +10,12 @@ import type { TAction } from "./TableActions";
 export interface ITable {
 	// data should have an uuid for actions (delete, update, etc..)
 	data: Array<{ uuid: string; [key: string]: TValue }>;
-	columns: string[];
+	columns: (string | number)[];
 	actions?: TAction[];
 	isLoading?: boolean;
 }
 
-export default function Table({ data, columns, actions, isLoading }: ITable) {
+export default function Table({ data, columns = [], actions, isLoading }: ITable) {
 	const searchParams = useSearchParams();
 	const dataOrdered = setOrderBy(data, searchParams.get("orderBy"), searchParams.get("column"));
 

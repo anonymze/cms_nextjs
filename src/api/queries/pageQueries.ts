@@ -1,6 +1,5 @@
 import {
   type PageI18n,
-  type PageI18ns,
   type formCreatePageSchema,
 } from "@/types/page";
 import { api } from "../_config";
@@ -26,7 +25,7 @@ export async function getPageQuery({ queryKey }: QueryFunctionContext) {
   if (!params?.slug) throw new Error("Slug is required");
   if (params?.lang) searchParams.set("lang", params.lang);
 
-  const result = await api.get<PageI18ns>(
+  const result = await api.get<PageI18n>(
     `pages/${params.slug}?${searchParams.toString()}`
   );
   return result.data;

@@ -9,7 +9,6 @@ export type ArticleI18n = {
 		content: string;
 		description?: string;
 		title: string;
-		uuid: Article["uuid"];
 		lang: I18n;
 	}>;
 };

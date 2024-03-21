@@ -3,15 +3,13 @@ import { I18n } from "./i18n";
 import type { Page } from "@prisma/client";
 
 export type PageI18n = {
-	description: string;
-	subtitle?: string;
-	title: string;
 	uuid: Page["uuid"];
-};
-
-export type PageI18ns = {
-	uuid: Page["uuid"];
-	i18n: Array<Exclude<PageI18n, "uuid">>;
+	i18n: Array<{
+		description: string;
+		subtitle?: string;
+		title: string;
+		lang: I18n
+	}>;
 };
 
 // Zod schema

@@ -1,4 +1,4 @@
-import { articleSchema, type ArticleI18n } from "@/types/article";
+import { articleSchema } from "@/types/article";
 import { I18n } from "@/types/i18n";
 import { validateRequest } from "@/utils/server_api/requests/validate";
 import { findManyWithLimit } from "@/utils/libs/prisma/server_helper";

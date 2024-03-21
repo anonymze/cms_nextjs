@@ -19,7 +19,7 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 	// we get the UUID from the URL params
 	const uuid = params.uuid;
 
-	const article = await prisma.article.findUniqueOrThrow({
+	const article = await prisma.article.findUnique({
 		select: {
 			uuid: true,
 			i18n: {

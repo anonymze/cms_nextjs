@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreatePageSchema, type PageI18ns } from "@/types/page";
+import { formCreatePageSchema, type PageI18n } from "@/types/page";
 import { useMutation } from "@tanstack/react-query";
 import { createPageQuery, updatePageQuery } from "@/api/queries/pageQueries";
 import {
@@ -26,7 +26,7 @@ import type { I18n } from "@/types/i18n";
 
 interface Props {
 	langForm?: I18n;
-	page?: PageI18ns;
+	page?: PageI18n;
 }
 
 const FormPage: React.FC<Props> = ({ langForm, page }) => {

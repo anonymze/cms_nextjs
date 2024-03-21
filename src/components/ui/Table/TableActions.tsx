@@ -41,7 +41,7 @@ export function TableActions({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-8 w-8 p-0">
+        <Button className="h-8 w-8 p-0 flex mx-auto">
           <span className="sr-only">{i18n[lang]("OPEN_MENU_ACTIONS")}</span>
           <MoreHorizontal className="h-4 w-4" />
         </Button>

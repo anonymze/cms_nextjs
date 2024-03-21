@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { formCreateArticleSchema } from "@/types/article";
+import { formCreateArticleSchema, type ArticleI18n } from "@/types/article";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
@@ -32,12 +32,12 @@ import MediaOperation from "@/components/media-operation/MediaOperation";
 import Image from "next/image";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { sleep } from "@/utils/helper";
-import type { ArticleI18ns } from "@/types/article";
 import type { z } from "zod";
+import Link from "next/link";
 
 interface Props {
 	langForm?: I18n;
-	article?: ArticleI18ns;
+	article?: ArticleI18n;
 }
 
 // we import component dynamicly (when we need it only, not included in the bundle) because the component uses a big package
@@ -58,7 +58,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	const files = useFilesStore((state) => state.files);
 	const setFiles = useFilesStore((state) => state.setFiles);
 
-	const { data: media, isLoading: isMediaLoading } = useQuery({
+	const { data: media } = useQuery({
 		queryKey: ["media"],
 		queryFn: getMediaQuery,
 	});
@@ -114,12 +114,11 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	const addMediaToForm = (ev: FormEvent<HTMLFormElement>) => {
 		// @ts-ignore
 		console.log(ev.nativeEvent);
-    if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
+		if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
 		if (!article || !articleI18n) return toast.info(i18n[langContext]("CREATE_CONTENT_FIRST"));
 
-		return updateMutation.mutate({ uuid: article.uuid, ...articleI18n  });
-  };
-
+		return updateMutation.mutate({ uuid: article.uuid, ...articleI18n });
+	};
 
 	return (
 		<>
@@ -193,8 +192,15 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						)}
 					/>
 
-					<div className="flex items-center gap-x-2" title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST"): undefined}>
-						<Button disabled={!article} onClick={() => dialogRef.current?.show()} aria-label={!article ? i18n[langContext]("CREATE_CONTENT_FIRST"): undefined}>
+					<div
+						className="flex items-center gap-x-2"
+						title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
+					>
+						<Button
+							disabled={!article}
+							onClick={() => dialogRef.current?.show()}
+							aria-label={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
+						>
 							<PlusCircleIcon className="h-4 w-4 mr-2" /> {i18n[langContext]("ADD_MULTIPLE_MEDIA")}
 						</Button>
 						{!article && <InfoIcon className="h-5 w-5" />}
@@ -222,19 +228,18 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 				<DialogBody>
 					<div className="flex flex-wrap gap-3 min-h-48">
 						{media?.map((file) => (
-							<MediaOperation selectMedia key={file.uuid} className="select-mode">
-								<Image
-									width={100}
-									height={100}
-									priority={false}
-									// id is needed here for selecting media
-									id={file.uuid}
-									key={file.uuid}
-									src={file.filepath_public}
-									alt=""
-								/>
+							<MediaOperation mediaUuid={file.uuid} selectMedia key={file.uuid} className="select-mode">
+								<Image width={100} height={100} priority={false} src={file.filepath_public} alt="" />
 							</MediaOperation>
 						))}
+						{media?.length === 0 && (
+							<>
+								<p className="my-auto ml-auto">{i18n[langContext]("NO_MEDIA_DATA")}.</p>
+								<Link href={`/${langContext}/media`} className="btn my-auto mr-auto underline">
+									{i18n[langContext]("MEDIA_LIBRARY")}
+								</Link>
+							</>
+						)}
 					</div>
 				</DialogBody>
 				<DialogFooter />

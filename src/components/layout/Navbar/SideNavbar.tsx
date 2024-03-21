@@ -2,13 +2,13 @@
 
 import { cn } from "@/utils/libs/tailwind/helper";
 import Link from "next/link";
-import { mainNavigation, optionsNavigation } from "./NavLinks";
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { useContext } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
+import { mainNavigation, optionsNavigation } from "./navLinks";
 
 export default function SideNavbar() {
 	const lang = useContext(LangContext);

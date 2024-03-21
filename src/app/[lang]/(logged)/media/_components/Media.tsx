@@ -29,14 +29,13 @@ const Media: React.FC = () => {
         <>
           {/* if data we show the medias */}
           {media.map((media) => (
-            <MediaOperation removeMediaFromApi={media.uuid} key={media.uuid}>
+            <MediaOperation mediaUuid={media.uuid} removeMediaFromApi={media.uuid} key={media.uuid}>
               <Image
                 placeholder="blur"
                 blurDataURL={"/placeholder-150x150.jpg"}
                 width={150}
                 height={150}
                 priority={true}
-                key={media.uuid}
                 src={media.filepath_public}
                 alt=""
               />
