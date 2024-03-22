@@ -50,18 +50,21 @@ export const sprintf = (str: string, ...args: string[]) => {
 	return args.reduce((acc, curr) => acc.replace(/%s/, curr), str);
 };
 
+type Entity<K> = { uuid: string; i18n: K };
+type FlattenEntity<T extends Entity<K>[], K extends { [k: string]: string }[]> = ({[key in keyof Omit<T[number], "i18n">]: string} & {[key in keyof T[number]["i18n"][number]]: string})[]
+
 /**
  * @description flatten an array of objects with i18n entities
- * @todo that typing is ugly, i have to refacto
+ * @todo i have to refacto that typing, ugly ? and make a generic for the key 
  */
-export const flattenI18nEntities = <T extends { uuid: string; i18n: K }[] = any[], K extends { [k: string]: string }[] = any []>(
+export const flattenI18nEntities = <T extends Entity<K>[] = any[], K extends { [k: string]: string }[] = any[]>(
 	arr: T
-): ({[key in keyof Omit<T[number], "i18n">]: string} & {[key in keyof T[number]["i18n"][number]]: string})[] => {
+): FlattenEntity<T, K> => {
 	// we spread the entity and get i18n outside of it
 	return arr.map(({ i18n, ...entity }) => {
 			return {
-					...(entity),
+					...(entity as object),
 					...(i18n[0] ?? {}),
 			};
-	}) as ({[key in keyof Omit<T[number], "i18n">]: string} & {[key in keyof T[number]["i18n"][number]]: string})[];
+	}) as FlattenEntity<T, K>;
 };
