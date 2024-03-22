@@ -50,9 +50,9 @@ export const sprintf = (str: string, ...args: string[]) => {
 	return args.reduce((acc, curr) => acc.replace(/%s/, curr), str);
 };
 
+
 /**
  * @description flatten an array of objects with i18n entities
- * @todo that typing is ugly, i have to refacto
  */
 export const flattenI18nEntities = <T extends { uuid: string; i18n: K }[] = any[], K extends { [k: string]: string }[] = any []>(
 	arr: T

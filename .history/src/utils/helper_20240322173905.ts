@@ -50,13 +50,13 @@ export const sprintf = (str: string, ...args: string[]) => {
 	return args.reduce((acc, curr) => acc.replace(/%s/, curr), str);
 };
 
+
 /**
  * @description flatten an array of objects with i18n entities
- * @todo that typing is ugly, i have to refacto
  */
-export const flattenI18nEntities = <T extends { uuid: string; i18n: K }[] = any[], K extends { [k: string]: string }[] = any []>(
+export const flattenI18nEntities = <R extends string, T extends { uuid: string; R: K }[] = any[], K extends { [k: string]: string }[] = any []>(
 	arr: T
-): ({[key in keyof Omit<T[number], "i18n">]: string} & {[key in keyof T[number]["i18n"][number]]: string})[] => {
+): ({[key in keyof Omit<T[number], "i18n">]: string} & {[key in keyof T[number][R][number]]: string})[] => {
 	// we spread the entity and get i18n outside of it
 	return arr.map(({ i18n, ...entity }) => {
 			return {
@@ -65,3 +65,5 @@ export const flattenI18nEntities = <T extends { uuid: string; i18n: K }[] = any[
 			};
 	}) as ({[key in keyof Omit<T[number], "i18n">]: string} & {[key in keyof T[number]["i18n"][number]]: string})[];
 };
+
+const ok = flattenI18nEntities([{uuid: "ok", i18n: [{title: "oui"}]}])
