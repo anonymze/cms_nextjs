@@ -54,8 +54,6 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 
 	const pageI18n = page?.i18n?.find((pageI18n) => pageI18n.lang === langForm);
 
-	console.log({langForm});
-
 	const form = useForm<z.infer<typeof formCreatePageSchema>>({
 		resolver: zodResolver(formCreatePageSchema),
 		mode: "onSubmit",
@@ -77,7 +75,8 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 
 		// if page is created then we redirect to the form with the uuid (to be in an updating state)
 
-		if (pageCreated) router.push(`/${langContext}/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
+		if (pageCreated)
+			router.push(`/${langContext}/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
 	}
 
 	return (
@@ -131,19 +130,27 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 					)}
 				/>
 
+				{/* TAG */}
 				<FormField
 					control={form.control}
-					name="lang"
-					render={({ field }) => <input type="hidden" {...field} />}
+					name="tag"
+					render={({ field }) => (
+						<FormItem className="w-1/2">
+							<FormLabel>{i18n[langContext]("TAG")}</FormLabel>
+							<FormControl>
+								<Input placeholder="" {...field} defaultValue={page?.tag} />
+							</FormControl>
+							<FormDescription>{i18n[langContext]("TAG_DEFINITION")}</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
+
+				<FormField control={form.control} name="lang" render={({ field }) => <input type="hidden" {...field} />} />
 
 				<p className="pt-5 text-xs">* {i18n[langContext]("MANDATORY_FIELDS")}</p>
 
-				<Button
-					disabled={createMutation.isPending}
-					isLoading={createMutation.isPending}
-					type="submit"
-				>
+				<Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
 					{i18n[langContext]("SAVE")}
 				</Button>
 			</form>

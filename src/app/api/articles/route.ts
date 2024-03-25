@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 							description: true,
 							conclusion: true,
 							content: true,
-							lang: true
+							lang: true,
 						},
 						where: {
 							lang: req.nextUrl.searchParams.get("lang") || I18n.DEFAULT,
@@ -48,6 +48,9 @@ export async function POST(req: NextRequest) {
 
 	const article = await prisma.article.create({
 		data: {
+			tag: data.tag,
+			eventCreatedAt: data.eventCreatedAt,
+			eventFinishedAt: data.eventFinishedAt,
 			i18n: {
 				create: {
 					content: data.content,

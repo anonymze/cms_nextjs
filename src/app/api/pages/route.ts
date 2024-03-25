@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
 
 	const page = await prisma.page.create({
 		data: {
+			tag: data.tag,
 			i18n: {
 				create: {
 					description: data.description,

@@ -22,12 +22,26 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 	const page = await prisma.page.findUnique({
 		select: {
 			uuid: true,
+			tag: true,
 			i18n: {
 				select: {
 					title: true,
 					description: true,
 					subtitle: true,
 					lang: true,
+					media_details: {
+						select: {
+							legend: true,
+							tag: true,
+							title: true,
+							media: {
+								select: {
+									filepath_public: true,
+									filetype: true,									
+								},
+							},
+						},
+					}
 				},
 			},
 		},
@@ -94,6 +108,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 				id: recordI18n.id,
 			},
 			data: {
+				page: {
+					update: {
+						tag: data.tag,
+					}
+				},
 				description: data.description,
 				title: data.title,
 				subtitle: data.subtitle,
@@ -107,8 +126,19 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 						uuid,
 					},
 				},
-				...data,
+				description: data.description,
+				title: data.title,
+				subtitle: data.subtitle,
 				lang: data.lang || I18n.DEFAULT,
+			},
+		});
+
+		await prisma.page.update({
+			where: {
+				uuid,
+			},
+			data: {
+				tag: data.tag,
 			},
 		});
 	}

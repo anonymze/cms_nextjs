@@ -75,7 +75,7 @@ export class ParserRequest {
 			return {
 				error: false,
 				dataParsed: await this.request.json(),
-			} satisfies ParsedRequest<any>;
+			} satisfies ParsedRequest<unknown>;
 		} catch (_) {
 			return {
 				error: true,

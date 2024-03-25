@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { formCreateArticleSchema, type ArticleI18n } from "@/types/article";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQueries";
 import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
@@ -32,8 +32,10 @@ import MediaOperation from "@/components/media-operation/MediaOperation";
 import Image from "next/image";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { sleep } from "@/utils/helper";
-import type { z } from "zod";
 import Link from "next/link";
+import { createMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
+import type { z } from "zod";
+import { file } from "bun";
 
 interface Props {
 	langForm?: I18n;
@@ -51,6 +53,7 @@ const TiptapDynamic = dynamic(() => import("@/components/ui/rich-text/Tiptap"), 
 });
 
 const FormArticle: React.FC<Props> = ({ langForm, article }) => {
+	const queryClient = useQueryClient();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const langContext = useContext(LangContext);
 	const langParam = useSearchParams().get("lang");
@@ -63,7 +66,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 		queryFn: getMediaQuery,
 	});
 
-	const createMutation = useMutation({
+	const createArticleMutation = useMutation({
 		mutationFn: createArticleQuery,
 		mutationKey: ["articles"],
 		meta: {
@@ -72,7 +75,17 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 		},
 	});
 
-	const updateMutation = useMutation({
+	const createMediaDetailsMutation = useMutation({
+		mutationFn: createMediaDetailsQuery,
+		mutationKey: ["media-details"],
+		meta: {
+			action: "create",
+			message: i18n[langContext]("MEDIA_DETAILS_ADDED"),
+		},
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["media"] }),
+	});
+
+	const updateArticleMutation = useMutation({
 		mutationFn: updateArticleQuery,
 		mutationKey: ["article", { slug: article?.uuid }],
 		meta: {
@@ -100,9 +113,9 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	// values are typesafe
 	const createOrUpdateArticle = async (values: z.infer<typeof formCreateArticleSchema>) => {
 		// if an article is present then we just update it
-		if (article) return updateMutation.mutate({ ...values, uuid: article.uuid });
+		if (article) return updateArticleMutation.mutate({ ...values, uuid: article.uuid });
 
-		const articleCreated = await createMutation.mutateAsync(values);
+		const articleCreated = await createArticleMutation.mutateAsync(values);
 
 		// if article is created then we redirect to the form with the uuid (to be in an updating state)
 		if (articleCreated)
@@ -111,19 +124,58 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 			);
 	};
 
-	const addMediaToForm = (ev: FormEvent<HTMLFormElement>) => {
-		// @ts-ignore
-		console.log(ev.nativeEvent);
+	const createMediaDetails = (ev: FormEvent<HTMLFormElement>) => {
 		if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
-		if (!article || !articleI18n) return toast.info(i18n[langContext]("CREATE_CONTENT_FIRST"));
+		if (!article || !langForm) return toast.info(i18n[langContext]("CREATE_CONTENT_FIRST"));
 
-		return updateMutation.mutate({ uuid: article.uuid, ...articleI18n });
+		createMediaDetailsMutation.mutate({
+			entityAttached: "article",
+			entityUuid: article.uuid,
+			lang: langForm,
+			// ids are uuids in this case
+			mediaUuids: files.map((file) => file.id),
+		});
+
+		return;
 	};
 
 	return (
 		<>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(createOrUpdateArticle)} className="space-y-6">
+					<div className="flex gap-x-4">
+						{/* EVENT CREATED AT */}
+						<FormField
+							control={form.control}
+							name="eventCreatedAt"
+							render={({ field }) => (
+								<FormItem className="basis-full">
+									<FormLabel>{i18n[langContext]("EVENT_BEGINNING")}</FormLabel>
+									<FormControl>
+										<Input placeholder="" {...field} defaultValue={article?.eventCreatedAt} />
+									</FormControl>
+									<FormDescription>{i18n[langContext]("EVENT_BEGINNING_ARTICLE")}</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						{/* EVENT FINISHED AT */}
+						<FormField
+							control={form.control}
+							name="eventFinishedAt"
+							render={({ field }) => (
+								<FormItem className="basis-full">
+									<FormLabel>{i18n[langContext]("EVENT_END")}</FormLabel>
+									<FormControl>
+										<Input placeholder="" {...field} defaultValue={article?.eventFinishedAt} />
+									</FormControl>
+									<FormDescription>{i18n[langContext]("EVENT_END_ARTICLE")}</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+
 					{/* TITLE */}
 					<FormField
 						control={form.control}
@@ -192,8 +244,11 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						)}
 					/>
 
+					{articleI18n?.media_details.length ? <div>oki</div> : null}
+
+					{/* MEDIAs */}
 					<div
-						className="flex items-center gap-x-2"
+						className="flex items-center gap-x-2 w-fit"
 						title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
 					>
 						<Button
@@ -206,11 +261,27 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						{!article && <InfoIcon className="h-5 w-5" />}
 					</div>
 
+					{/* TAG */}
+					<FormField
+						control={form.control}
+						name="tag"
+						render={({ field }) => (
+							<FormItem className="w-1/2">
+								<FormLabel>{i18n[langContext]("TAG")}</FormLabel>
+								<FormControl>
+									<Input placeholder="" {...field} defaultValue={article?.tag}  />
+								</FormControl>
+								<FormDescription>{i18n[langContext]("TAG_DEFINITION")}</FormDescription>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
 					<FormField control={form.control} name="lang" render={({ field }) => <input type="hidden" {...field} />} />
 
 					<p className="pt-5 text-xs">* {i18n[langContext]("MANDATORY_FIELDS")}</p>
 
-					<Button disabled={createMutation.isPending} isLoading={createMutation.isPending} type="submit">
+					<Button disabled={createArticleMutation.isPending} isLoading={createArticleMutation.isPending} type="submit">
 						{i18n[langContext]("SAVE")}
 					</Button>
 				</form>
@@ -218,7 +289,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 			<Dialog
 				ref={dialogRef}
-				onSubmitForm={addMediaToForm}
+				onSubmitForm={createMediaDetails}
 				onClose={async () => {
 					await sleep(250);
 					setFiles([]);

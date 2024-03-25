@@ -11,4 +11,5 @@ model Article_I18n {
     media_details    Media_Details[]
 
     @@index(fields: [lang])
+    // @@unique([article_id, lang])
 }

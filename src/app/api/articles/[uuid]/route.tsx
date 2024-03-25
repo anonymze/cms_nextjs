@@ -10,8 +10,8 @@ import {
 import { responseDelete, jsonResponsePatch, jsonResponseGet } from "@/utils/server_api/responses/successes";
 import { getCurrentUser } from "@/utils/libs/clerk/server_helper";
 import { isActionAuthorized } from "@/utils/helper";
-import type { NextRequest } from "next/server";
 import { HierarchyRole } from "@/types/user";
+import type { NextRequest } from "next/server";
 
 const ACCEPTED_CONTENT_TYPE = "application/json";
 
@@ -22,6 +22,9 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 	const article = await prisma.article.findUnique({
 		select: {
 			uuid: true,
+			tag: true,
+			eventCreatedAt: true,
+			eventFinishedAt: true,
 			i18n: {
 				select: {
 					title: true,
@@ -29,6 +32,19 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 					description: true,
 					content: true,
 					lang: true,
+					media_details: {
+						select: {
+							legend: true,
+							tag: true,
+							title: true,
+							media: {
+								select: {
+									filepath_public: true,
+									filetype: true,
+								},
+							},
+						},
+					},
 				},
 			},
 		},
@@ -95,6 +111,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 				id: recordI18n.id,
 			},
 			data: {
+				article: {
+					update: {
+						tag: data.tag,
+						eventCreatedAt: data.eventCreatedAt,
+						eventFinishedAt: data.eventFinishedAt,
+					},
+				},
 				title: data.title,
 				description: data.description,
 				conclusion: data.conclusion,
@@ -109,8 +132,22 @@ export async function PATCH(req: NextRequest, { params }: { params: { uuid: stri
 						uuid,
 					},
 				},
-				...data,
+				title: data.title,
+				description: data.description,
+				conclusion: data.conclusion,
+				content: data.content,
 				lang: data.lang || I18n.DEFAULT,
+			},
+		});
+
+		await prisma.article.update({
+			where: {
+				uuid,
+			},
+			data: {
+				tag: data.tag,
+				eventCreatedAt: data.eventCreatedAt,
+				eventFinishedAt: data.eventFinishedAt,
 			},
 		});
 	}

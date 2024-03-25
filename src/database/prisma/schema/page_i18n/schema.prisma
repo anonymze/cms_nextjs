@@ -10,4 +10,5 @@ model Page_I18n {
     media_details    Media_Details[]
 
     @@index(fields: [lang])
+    // @@unique([page_id, lang])
 }
