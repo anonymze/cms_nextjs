@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,7 +9,7 @@ import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useRef, useState, type FormEvent } from "react";
+import { useContext, useRef, type FormEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { toast } from "sonner";
@@ -35,7 +34,6 @@ import { sleep } from "@/utils/helper";
 import Link from "next/link";
 import { createMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
 import type { z } from "zod";
-import { file } from "bun";
 
 interface Props {
 	langForm?: I18n;
@@ -106,6 +104,10 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 			content: articleI18n?.content || "<p></p>",
 			description: articleI18n?.description || "",
 			conclusion: articleI18n?.conclusion || "",
+			// "2024-03-30T21:51:00.000Z" is datetime, so remove the milliseconds if present
+			eventCreatedAt: article?.eventCreatedAt ? article.eventCreatedAt.split(".")[0] : "",
+			eventFinishedAt: article?.eventFinishedAt ? article.eventFinishedAt.split(".")[0] : "",
+			tag: article?.tag || "",
 			lang: langForm,
 		},
 	});
@@ -152,7 +154,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 								<FormItem className="basis-full">
 									<FormLabel>{i18n[langContext]("EVENT_BEGINNING")}</FormLabel>
 									<FormControl>
-										<Input placeholder="" {...field} defaultValue={article?.eventCreatedAt} />
+										{/* @ts-expect-error we fix the string / undefined problem in defaultValue, don't know why error still occur here */}
+										<Input placeholder="" {...field} type="datetime-local" />
 									</FormControl>
 									<FormDescription>{i18n[langContext]("EVENT_BEGINNING_ARTICLE")}</FormDescription>
 									<FormMessage />
@@ -167,7 +170,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 								<FormItem className="basis-full">
 									<FormLabel>{i18n[langContext]("EVENT_END")}</FormLabel>
 									<FormControl>
-										<Input placeholder="" {...field} defaultValue={article?.eventFinishedAt} />
+										{/* @ts-expect-error */}
+										<Input placeholder="" {...field} type="datetime-local" />
 									</FormControl>
 									<FormDescription>{i18n[langContext]("EVENT_END_ARTICLE")}</FormDescription>
 									<FormMessage />
@@ -269,7 +273,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 							<FormItem className="w-1/2">
 								<FormLabel>{i18n[langContext]("TAG")}</FormLabel>
 								<FormControl>
-									<Input placeholder="" {...field} defaultValue={article?.tag}  />
+									<Input placeholder="" {...field} />
 								</FormControl>
 								<FormDescription>{i18n[langContext]("TAG_DEFINITION")}</FormDescription>
 								<FormMessage />

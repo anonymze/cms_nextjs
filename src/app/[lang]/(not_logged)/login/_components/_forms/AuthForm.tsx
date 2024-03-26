@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { LoginStateInfo } from "@/types/user";
 import { LangContext } from "@/utils/providers";
-import googleIcon from "@/assets/icons/oauth/google.svg";
+import googleIcon from "@/assets/icons/oauths/google.svg";
 import { i18n } from "@/i18n/translations";
 
 export type AuthServices = {

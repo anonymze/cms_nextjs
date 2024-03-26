@@ -46,6 +46,8 @@ export async function POST(req: NextRequest) {
 
 	if (error) return jsonResponseBadRequest(messageError);
 
+	console.log(data);
+
 	const article = await prisma.article.create({
 		data: {
 			tag: data.tag,

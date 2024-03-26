@@ -62,6 +62,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 			title: pageI18n?.title || "",
 			subtitle: pageI18n?.subtitle || "",
 			description: pageI18n?.description || "",
+			tag: page?.tag || "",
 			lang: langForm,
 		},
 	});
@@ -138,7 +139,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 						<FormItem className="w-1/2">
 							<FormLabel>{i18n[langContext]("TAG")}</FormLabel>
 							<FormControl>
-								<Input placeholder="" {...field} defaultValue={page?.tag} />
+								<Input placeholder="" {...field} />
 							</FormControl>
 							<FormDescription>{i18n[langContext]("TAG_DEFINITION")}</FormDescription>
 							<FormMessage />
