@@ -104,7 +104,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 			content: articleI18n?.content || "<p></p>",
 			description: articleI18n?.description || "",
 			conclusion: articleI18n?.conclusion || "",
-			// "2024-03-30T21:51:00.000Z" is datetime, so remove the milliseconds if present
+			// "2024-03-30T21:51:00.000Z" is datetime, so remove the milliseconds
 			eventCreatedAt: article?.eventCreatedAt ? article.eventCreatedAt.split(".")[0] : "",
 			eventFinishedAt: article?.eventFinishedAt ? article.eventFinishedAt.split(".")[0] : "",
 			tag: article?.tag || "",
@@ -248,9 +248,20 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						)}
 					/>
 
-					{articleI18n?.media_details.length ? <div>oki</div> : null}
-
 					{/* MEDIAs */}
+					{articleI18n?.media_details.length ? (
+						<div className="flex flex-wrap gap-3 min-h-48 p-4 border border-dashed rounded-md">
+							{articleI18n?.media_details.map((mediaDetail) => (
+								<MediaOperation
+									mediaDetailsUuid={mediaDetail.uuid}
+									key={mediaDetail.uuid}
+									editionMedia
+								>
+									<Image width={100} height={100} priority={false} src={mediaDetail.media.filepath_public} alt="" />
+								</MediaOperation>
+							))}
+						</div>
+					): null}
 					<div
 						className="flex items-center gap-x-2 w-fit"
 						title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
@@ -303,7 +314,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 				<DialogBody>
 					<div className="flex flex-wrap gap-3 min-h-48">
 						{media?.map((file) => (
-							<MediaOperation mediaUuid={file.uuid} selectMedia key={file.uuid} className="select-mode">
+							<MediaOperation mediaUuid={file.uuid} selectMedia key={file.uuid}>
 								<Image width={100} height={100} priority={false} src={file.filepath_public} alt="" />
 							</MediaOperation>
 						))}

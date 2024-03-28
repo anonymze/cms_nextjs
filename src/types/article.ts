@@ -14,10 +14,12 @@ export type ArticleI18n = {
 		lang: I18n;
 		title: string;
 		media_details: Array<{
+			uuid: string;
 			legend?: string;
 			tag?: string;
 			title: string;
 			media: {
+				uuid: string;
 				filepath_public: string;
 				filetype: string;
 			};

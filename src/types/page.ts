@@ -11,10 +11,12 @@ export type PageI18n = {
 		title: string;
 		lang: I18n,
 		media_details: Array<{
+			uuid: string;
 			legend?: string;
 			tag?: string;
 			title: string;
 			media: {
+				uuid: string;
 				filepath_public: string;
 				filetype: string;
 			};

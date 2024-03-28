@@ -34,11 +34,13 @@ export async function GET(_: NextRequest, { params }: { params: { uuid: string }
 					lang: true,
 					media_details: {
 						select: {
+							uuid: true,
 							legend: true,
 							tag: true,
 							title: true,
 							media: {
 								select: {
+									uuid: true,
 									filepath_public: true,
 									filetype: true,
 								},

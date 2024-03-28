@@ -1,13 +1,16 @@
 .media-operation {
-  --size: 7rem;
   --transition: 0.2s ease-in-out;
+
+  &.remove-mode {
+    --size: 8rem;
+  }
 
   &.select-mode {
     --size: 5rem;
   }
 
   &.edition-mode {
-    --size: 8rem;
+    --size: 5rem;
   }
 
   position: relative;

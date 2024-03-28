@@ -19,7 +19,7 @@
   body {
       /* native margin removed */
       margin: 0;
-      /** Ensure that the body fill the en entiere view port (vh dynamic) **/
+      /** Ensure that the body fill the en entiere view port (vh dynamic better for mobile) **/
       min-height: 100dvh;
       /** smooth font rendering **/
       -webkit-font-smoothing: antialiased;

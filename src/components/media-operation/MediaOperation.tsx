@@ -7,16 +7,32 @@ import { cn } from "@/utils/libs/tailwind/helper";
 import { deleteMediaQuery } from "@/api/queries/mediaQueries";
 import type { HTMLAttributes } from "react";
 import { useFilesStore } from "@/contexts/store_files_context";
-import type { Media } from "@prisma/client";
+import type { Media, Media_Details } from "@prisma/client";
 import "./MediaOperation.css";
 
-type Props = HTMLAttributes<HTMLElement> & {
-	mediaUuid: string
-} &
+type Props = HTMLAttributes<HTMLElement> &
 	(
-		| { removeMediaFromApi: Media["uuid"] | false; selectMedia?: never; editionMedia?: never }
-		| { removeMediaFromApi?: never; selectMedia: boolean; editionMedia?: never }
-		| { removeMediaFromApi?: never; selectMedia?: never; editionMedia: boolean }
+		| {
+				removeMediaFromApi: Media["uuid"] | false;
+				mediaUuid: Media["uuid"];
+				selectMedia?: never;
+				editionMedia?: never;
+				mediaDetailsUuid?: never;
+		  }
+		| {
+				removeMediaFromApi?: never;
+				selectMedia: boolean;
+				mediaUuid: Media["uuid"];
+				editionMedia?: never;
+				mediaDetailsUuid?: never;
+		  }
+		| {
+				removeMediaFromApi?: never;
+				selectMedia?: never;
+				editionMedia: boolean;
+				mediaDetailsUuid: Media_Details["uuid"];
+				mediaUuid?: never;
+		  }
 	);
 
 export default function MediaOperation({
@@ -52,7 +68,7 @@ export default function MediaOperation({
 				if (editionMedia) {
 				}
 			}}
-			className={cn("media-operation", className)}
+			className={cn("media-operation", selectMedia ? "select-mode" : editionMedia ? "edition-mode" : "remove-mode", className)}
 			{...props}
 		>
 			{children}
