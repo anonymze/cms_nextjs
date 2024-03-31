@@ -38,7 +38,7 @@ export default function Content({
   });
 
   const sendMediaToApi = (ev: FormEvent<HTMLFormElement>) => {
-    if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
+    if ((ev.nativeEvent as SubmitEvent)?.submitter?.dataset.type === "cancel" || !files.length) return;
     createMutation.mutate(files);
   };
 

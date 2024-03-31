@@ -70,6 +70,8 @@ export default {
 	MEDIA_ADDED: "Media added",
 	MEDIA_DELETED: "Media deleted",
 	MEDIA_DETAILS_ADDED: "Media details added",
+	MEDIA_DETAILS_DELETED: "Media details deleted",
+	MEDIA_DETAILS_EDITED: "Media details edited",
 	MEDIA_EDITED: "Media edited",
 	MEDIA_LIBRARY: "Media library",
   NAME: "Name",

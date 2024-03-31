@@ -70,6 +70,8 @@ export default {
 	MEDIA_ADDED: "Medios añadidos",
 	MEDIA_DELETED: "Medios borrados",
 	MEDIA_DETAILS_ADDED: "Detalles de los medios añadidos",
+	MEDIA_DETAILS_DELETED: "Detalles de los medios borrados",
+	MEDIA_DETAILS_EDITED: "Detalles de los medios modificados",
 	MEDIA_EDITED: "Medios modificados",
 	MEDIA_LIBRARY: "Mediateca",
 	NAME: "Nombre",

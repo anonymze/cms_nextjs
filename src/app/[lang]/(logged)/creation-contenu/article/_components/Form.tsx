@@ -80,7 +80,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 			action: "create",
 			message: i18n[langContext]("MEDIA_DETAILS_ADDED"),
 		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["media"] }),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["articles"] }),
 	});
 
 	const updateArticleMutation = useMutation({
@@ -127,7 +127,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	};
 
 	const createMediaDetails = (ev: FormEvent<HTMLFormElement>) => {
-		if ((ev.nativeEvent as SubmitEvent)?.submitter?.title === "cancel" || !files.length) return;
+		if ((ev.nativeEvent as SubmitEvent)?.submitter?.dataset.type === "cancel" || !files.length) return;
 		if (!article || !langForm) return toast.info(i18n[langContext]("CREATE_CONTENT_FIRST"));
 
 		createMediaDetailsMutation.mutate({
@@ -253,6 +253,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						<div className="flex flex-wrap gap-3 min-h-48 p-4 border border-dashed rounded-md">
 							{articleI18n?.media_details.map((mediaDetail) => (
 								<MediaOperation
+									removeMediaFromApi
 									mediaDetailsUuid={mediaDetail.uuid}
 									key={mediaDetail.uuid}
 									editionMedia
