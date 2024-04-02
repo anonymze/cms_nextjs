@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useRef, type FormEvent } from "react";
+import { useContext, useRef, type FormEvent, useState } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { toast } from "sonner";
@@ -33,7 +33,7 @@ import { useFilesStore } from "@/contexts/store_files_context";
 import { sleep } from "@/utils/helper";
 import Link from "next/link";
 import { createMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
-import type { z } from "zod";
+import { set, type z } from "zod";
 
 interface Props {
 	langForm?: I18n;
@@ -80,7 +80,7 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 			action: "create",
 			message: i18n[langContext]("MEDIA_DETAILS_ADDED"),
 		},
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["articles"] }),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["article", { slug: article?.uuid }] }),
 	});
 
 	const updateArticleMutation = useMutation({
@@ -253,16 +253,25 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						<div className="flex flex-wrap gap-3 min-h-48 p-4 border border-dashed rounded-md">
 							{articleI18n?.media_details.map((mediaDetail) => (
 								<MediaOperation
+									mutationKey={["article", { slug: article?.uuid }]}
 									removeMediaFromApi
 									mediaDetailsUuid={mediaDetail.uuid}
 									key={mediaDetail.uuid}
 									editionMedia
 								>
-									<Image width={100} height={100} priority={false} src={mediaDetail.media.filepath_public} alt="" />
+									<Image
+										placeholder="blur"
+										blurDataURL={"/placeholder-150x150.jpg"}
+										width={100}
+										height={100}
+										priority={false}
+										src={mediaDetail.media.filepath_public}
+										alt=""
+									/>
 								</MediaOperation>
 							))}
 						</div>
-					): null}
+					) : null}
 					<div
 						className="flex items-center gap-x-2 w-fit"
 						title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
@@ -316,7 +325,15 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 					<div className="flex flex-wrap gap-3 min-h-48">
 						{media?.map((file) => (
 							<MediaOperation mediaUuid={file.uuid} selectMedia key={file.uuid}>
-								<Image width={100} height={100} priority={false} src={file.filepath_public} alt="" />
+								<Image
+									placeholder="blur"
+									blurDataURL={"/placeholder-150x150.jpg"}
+									width={100}
+									height={100}
+									priority={false}
+									src={file.filepath_public}
+									alt=""
+								/>
 							</MediaOperation>
 						))}
 						{media?.length === 0 && (

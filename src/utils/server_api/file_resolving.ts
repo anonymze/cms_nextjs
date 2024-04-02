@@ -12,17 +12,12 @@ export const FileSchema = z
 	.custom<File>()
 	.refine(
 		(file) => {
-			console.log('hhmmmmmm');
-			console.log(file.size);
-			console.log(MAX_FILE_SIZE);
-			console.log(5_000_000);
 			return file.size < MAX_FILE_SIZE;
 		},
 		{ message: "Le fichier est trop volumineux" },
 	)
 	.refine(
 		(file) => {
-			console.log({file});
 			return isValidFileType(file);
 		},
 		{ message: "Le type de fichier n'est pas valide" },

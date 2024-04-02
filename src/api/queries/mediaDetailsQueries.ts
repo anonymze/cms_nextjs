@@ -15,8 +15,8 @@ export async function createMediaDetailsQuery(
   return result.data;
 }
 
-export async function deleteMediaDetailsQuery(mediaDetailId: Media_Details["uuid"]) {
-  const result = await api.delete(`media-details/${mediaDetailId}`);
+export async function deleteMediaDetailsQuery(mediaDetailsUuid: Media_Details["uuid"]) {
+  const result = await api.delete(`media-details/${mediaDetailsUuid}`);
   return result.data;
 }
 

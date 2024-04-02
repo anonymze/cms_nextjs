@@ -76,7 +76,6 @@ export default function Content() {
               {
                 label: i18n[lang]("ADMINISTRATOR"),
                 action: (entity: User) => {
-                  console.log(entity);
                   updateMutation.mutate({ uuid: entity.uuid, role: UserRole.ADMIN });
                 },
                 disabled: (entity: User) => {

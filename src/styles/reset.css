@@ -2,6 +2,7 @@
   html {
       /* Include padding and border in size calculation */
       box-sizing: border-box;
+      scroll-behavior: smooth;
   }
 
   *,

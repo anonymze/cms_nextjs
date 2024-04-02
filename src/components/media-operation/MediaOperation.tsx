@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckIcon, Edit2Icon, Edit3Icon, EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, type MutationKey } from "@tanstack/react-query";
 import { SpinnerLoader } from "../ui/loader/Loader";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { deleteMediaQuery } from "@/api/queries/mediaQueries";
@@ -19,6 +19,7 @@ type Props = HTMLAttributes<HTMLElement> &
 		| {
 				mediaUuid: Media["uuid"];
 				removeMediaFromApi: boolean;
+				mutationKey?: never;
 				selectMedia?: never;
 				editionMedia?: never;
 				mediaDetailsUuid?: never;
@@ -26,6 +27,7 @@ type Props = HTMLAttributes<HTMLElement> &
 		| {
 				mediaUuid: Media["uuid"];
 				selectMedia: boolean;
+				mutationKey?: never;
 				removeMediaFromApi?: never;
 				editionMedia?: never;
 				mediaDetailsUuid?: never;
@@ -33,6 +35,7 @@ type Props = HTMLAttributes<HTMLElement> &
 		| {
 				mediaDetailsUuid: Media_Details["uuid"];
 				removeMediaFromApi: boolean;
+				mutationKey: MutationKey
 				selectMedia?: never;
 				editionMedia: boolean;
 				mediaUuid?: never;
@@ -43,6 +46,7 @@ export default function MediaOperation({
 	mediaUuid,
 	mediaDetailsUuid,
 	removeMediaFromApi,
+	mutationKey,
 	selectMedia,
 	editionMedia,
 	className,
@@ -65,7 +69,7 @@ export default function MediaOperation({
 
 	const deleteMediaDetailsMutation = useMutation({
 		mutationFn: deleteMediaDetailsQuery,
-		mutationKey: ["media-details"],
+		mutationKey,
 		meta: {
 			message: i18n[lang]("MEDIA_DETAILS_DELETED"),
 		},
@@ -119,7 +123,7 @@ export default function MediaOperation({
 								aria-label="delete"
 								type="button"
 								onClick={() => {
-									console.log("delete");
+									deleteMediaDetailsMutation.mutate(mediaDetailsUuid);
 								}}
 							>
 								<Trash2Icon className="w-6 h-6" />
