@@ -7,7 +7,7 @@ import type { Page } from "@prisma/client";
 import type { z } from "zod";
 import type { QueryFunctionContext } from "@tanstack/react-query";
 
-export async function getPagesQuery({ queryKey }: QueryFunctionContext) {
+export async function getPagesQuery({ queryKey }) {
   const searchParams = new URLSearchParams();
   const [, params] = queryKey;
 
@@ -18,7 +18,7 @@ export async function getPagesQuery({ queryKey }: QueryFunctionContext) {
   return result.data;
 }
 
-export async function getPageQuery({ queryKey }: QueryFunctionContext) {
+export async function getPageQuery({ queryKey }) {
   const searchParams = new URLSearchParams();
   const [, params] = queryKey;
 

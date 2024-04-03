@@ -3,7 +3,7 @@ import type { User } from "@prisma/client";
 import type { UserCreationZodType, UserUpdateZodType } from "@/types/user";
 import type { QueryFunctionContext } from "@tanstack/react-query";
 
-export async function getUsersQuery({ queryKey }: QueryFunctionContext) {
+export async function getUsersQuery({ queryKey }) {
 	const searchParams = new URLSearchParams();
 	const [, params] = queryKey;
 

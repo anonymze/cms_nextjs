@@ -8,7 +8,7 @@ import type { z } from "zod";
 import type { QueryFunctionContext } from "@tanstack/react-query";
 
 
-export async function getArticlesQuery({ queryKey }: QueryFunctionContext) {
+export async function getArticlesQuery({ queryKey }) {
   const searchParams = new URLSearchParams();
   const [, params] = queryKey;
 
@@ -19,7 +19,7 @@ export async function getArticlesQuery({ queryKey }: QueryFunctionContext) {
   return result.data;
 }
 
-export async function getArticleQuery({ queryKey }: QueryFunctionContext) {
+export async function getArticleQuery({ queryKey }) {
   const searchParams = new URLSearchParams();
   const [, params] = queryKey;
 
