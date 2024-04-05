@@ -2,39 +2,31 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { startTransition, useEffect, useLayoutEffect, useState } from "react";
-import { createContext, useContext, useSyncExternalStore } from "react";
+import { startTransition, useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import nprogress from "nprogress";
 import type { ComponentProps } from "react";
 import "nprogress/nprogress.css";
 
-export const ProgressContext = createContext({ start: () => {}, done: () => {} });
-
-export const ProgressProvider = ({ children }) => {
-	return (
-		<ProgressContext.Provider value={{ start: nprogress.start, done: nprogress.done }}>
-			{children}
-		</ProgressContext.Provider>
-	);
-};
+nprogress.configure({ minimum: 0.4 });
 
 // we give an empty registration because we don't use it in this case (need to be outside of the hook to prevent infine loop / re-execution)
 const register = () => () => {};
+const nprogressClient = { start: nprogress.start, done: nprogress.done };
+const nprogressServer = { start: () => {}, done: () => {} };
 
 export const useProgress = () => {
-	const { start, done } = useContext(ProgressContext);
-
 	// becareful the returns need to be re-render safe to prevend infinite loop / re-execution
-	const isServer = useSyncExternalStore(
+	const safeExec = useSyncExternalStore(
 		register,
 		// returned if on client
-		() => false,
+		() => nprogressClient,
 		// returned if on server
-		() => true,
+		() => nprogressServer,
 	);
 
 	// you can use safely start and done in your components, we will make sure it is not called on the server
-	return { start: isServer ? () => {} : start, done: isServer ? () => {} : done };
+	return { start: safeExec.start, done: safeExec.done };
 };
 
 export function ProgressLink({ href, children }: ComponentProps<typeof Link>) {

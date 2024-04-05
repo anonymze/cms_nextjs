@@ -4,10 +4,6 @@ import type { I18n } from "@/types/i18n";
 
 export const mainNavigation = (lang: I18n) =>
 	[
-		{ name: "Test logged", href: `/${lang}/test-logged`, icon: Smile, count: "5", current: false},
-		{ name: "Test logged 2", href: `/${lang}/test-logged-2`, icon: Smile, count: "5", current: false},
-		{ name: "Test unlog 2", href: `/${lang}/test-unlog-2`, icon: Smile, count: "5", current: false},
-		{ name: "Test unlog", href: `/${lang}/test-unlog`, icon: Smile, count: "5", current: false},
 		{ name: i18n[lang]("DASHBOARD"), href: `/${lang}/dashboard`, icon: Smile, count: "5", current: false },
 		{ name: i18n[lang]("CONTENT"), href: `/${lang}/contenu`, icon: Smile, count: "5", current: false },
 		{

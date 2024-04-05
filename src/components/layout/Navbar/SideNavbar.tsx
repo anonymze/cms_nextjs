@@ -9,10 +9,9 @@ import { useContext } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { mainNavigation, optionsNavigation } from "./nav_links";
-import { ProgressContext, ProgressLink } from "@/components/ui/progress-bar/ProgressBar";
+import { ProgressLink } from "@/components/ui/progress-bar/ProgressBar";
 
 export default function SideNavbar() {
-	const { start, done } = useContext(ProgressContext);
 	const lang = useContext(LangContext);
 	const router = useRouter();
 	const { signOut } = useClerk();
