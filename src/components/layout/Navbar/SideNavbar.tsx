@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/Button";
 import { useContext } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
-import { mainNavigation, optionsNavigation } from "./navLinks";
+import { mainNavigation, optionsNavigation } from "./nav_links";
+import { ProgressContext, ProgressLink } from "@/components/ui/progress-bar/ProgressBar";
 
 export default function SideNavbar() {
+	const { start, done } = useContext(ProgressContext);
 	const lang = useContext(LangContext);
 	const router = useRouter();
 	const { signOut } = useClerk();
@@ -31,7 +33,7 @@ export default function SideNavbar() {
 						<menu className="mt-2 space-y-1">
 							{mainNavigation(lang).map((item) => (
 								<li key={item.name}>
-									<Link
+									<ProgressLink
 										href={item.href}
 										className={cn(
 											item.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
@@ -40,15 +42,8 @@ export default function SideNavbar() {
 									>
 										<item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
 										{item.name}
-										{item.count ? (
-											<span
-												className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-gray-900 px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-white ring-1 ring-inset ring-gray-700"
-												aria-hidden="true"
-											>
-												{item.count}
-											</span>
-										) : null}
-									</Link>
+										{item.count ? <>{item.count}</> : null}
+									</ProgressLink>
 								</li>
 							))}
 						</menu>
@@ -58,7 +53,7 @@ export default function SideNavbar() {
 						<menu className="mt-2 space-y-1">
 							{optionsNavigation(lang).map((team) => (
 								<li key={team.name}>
-									<Link
+									<ProgressLink
 										href={team.href}
 										className={cn(
 											team.current ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white hover:bg-gray-800",
@@ -69,7 +64,7 @@ export default function SideNavbar() {
 											{team.initial}
 										</span>
 										<span className="truncate">{team.name}</span>
-									</Link>
+									</ProgressLink>
 								</li>
 							))}
 						</menu>

@@ -1,5 +1,5 @@
 import Footer from "./Footer";
-import SideNavbar from "./Navbar/SideNavbar";
+import SideNavbar from "./navbar/SideNavbar";
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 	return (
