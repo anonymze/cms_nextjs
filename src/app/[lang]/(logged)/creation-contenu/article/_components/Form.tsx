@@ -94,6 +94,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 	const articleI18n = article?.i18n?.find((articleI18n) => articleI18n.lang === langForm);
 
+	console.log(articleI18n);
+
 	const form = useForm<z.infer<typeof formCreateArticleSchema>>({
 		resolver: zodResolver(formCreateArticleSchema),
 		mode: "onSubmit",
@@ -120,10 +122,11 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 		const articleCreated = await createArticleMutation.mutateAsync(values);
 
 		// if article is created then we redirect to the form with the uuid (to be in an updating state)
-		if (articleCreated)
+		if (articleCreated) {
 			router.push(
 				`/${langContext}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`,
 			);
+		}
 	};
 
 	const createMediaDetails = (ev: FormEvent<HTMLFormElement>) => {

@@ -29,10 +29,10 @@ export const useProgress = () => {
 	return { start: safeExec.start, done: safeExec.done };
 };
 
-export function ProgressLink({ href, children }: ComponentProps<typeof Link>) {
+export const ProgressLink = ({ href, children }: ComponentProps<typeof Link>) => {
 	const router = useRouter();
-	const { start, done } = useProgress();
 	const [isNavigating, setIsNavigating] = useState<boolean | null>(null);
+	const { start, done } = useProgress();
 
 	useEffect(() => {
 		if (isNavigating) {
@@ -61,4 +61,39 @@ export function ProgressLink({ href, children }: ComponentProps<typeof Link>) {
 			{children}
 		</Link>
 	);
-}
+};
+
+
+// /**
+//  * @description you can use this hook to navigate programmaticly with router.push and have a nice progress bar
+//  */
+// export const useNavigationProgrammaticly = () => {
+// 	const router = useRouter();
+// 	const [isNavigating, setIsNavigating] = useState<boolean | null>(null);
+// 	const [startNavigation, setStartNavigation] = useState<boolean>(false);
+// 	const [href, setHref] = useState<string | null>(null);
+// 	const { start, done } = useProgress();
+
+// 	useEffect(() => {
+// 		if (startNavigation && href) {
+// 			setIsNavigating(true);
+
+// 			startTransition(() => {
+// 				router.push(href);
+// 				setIsNavigating(false);
+// 			});
+// 		}
+// 	}, [startNavigation]);
+
+// 	useEffect(() => {
+// 		if (isNavigating) {
+// 			start();
+// 		}
+
+// 		if (isNavigating === false) {
+// 			done();
+// 		}
+// 	}, [isNavigating]);
+
+// 	return { setStartNavigation, setHref };
+// };
