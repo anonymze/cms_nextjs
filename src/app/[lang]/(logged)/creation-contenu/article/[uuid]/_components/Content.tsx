@@ -12,12 +12,18 @@ import type { Article } from "@prisma/client";
 export default function Content({ uuid }: { uuid: Article["uuid"] }) {
 	const lang = useContext(LangContext);
 
-	const { data: article, isError } = useQuery({
+	const {
+		data: article,
+		isError,
+		isLoading,
+		isFetching,
+	} = useQuery({
 		queryKey: ["article", { slug: uuid }],
 		queryFn: getArticleQuery,
 	});
 
-	if (isError) return <div>{i18n[lang]("NO_DATA")}</div>
+	if (isLoading || isFetching) return <div>{i18n[lang]("LOADING")}...</div>;
+	if (isError) return <div>{i18n[lang]("NO_DATA")}</div>;
 
 	return (
 		<ContentFormI18n>

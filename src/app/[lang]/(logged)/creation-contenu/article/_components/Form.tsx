@@ -51,6 +51,7 @@ const TiptapDynamic = dynamic(() => import("@/components/ui/rich-text/Tiptap"), 
 });
 
 const FormArticle: React.FC<Props> = ({ langForm, article }) => {
+	console.log(article);
 	const queryClient = useQueryClient();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const langContext = useContext(LangContext);
@@ -73,6 +74,15 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 		},
 	});
 
+	const updateArticleMutation = useMutation({
+		mutationFn: updateArticleQuery,
+		mutationKey: ["article", { slug: article?.uuid }],
+		meta: {
+			action: "update",
+			message: i18n[langContext]("ARTICLE_EDITED"),
+		},
+	});
+
 	const createMediaDetailsMutation = useMutation({
 		mutationFn: createMediaDetailsQuery,
 		mutationKey: ["media-details"],
@@ -81,15 +91,6 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 			message: i18n[langContext]("MEDIA_DETAILS_ADDED"),
 		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["article", { slug: article?.uuid }] }),
-	});
-
-	const updateArticleMutation = useMutation({
-		mutationFn: updateArticleQuery,
-		mutationKey: ["article", { slug: article?.uuid }],
-		meta: {
-			action: "update",
-			message: i18n[langContext]("ARTICLE_EDITED"),
-		},
 	});
 
 	const articleI18n = article?.i18n?.find((articleI18n) => articleI18n.lang === langForm);
