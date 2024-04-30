@@ -51,7 +51,6 @@ const TiptapDynamic = dynamic(() => import("@/components/ui/rich-text/Tiptap"), 
 });
 
 const FormArticle: React.FC<Props> = ({ langForm, article }) => {
-	console.log(article);
 	const queryClient = useQueryClient();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const langContext = useContext(LangContext);
@@ -94,8 +93,6 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	});
 
 	const articleI18n = article?.i18n?.find((articleI18n) => articleI18n.lang === langForm);
-
-	console.log(articleI18n);
 
 	const form = useForm<z.infer<typeof formCreateArticleSchema>>({
 		resolver: zodResolver(formCreateArticleSchema),
@@ -254,26 +251,29 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 					{/* MEDIAs */}
 					{articleI18n?.media_details.length ? (
-						<div className="flex flex-wrap gap-3 min-h-48 p-4 border border-dashed rounded-md">
-							{articleI18n?.media_details.map((mediaDetail) => (
-								<MediaOperation
-									mutationKey={["article", { slug: article?.uuid }]}
-									removeMediaFromApi
-									mediaDetailsUuid={mediaDetail.uuid}
-									key={mediaDetail.uuid}
-									editionMedia
-								>
-									<Image
-										placeholder="blur"
-										blurDataURL={"/placeholder-150x150.jpg"}
-										width={100}
-										height={100}
-										priority={false}
-										src={mediaDetail.media.filepath_public}
-										alt=""
-									/>
-								</MediaOperation>
-							))}
+						<div>
+							<p className="mb-2 text-sm font-medium">{i18n[langContext]("MEDIA_ASSOCIATED")}</p>
+							<div className="flex flex-wrap gap-3 p-4 border border-dashed rounded-md">
+								{articleI18n?.media_details.map((mediaDetail) => (
+									<MediaOperation
+										mutationKey={["article", { slug: article?.uuid }]}
+										removeMediaFromApi
+										mediaDetailsUuid={mediaDetail.uuid}
+										key={mediaDetail.uuid}
+										editionMedia
+									>
+										<Image
+											placeholder="blur"
+											blurDataURL={"/placeholder-150x150.jpg"}
+											width={100}
+											height={100}
+											priority={false}
+											src={mediaDetail.media.filepath_public}
+											alt=""
+										/>
+									</MediaOperation>
+								))}
+							</div>
 						</div>
 					) : null}
 					<div
@@ -332,8 +332,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 								<Image
 									placeholder="blur"
 									blurDataURL={"/placeholder-150x150.jpg"}
-									width={100}
-									height={100}
+									width={150}
+									height={150}
 									priority={false}
 									src={file.filepath_public}
 									alt=""

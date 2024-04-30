@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon, Edit2Icon, Edit3Icon, EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import { CheckIcon, EditIcon, Link, PlusIcon, Trash2Icon } from "lucide-react";
 import { useMutation, type MutationKey } from "@tanstack/react-query";
 import { SpinnerLoader } from "../ui/loader/Loader";
 import { cn } from "@/utils/libs/tailwind/helper";
@@ -9,10 +9,14 @@ import { useFilesStore } from "@/contexts/store_files_context";
 import { deleteMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
 import { i18n } from "@/i18n/translations";
 import { LangContext } from "@/utils/providers";
-import { useContext } from "react";
+import React, { useContext, useRef, type ElementRef, type ReactElement } from "react";
 import type { Media, Media_Details } from "@prisma/client";
 import { type HTMLAttributes } from "react";
 import "./MediaOperation.css";
+import { sleep } from "bun";
+import { Dialog, DialogHeader, DialogBody, DialogFooter } from "../ui/Dialog";
+import { Input } from "../ui/form/Input";
+import { Label } from "../ui/form/Label";
 
 type Props = HTMLAttributes<HTMLElement> &
 	(
@@ -35,9 +39,9 @@ type Props = HTMLAttributes<HTMLElement> &
 		| {
 				mediaDetailsUuid: Media_Details["uuid"];
 				removeMediaFromApi: boolean;
-				mutationKey: MutationKey
-				selectMedia?: never;
+				mutationKey: MutationKey;
 				editionMedia: boolean;
+				selectMedia?: never;
 				mediaUuid?: never;
 		  }
 	);
@@ -58,6 +62,7 @@ export default function MediaOperation({
 	const isSelected = files.find((file) => file.id === mediaUuid);
 	const setFiles = useFilesStore((state) => state.setFiles);
 	const removeFile = useFilesStore((state) => state.removeFile);
+	const dialogRef = useRef<ElementRef<"dialog">>(null);
 
 	const deleteMediaMutation = useMutation({
 		mutationFn: deleteMediaQuery,
@@ -76,70 +81,111 @@ export default function MediaOperation({
 	});
 
 	return (
-		<figure
-			onClick={async () => {
-				// if media details we will handle the onclick directly on the buttons edit and delete
-				if (mediaDetailsUuid) return;
+		<>
+			<figure
+				onClick={async () => {
+					// if media details we will handle the onclick directly on the buttons edit and delete
+					if (mediaDetailsUuid) return;
 
-				if (removeMediaFromApi && mediaUuid) deleteMediaMutation.mutate(mediaUuid);
+					if (removeMediaFromApi && mediaUuid) deleteMediaMutation.mutate(mediaUuid);
 
-				if (selectMedia) {
-					if (isSelected) {
-						removeFile(isSelected.file);
-					} else {
-						// we set fake data because we only need the id to manipulate the media
-						setFiles([{ id: mediaUuid, base64: "", file: new File([""], "") }]);
+					if (selectMedia) {
+						if (isSelected) {
+							removeFile(isSelected.file);
+						} else {
+							// we set fake data because we only need the id to manipulate the media
+							setFiles([{ id: mediaUuid, base64: "", file: new File([""], "") }]);
+						}
 					}
-				}
-			}}
-			className={cn(
-				"media-operation",
-				selectMedia ? "select-mode" : editionMedia ? "edition-mode" : "remove-mode",
-				className,
-			)}
-			{...props}
-		>
-			{children}
-			{selectMedia ? (
-				<figcaption className={cn(isSelected && "action")}>
-					{isSelected ? <CheckIcon className="w-8 h-8" /> : <PlusIcon className="w-8 h-8" />}
-				</figcaption>
-			) : editionMedia ? (
-				<figcaption className={cn(deleteMediaDetailsMutation.isPending && "action")}>
-					{deleteMediaDetailsMutation.isSuccess || deleteMediaDetailsMutation.isPending ? (
-						<SpinnerLoader className="w-8 h-8" />
-					) : (
-						<>
-							<button
-								aria-label="edit"
-								type="button"
-								onClick={() => {
-									console.log("edit");
-								}}
-							>
-								<EditIcon className="w-6 h-6" />
-							</button>
-							<button
-								aria-label="delete"
-								type="button"
-								onClick={() => {
-									deleteMediaDetailsMutation.mutate(mediaDetailsUuid);
-								}}
-							>
-								<Trash2Icon className="w-6 h-6" />
-							</button>
-						</>
-					)}
-				</figcaption>
-			) : (
-				<figcaption className={cn(deleteMediaMutation.isPending && "action")}>
-					{deleteMediaMutation.isSuccess || deleteMediaMutation.isPending ? (
-						<SpinnerLoader className="w-8 h-8" />
-					) : (
-						<Trash2Icon className="w-8 h-8" />
-					)}
-				</figcaption>
-			)}
-		</figure>
+				}}
+				className={cn(
+					"media-operation",
+					selectMedia ? "select-mode" : editionMedia ? "edition-mode" : "remove-mode",
+					className,
+				)}
+				{...props}
+			>
+				{children}
+				{selectMedia ? (
+					<figcaption className={cn(isSelected && "action")}>
+						{isSelected ? <CheckIcon className="w-8 h-8" /> : <PlusIcon className="w-8 h-8" />}
+					</figcaption>
+				) : editionMedia ? (
+					<figcaption className={cn(deleteMediaDetailsMutation.isPending && "action")}>
+						{deleteMediaDetailsMutation.isSuccess || deleteMediaDetailsMutation.isPending ? (
+							<SpinnerLoader className="w-8 h-8" />
+						) : (
+							<>
+								<button
+									aria-label="edit"
+									type="button"
+									onClick={() => {
+										dialogRef.current?.show();
+									}}
+								>
+									<EditIcon className="w-6 h-6" />
+								</button>
+								<button
+									aria-label="delete"
+									type="button"
+									onClick={() => {
+										deleteMediaDetailsMutation.mutate(mediaDetailsUuid);
+									}}
+								>
+									<Trash2Icon className="w-6 h-6" />
+								</button>
+							</>
+						)}
+					</figcaption>
+				) : (
+					<figcaption className={cn(deleteMediaMutation.isPending && "action")}>
+						{deleteMediaMutation.isSuccess || deleteMediaMutation.isPending ? (
+							<SpinnerLoader className="w-8 h-8" />
+						) : (
+							<Trash2Icon className="w-8 h-8" />
+						)}
+					</figcaption>
+				)}
+			</figure>
+			{editionMedia ? (
+				<Dialog ref={dialogRef} onSubmitForm={() => {}}>
+					<DialogHeader title={i18n[lang]("MEDIA_DETAILS")} />
+					<DialogBody>
+						<div className="flex gap-x-5">
+							<div className="flex-1">
+								{/* we add a class to the children */}
+								{React.Children.map(children, (child) => {
+									if (React.isValidElement(child)) {
+										return React.cloneElement((child as ReactElement), {
+											className: cn(child.props.className, "w-full rounded-sm"),
+										});
+									}
+									return child;
+								})}
+							</div>
+							<div className="flex-1 space-y-4">
+								<div>
+									<Label htmlFor="title">{i18n[lang]("TITLE")}</Label>
+									<Input className="mt-2" required name="title" type="text" />
+								</div>
+
+								<div>
+									<Label htmlFor="legend">{i18n[lang]("LEGEND")}</Label>
+									<Input className="mt-2" name="legend" type="text" />
+								</div>
+
+								<div>
+									<Label htmlFor="tag">{i18n[lang]("TAG")}</Label>
+									<Input className="mt-2" name="tag" type="text" />
+								</div>
+
+								<input type="hidden" name="id" value={mediaDetailsUuid} />
+							</div>
+						</div>
+					</DialogBody>
+					<DialogFooter />
+				</Dialog>
+			) : null}
+		</>
 	);
 }

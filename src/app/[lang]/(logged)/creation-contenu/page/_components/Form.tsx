@@ -30,7 +30,6 @@ interface Props {
 }
 
 const FormPage: React.FC<Props> = ({ langForm, page }) => {
-	console.log(page);
 	const langContext = useContext(LangContext);
 	const langParam = useSearchParams().get("lang");
 	const router = useRouter();

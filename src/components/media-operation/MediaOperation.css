@@ -59,10 +59,10 @@
 
   &>button {
     padding: 0.3rem;
-    border-radius: 3px;
+    border-radius: 4px;
 
     &:not(:last-of-type) {
-      margin-right: 0.4rem;
+      margin-right: 0.8rem;
     }
 
     &:hover {

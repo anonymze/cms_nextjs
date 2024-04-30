@@ -16,7 +16,7 @@ const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
 		return (
 			<dialog
 				className={cn(
-					"fixed block left-1/2 top-1/2 w-[65vh] p-4",
+					"fixed block left-1/2 top-1/2 w-[65vh] p-4 z-10",
 					"translate-x-[-50%] translate-y-[-40%]",
 					"bg-popover text-popover-foreground rounded-md border-[1px]",
 					"opacity-0 invisible transition-fade open:opacity-100 open:translate-y-[-50%] open:visible",

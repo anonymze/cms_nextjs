@@ -16,14 +16,14 @@ export default function Content({ uuid }: { uuid: Article["uuid"] }) {
 		data: article,
 		isError,
 		isLoading,
-		isFetching,
 	} = useQuery({
 		queryKey: ["article", { slug: uuid }],
 		queryFn: getArticleQuery,
 	});
 
-	if (isLoading || isFetching) return <div>{i18n[lang]("LOADING")}...</div>;
+	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
 	if (isError) return <div>{i18n[lang]("NO_DATA")}</div>;
+
 
 	return (
 		<ContentFormI18n>
