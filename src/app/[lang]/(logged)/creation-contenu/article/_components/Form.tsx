@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useRef, type FormEvent, useState } from "react";
+import { useContext, useRef, type FormEvent, useState, type SyntheticEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { toast } from "sonner";
@@ -32,8 +32,11 @@ import Image from "next/image";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { sleep } from "@/utils/helper";
 import Link from "next/link";
-import { createMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
+import { createMediaDetailsQuery, updateMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
 import { set, type z } from "zod";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/Popover";
+import { SpinnerLoader } from "@/components/ui/loader/Loader";
+import { updateMediaDetailsSchema } from "@/types/media_details";
 
 interface Props {
 	langForm?: I18n;
@@ -88,6 +91,16 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 		meta: {
 			action: "create",
 			message: i18n[langContext]("MEDIA_DETAILS_ADDED"),
+		},
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["article", { slug: article?.uuid }] }),
+	});
+
+	const updateMediaDetailsMutation = useMutation({
+		mutationFn: updateMediaDetailsQuery,
+		mutationKey: ["media-details"],
+		meta: {
+			action: "update",
+			message: i18n[langContext]("MEDIA_DETAILS_EDITED"),
 		},
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["article", { slug: article?.uuid }] }),
 	});
@@ -253,42 +266,64 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 					{articleI18n?.media_details.length ? (
 						<div>
 							<p className="mb-2 text-sm font-medium">{i18n[langContext]("MEDIA_ASSOCIATED")}</p>
-							<div className="flex flex-wrap gap-3 p-4 border border-dashed rounded-md">
-								{articleI18n?.media_details.map((mediaDetail) => (
+							<div className="flex flex-wrap items-center gap-3 p-4 border border-dashed rounded-md">
+								{articleI18n.media_details.map((mediaDetail) => (
 									<MediaOperation
 										mutationKey={["article", { slug: article?.uuid }]}
 										removeMediaFromApi
 										mediaDetailsUuid={mediaDetail.uuid}
 										key={mediaDetail.uuid}
 										editionMedia
+										afterSubmit={(ev: SyntheticEvent) => {
+											const inputs = Array.from(ev.currentTarget.closest('dialog')?.querySelectorAll('input') || []);
+											
+											const notSafeData = new Map();
+
+											for (const input of inputs) {
+												notSafeData.set(input.name, input.value);
+											}
+
+											const safeData = updateMediaDetailsSchema.safeParse(Object.fromEntries(notSafeData));
+											
+											if (!safeData.success) return;
+
+											updateMediaDetailsMutation.mutate({
+												uuid: mediaDetail.uuid,
+												...safeData.data,
+											});
+										}}
 									>
 										<Image
 											placeholder="blur"
 											blurDataURL={"/placeholder-150x150.jpg"}
-											width={100}
-											height={100}
+											width={300}
+											height={300}
 											priority={false}
 											src={mediaDetail.media.filepath_public}
 											alt=""
 										/>
 									</MediaOperation>
 								))}
+								{createMediaDetailsMutation.isPending && <SpinnerLoader className="mx-8" medium/>}
 							</div>
 						</div>
 					) : null}
-					<div
-						className="flex items-center gap-x-2 w-fit"
-						title={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
+					{!articleI18n?.media_details.length && createMediaDetailsMutation.isPending && <SpinnerLoader medium/>}
+
+					<Button
+						disabled={!article}
+						onClick={() => dialogRef.current?.show()}
+						aria-label={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
 					>
-						<Button
-							disabled={!article}
-							onClick={() => dialogRef.current?.show()}
-							aria-label={!article ? i18n[langContext]("CREATE_CONTENT_FIRST") : undefined}
-						>
-							<PlusCircleIcon className="h-4 w-4 mr-2" /> {i18n[langContext]("ADD_MULTIPLE_MEDIA")}
-						</Button>
-						{!article && <InfoIcon className="h-5 w-5" />}
-					</div>
+						<PlusCircleIcon className="h-4 w-4 mr-2" /> {i18n[langContext]("ADD_MULTIPLE_MEDIA")}
+					</Button>
+
+					{!article ? (
+						<Popover>
+							<PopoverTrigger><InfoIcon className="h-5 w-5 ml-3" /></PopoverTrigger>
+							<PopoverContent>{i18n[langContext]("CREATE_CONTENT_FIRST")}</PopoverContent>
+						</Popover>
+					) : null}
 
 					{/* TAG */}
 					<FormField

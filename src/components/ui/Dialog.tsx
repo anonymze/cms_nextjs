@@ -3,16 +3,17 @@ import { cn } from "@/utils/libs/tailwind/helper";
 import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./Separator";
 import { Button } from "./Button";
-import type { PropsWithChildren } from "react";
+import type { ElementRef, PropsWithChildren, SyntheticEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 
 interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
+	noForm?: boolean;
 	onSubmitForm?: (ev: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
-	({ children, className, onSubmitForm, ...props }, ref) => {
+	({ noForm, children, className, onSubmitForm, ...props }, ref) => {
 		return (
 			<dialog
 				className={cn(
@@ -25,9 +26,13 @@ const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
 				ref={ref}
 				{...props}
 			>
-				<form onSubmit={onSubmitForm} className="flex flex-col h-full" method="dialog" noValidate>
-					{children}
-				</form>
+				{noForm ? (
+					children
+				) : (
+					<form onSubmit={onSubmitForm} className="flex flex-col h-full" method="dialog" noValidate>
+						{children}
+					</form>
+				)}
 			</dialog>
 		);
 	},
@@ -35,13 +40,25 @@ const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
 
 Dialog.displayName = "Dialog";
 
-const DialogHeader: React.FC<{ title: string }> = ({ title }) => {
+const DialogHeader: React.FC<{ title: string; noForm?: boolean }> = ({ title, noForm }) => {
 	const lang = useContext(LangContext);
 	return (
 		<>
 			<div className="flex items-center justify-between pb-2">
 				<h3>{title}</h3>
-				<Button outline={false} fill={false} data-type="cancel" type="submit" aria-label={i18n[lang]("CLOSE")} autoFocus>
+				<Button
+					onClick={(ev) => {
+						if (noForm) {
+							(ev.currentTarget.closest("dialog") as HTMLDialogElement)?.close();
+						}
+					}}
+					outline={false}
+					fill={false}
+					data-type="cancel"
+					type={noForm ? "button" : "submit"}
+					aria-label={i18n[lang]("CLOSE")}
+					autoFocus
+				>
 					<X className="w-5 h-5 cursor-pointer" />
 				</Button>
 			</div>
@@ -54,15 +71,41 @@ const DialogBody: React.FC<PropsWithChildren> = ({ children }) => {
 	return <div className="flex-1 py-4">{children}</div>;
 };
 
-const DialogFooter: React.FC<PropsWithChildren> = ({ children }) => {
+const DialogFooter: React.FC<PropsWithChildren & { noForm?: boolean; afterSubmit?: (ev: SyntheticEvent) => void }> = ({
+	noForm,
+	afterSubmit,
+	children,
+}) => {
 	const lang = useContext(LangContext);
 	return (
 		<div className="flex items-center gap-2">
 			{children}
-			<Button className="ml-auto" type="submit" data-type="cancel" fill={false} aria-label={i18n[lang]("CLOSE")}>
+			<Button
+				onClick={(ev) => {
+					if (noForm) {
+						(ev.currentTarget.closest("dialog") as HTMLDialogElement)?.close();
+					}
+				}}
+				className="ml-auto"
+				type={noForm ? "button" : "submit"}
+				data-type="cancel"
+				fill={false}
+				aria-label={i18n[lang]("CLOSE")}
+			>
 				{i18n[lang]("CANCEL")}
 			</Button>
-			<Button type="submit">{i18n[lang]("SAVE")}</Button>
+			<Button
+				onClick={(ev) => {
+					if (noForm) {
+						(ev.currentTarget.closest("dialog") as HTMLDialogElement)?.close();
+					}
+
+					afterSubmit?.(ev);
+				}}
+				type={noForm ? "button" : "submit"}
+			>
+				{i18n[lang]("SAVE")}
+			</Button>
 		</div>
 	);
 };

@@ -1,6 +1,5 @@
-"use client";
-
-import { CheckIcon, EditIcon, Link, PlusIcon, Trash2Icon } from "lucide-react";
+"use client";;
+import { CheckIcon, EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useMutation, type MutationKey } from "@tanstack/react-query";
 import { SpinnerLoader } from "../ui/loader/Loader";
 import { cn } from "@/utils/libs/tailwind/helper";
@@ -10,19 +9,19 @@ import { deleteMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
 import { i18n } from "@/i18n/translations";
 import { LangContext } from "@/utils/providers";
 import React, { useContext, useRef, type ElementRef, type ReactElement } from "react";
-import type { Media, Media_Details } from "@prisma/client";
-import { type HTMLAttributes } from "react";
-import "./MediaOperation.css";
-import { sleep } from "bun";
 import { Dialog, DialogHeader, DialogBody, DialogFooter } from "../ui/Dialog";
 import { Input } from "../ui/form/Input";
 import { Label } from "../ui/form/Label";
+import type { Media, Media_Details } from "@prisma/client";
+import type { HTMLAttributes, SyntheticEvent } from "react";
+import "./MediaOperation.css";
 
 type Props = HTMLAttributes<HTMLElement> &
 	(
 		| {
 				mediaUuid: Media["uuid"];
 				removeMediaFromApi: boolean;
+				afterSubmit?: (ev: SyntheticEvent) => void;
 				mutationKey?: never;
 				selectMedia?: never;
 				editionMedia?: never;
@@ -31,6 +30,7 @@ type Props = HTMLAttributes<HTMLElement> &
 		| {
 				mediaUuid: Media["uuid"];
 				selectMedia: boolean;
+				afterSubmit?: (ev: SyntheticEvent) => void;
 				mutationKey?: never;
 				removeMediaFromApi?: never;
 				editionMedia?: never;
@@ -40,6 +40,7 @@ type Props = HTMLAttributes<HTMLElement> &
 				mediaDetailsUuid: Media_Details["uuid"];
 				removeMediaFromApi: boolean;
 				mutationKey: MutationKey;
+				afterSubmit?: (ev: SyntheticEvent) => void;
 				editionMedia: boolean;
 				selectMedia?: never;
 				mediaUuid?: never;
@@ -53,6 +54,7 @@ export default function MediaOperation({
 	mutationKey,
 	selectMedia,
 	editionMedia,
+	afterSubmit,
 	className,
 	children,
 	...props
@@ -148,11 +150,11 @@ export default function MediaOperation({
 				)}
 			</figure>
 			{editionMedia ? (
-				<Dialog ref={dialogRef} onSubmitForm={() => {}}>
-					<DialogHeader title={i18n[lang]("MEDIA_DETAILS")} />
+				<Dialog noForm ref={dialogRef}>
+					<DialogHeader noForm title={i18n[lang]("MEDIA_DETAILS")} />
 					<DialogBody>
-						<div className="flex gap-x-5">
-							<div className="flex-1">
+						<div className="flex gap-x-5 [&>*]:flex-1">
+							<div>
 								{/* we add a class to the children */}
 								{React.Children.map(children, (child) => {
 									if (React.isValidElement(child)) {
@@ -163,10 +165,10 @@ export default function MediaOperation({
 									return child;
 								})}
 							</div>
-							<div className="flex-1 space-y-4">
+							<div className="[&>*]:mb-4">
 								<div>
 									<Label htmlFor="title">{i18n[lang]("TITLE")}</Label>
-									<Input className="mt-2" required name="title" type="text" />
+									<Input className="mt-2" name="title" type="text" />
 								</div>
 
 								<div>
@@ -178,12 +180,10 @@ export default function MediaOperation({
 									<Label htmlFor="tag">{i18n[lang]("TAG")}</Label>
 									<Input className="mt-2" name="tag" type="text" />
 								</div>
-
-								<input type="hidden" name="id" value={mediaDetailsUuid} />
 							</div>
 						</div>
 					</DialogBody>
-					<DialogFooter />
+					<DialogFooter noForm afterSubmit={(ev) => afterSubmit?.(ev)} />
 				</Dialog>
 			) : null}
 		</>

@@ -24,7 +24,6 @@ export default function Content({ uuid }: { uuid: Article["uuid"] }) {
 	if (isLoading) return <div>{i18n[lang]("LOADING")}...</div>;
 	if (isError) return <div>{i18n[lang]("NO_DATA")}</div>;
 
-
 	return (
 		<ContentFormI18n>
 			<FormArticle article={article} />
