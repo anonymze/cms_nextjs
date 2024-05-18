@@ -14,7 +14,7 @@ export default function GoogleForm({ state }: { state: StateConfigurationGoogleF
 	const { pending } = useFormStatus();
 
 	return (
-		<div className="mt-4">
+		<div className="mt-2">
 			<div className="mb-5">
 				<Label htmlFor="clientId">{i18n[lang]("PUBLIC_CLIENT")}</Label>
 				<Input required className="mt-2" type="text" id="clientId" name="clientId" defaultValue={state.clientId} />

@@ -8,12 +8,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { LangContext } from "@/utils/providers";
 import { useContext } from "react";
 import { i18n } from "@/i18n/translations";
+import { useProgressLinkProgrammaticly } from "@/components/ui/progress-bar/ProgressBar";
 import type { Article } from "@prisma/client";
 
 export default function Content() {
 	const lang = useContext(LangContext);
 	const searchParams = useSearchParams();
-	const router = useRouter();
+	const { routerPush } = useProgressLinkProgrammaticly();
 
 	const {
 		data: articles,
@@ -49,7 +50,7 @@ export default function Content() {
 				{
 					label: i18n[lang]("EDIT"),
 					action: (entity: Article) => {
-						router.push(`/${lang}/creation-contenu/article/${entity.uuid}`);
+						routerPush(`/${lang}/creation-contenu/article/${entity.uuid}`);
 					},
 				},
 

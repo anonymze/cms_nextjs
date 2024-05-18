@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ProgressLink } from "./progress-bar/ProgressBar";
 
 interface Props {
 	title: string;
@@ -7,12 +7,12 @@ interface Props {
 
 const CardContentManager: React.FC<Props> = ({ title, redirect }) => {
 	return (
-		<Link
+		<ProgressLink
 			href={redirect}
 			className="flex items-center w-full h-40 border-2 border-primary rounded-xl cursor-pointer md:w-1/2"
 		>
 			<h2 className="w-full text-center">{title}</h2>
-		</Link>
+		</ProgressLink>
 	);
 };
 

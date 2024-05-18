@@ -12,8 +12,6 @@ export async function generateMetadata(
 }
 
 export default async function Page() {
-  await new Promise((resolve) => setTimeout(resolve, 6000));
-
 	return (
 		<div>
 			<h1>salut</h1>

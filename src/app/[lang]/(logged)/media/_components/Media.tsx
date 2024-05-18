@@ -3,7 +3,6 @@
 import Image from "next/image";
 import MediaOperation from "@/components/media-operation/MediaOperation";
 import Content from "./Content";
-import { SkeletonCard } from "@/components/ui/skeleton/Skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { getMediaQuery } from "@/api/queries/mediaQueries";
 import { cn } from "@/utils/libs/tailwind/helper";
@@ -11,10 +10,13 @@ import { cn } from "@/utils/libs/tailwind/helper";
 const Media: React.FC = () => {
   const {
     data: media,
+    isLoading,
   } = useQuery({
     queryKey: ["media"],
     queryFn: getMediaQuery,
   });
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <section
@@ -42,19 +44,9 @@ const Media: React.FC = () => {
             </MediaOperation>
           ))}
         </>
-      ) : (
-        <>
-          {/* else we show the placeholders */}
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </>
-      )}
+      ) : null}
       <div className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col">
-        {/* if data we hide the action button */}
+        {/* if data we hide the action button, we have to do that because inside there is the dialog component used with other buttons */}
         <Content hideActionButton={!media || !media.length ? false : true} />
       </div>
     </section>

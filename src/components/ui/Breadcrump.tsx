@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useContext } from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { Button } from "./Button";
 import { ArrowLeft } from "lucide-react";
 import { LangContext } from "@/utils/providers";
+import { ProgressLink } from "./progress-bar/ProgressBar";
 
 const convertPathnameToReadableString = (pathname: string) => {
 	return pathname.replaceAll("-", " ");
@@ -48,15 +48,15 @@ const Breadcrump: React.FC<{ removeLangCrumb?: boolean }> = ({ removeLangCrumb =
 			{pathnames.map((pathname, idx) => (
 				<React.Fragment key={pathname}>
 					{"  -  "}
-					<Link
+					<ProgressLink
 						title={convertPathnameToReadableString(pathname)}
 						className={cn("inline-block max-w-32 pr-[0.5px] truncate align-bottom first-letter:uppercase lg:max-w-40", {
 							underline: idx === currentIdxPathname,
 						})}
-						href={`/${lang}/${constructURL(pathnames, idx)}`}
+					  href={`/${lang}/${constructURL(pathnames, idx)}`}
 					>
 						{convertPathnameToReadableString(pathname)}
-					</Link>
+					</ProgressLink>
 				</React.Fragment>
 			))}
 		</div>

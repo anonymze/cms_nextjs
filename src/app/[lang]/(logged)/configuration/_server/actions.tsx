@@ -22,8 +22,6 @@ const ENV_GOOGLE_CLIENT_SECRET = "GOOGLE_CLIENT_SECRET=";
 
 
 export async function generateAndWriteApiKey(_: StateConfigurationApiForm, __: FormData) {
-	// i slow down the process to make it more realistic (because it is too damn fast, we can't see the loading state and show something happened)
-	await sleep(300);
 	const result = formCreateConfigurationApiSchema.safeParse({ apiKey: randomUUID() });
 
 	if (!result.success) return { apiKey: "", error: true };

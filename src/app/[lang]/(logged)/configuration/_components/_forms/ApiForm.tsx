@@ -19,7 +19,7 @@ export default function ApiForm({ state }: { state: StateConfigurationApiForm })
 		<>
 			<Label htmlFor="apiKey">{i18n[lang]("KEY")} API</Label>
 			<div className="flex items-center gap-x-2 mt-2">
-				<Input type="text" id="apiKey" name="apiKey" defaultValue={state.apiKey} />
+				<Input type="text" id="apiKey" name="apiKey" value={state.apiKey} />
 				<Button type="submit" disabled={pending}>
 					<RotateCwIcon
 						className={cn("flex-shrink-0 w-4 h-4 mr-2", pending && "animate-spin")}

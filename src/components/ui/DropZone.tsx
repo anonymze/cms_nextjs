@@ -1,9 +1,9 @@
-import { useRef, useCallback, useState, useId, use, useContext } from "react";
+import { useRef, useCallback, useState, useContext } from "react";
 import { Button } from "./Button";
 import MediaOperation from "../media-operation/MediaOperation";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { TYPE_FILES_ACCEPTED, convertFileToBaseType } from "@/utils/web_api/file_resolving";
-import { CloudLightningIcon } from "lucide-react";
+import { ArrowDownToLineIcon } from "lucide-react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { type DragEvent, type ChangeEvent } from "react";
@@ -80,7 +80,7 @@ export default function DropZone() {
 					className="grid items-center h-48 text-center rounded-md border-[1px] border-dashed"
 				>
 					{isDraggedOver ? (
-						<CloudLightningIcon className="w-8 h-8 mx-auto" />
+						<ArrowDownToLineIcon className="w-8 h-8 mx-auto" />
 					) : (
 						<p>
 							{i18n[lang]("DROP_FILE")}

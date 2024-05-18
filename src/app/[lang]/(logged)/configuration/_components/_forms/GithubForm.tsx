@@ -14,7 +14,7 @@ export default function GithubForm({ state }: { state: StateConfigurationGithubF
 	const { pending } = useFormStatus();
 
 	return (
-		<div className="mt-4">
+		<div className="mt-2">
 			<div className="mb-5">
 				<Label htmlFor="clientId">{i18n[lang]("PUBLIC_CLIENT")} ID</Label>
 				<Input required className="mt-2" type="text" id="clientId" name="clientId" defaultValue={state.clientId} />

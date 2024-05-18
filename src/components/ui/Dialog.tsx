@@ -3,9 +3,9 @@ import { cn } from "@/utils/libs/tailwind/helper";
 import { X } from "lucide-react";
 import { SeparatorHorizontal } from "./Separator";
 import { Button } from "./Button";
-import type { ElementRef, PropsWithChildren, SyntheticEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
+import type { PropsWithChildren, SyntheticEvent } from "react";
 
 interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElement> {
 	noForm?: boolean;

@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useSyncExternalStore } from "react"
+import { useSyncExternalStore } from "react"
+import { useProgress } from "../progress-bar/ProgressBar";
 
 const register = () => () => {};
 
@@ -9,7 +10,7 @@ function TransitionServerToClientLoader() {
 		register,
 		() => false,
 		() => true,
-	)
+	);
 
 	return (
 		<div className="bg-slate-400">{isServer ? "server" : "client"}</div>
