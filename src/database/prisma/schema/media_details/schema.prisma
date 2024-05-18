@@ -1,0 +1,16 @@
+model Media_Details {
+    id              Int           @id @default(autoincrement())
+    uuid            String        @unique @default(uuid())
+    title           String
+    legend          String?
+    tag             String?
+    createdAt       DateTime      @default(now())
+    media           Media         @relation(fields: [media_id], references: [id], onDelete: Cascade)
+    media_id        Int           @map("media")
+    page_i18n       Page_I18n?    @relation(fields: [page_i18n_id], references: [id], onDelete: Cascade)
+    page_i18n_id    Int?          @map("page_i18n")
+    article_i18n    Article_I18n? @relation(fields: [article_i18n_id], references: [id], onDelete: Cascade)
+    article_i18n_id Int?          @map("article_i18n")
+
+    @@index(fields: [uuid])
+}

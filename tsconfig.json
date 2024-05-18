@@ -6,12 +6,11 @@
     "target": "es2022",
     "verbatimModuleSyntax": true,
     "allowJs": true,
+    "checkJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "allowImportingTsExtensions": false,
     "plugins": [
@@ -24,30 +23,24 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     /* If NOT transpiling with TypeScript: */
     "jsx": "preserve",
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "noEmit": true,
     /* If your code runs in the DOM: */
-    "lib": [
-      "es2022",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts", "src/i18n/langs/en.js", "src/i18n/langs/fr.js", "src/i18n/langs/es.js",
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

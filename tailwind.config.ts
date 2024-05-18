@@ -1,68 +1,85 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
-  breakpoints: {
-
-  },
+  content: ["./src/**/*.{ts,tsx}"],
+  breakpoints: {},
   theme: {
     container: {
       center: true,
-      padding: "1.2rem",
+      padding: "1.6rem",
       // screens: {
       //   "2xl": "1400px",
       // },
     },
+    // scaling font size
+    fontSize: {
+      xs: "clamp(0.64rem, 0.05vw + 0.63rem, 0.67rem)",
+      sm: "clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem)",
+      base: "clamp(1rem, 0.34vw + 0.91rem, 1.19rem)",
+      md: "clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem)",
+      lg: "clamp(1.56rem, 1vw + 1.31rem, 2.11rem)",
+      xl: "clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem)",
+      "2xl": "clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem)",
+      "3xl": "clamp(3.05rem, 3.54vw + 2.17rem, 5rem)",
+      "4xl": "clamp(3.81rem, 5.18vw + 2.52rem, 6.66rem)",
+    },
     extend: {
       screens: {
-        xs: "391px",
+        xs: "392px",
         sm: "720px",
-        md: "920px",
+        md: "960px",
         lg: "1200px",
         xl: "1500px",
         "2xl": "1920px",
       },
+      spacing: {
+        sm: "0.8rem",
+        md: "1.8rem",
+        lg: "3rem",
+        xl: "6rem",
+      },
       colors: {
-        /* custom */
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        /* exists */
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
+        },
+        success: {
+          DEFAULT: "var(--success)",
+          foreground: "var(--success-foreground)",
+        },
+        info: {
+          DEFAULT: "var(--info)",
+          foreground: "var(--info-foreground)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
         },
       },
       gridRow: {
@@ -70,14 +87,23 @@ const config: Config = {
         "span-12": "span 12 / span 12",
       },
       gridTemplateRows: {
-        '8': 'repeat(8, minmax(0, 1fr))',
-        '10': 'repeat(10, minmax(0, 1fr))',
-        '12': 'repeat(12, minmax(0, 1fr))',
+        "8": "repeat(8, minmax(0, 1fr))",
+        "10": "repeat(10, minmax(0, 1fr))",
+        "12": "repeat(12, minmax(0, 1fr))",
+      },
+      gridTemplateColumns: {
+        "wrap-sm": "repeat(auto-fit, minmax(5rem, 1fr))",
+        "wrap-md": "repeat(auto-fit, minmax(10rem, 1fr))",
+        "wrap-lg": "repeat(auto-fit, minmax(14rem, 1fr))",
+        "wrap-xl": "repeat(auto-fit, minmax(18rem, 1fr))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      transitionProperty: {
+        fade: "transform, opacity, visibility",
       },
       keyframes: {
         "accordion-down": {
@@ -88,14 +114,24 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.2s ease-out",
+        "fade-out": "fadeOut 0.2s ease-out",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
 
-export default config
+export default config;

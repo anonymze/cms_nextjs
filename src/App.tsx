@@ -1,38 +1,20 @@
-"use client"
+"use client";
 
-import Layout from "./components/layout/Layout"
-import { cn } from "./utils/libs/utils"
-import { useThemeStore } from "./contexts/StoreUIContext"
+import { useThemeStore } from "./contexts/store_ui_context";
+import { I18n } from "./types/i18n";
+import type { PropsWithChildren } from "react";
+import "@/styles/globals.css";
 
-import type { Metadata } from "next"
-import type { NextFont } from "next/dist/compiled/@next/font"
-import { type PropsWithChildren } from "react"
+export default function App({ lang, children }: PropsWithChildren & { lang: I18n }) {
+	const theme = useThemeStore((state) => state.theme);
 
-import '@/styles/globals.css'
-
-type AppProps = PropsWithChildren & { fontSans: NextFont }
-
-// export it and nextjs handle it
-export const metadata: Metadata = {
-    title: 'CMS Nextjs',
-    description: 'Créé par Yann M.',
-}
-
-export default function App({ children, fontSans }: AppProps) {
-    const theme = useThemeStore((state) => state.theme);
-
-    return (
-        <html lang="fr" className={theme}>
-            <body 
-            className={cn(
-                "h-screen",
-                fontSans.className
-            )}      
-            >
-                <Layout>
-                    {children}
-                </Layout>
-            </body>
-        </html>
-    )
+	return (
+		<html lang={lang} className={theme}>
+			<head>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+			</head>
+			{children}
+		</html>
+	);
 }

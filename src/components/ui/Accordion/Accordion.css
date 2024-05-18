@@ -1,0 +1,38 @@
+details {
+    padding-right: 1rem;
+    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    border-width: 1px;
+    border-radius: theme("borderRadius.md");
+    opacity: 0.8;
+    cursor: pointer;
+
+    :is(&[open], &:hover) {
+        opacity: 1;
+    }
+
+    &[open] {
+        summary::after {
+            content: "-";
+        }
+    }
+
+    summary {
+        position: relative;
+        padding : 1rem;
+        font-size: theme("fontSize.sm");
+
+        &::marker {
+            content: "";
+        }
+
+        &::after {
+            content: "+";
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    form {
+        padding: 0 1rem 1rem 1rem;
+    }
+}

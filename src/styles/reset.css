@@ -1,0 +1,47 @@
+  /** CSS RESET **/
+  html {
+      /* Include padding and border in size calculation */
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+  }
+
+  *,
+  ::before,
+  ::after {
+      /** inherit from parent (html) **/
+      box-sizing: inherit;
+  }
+
+  * {
+      /* Prevent grid and flex items from spilling out of their container */
+      min-width: 0;
+  }
+
+  body {
+      /* native margin removed */
+      margin: 0;
+      /** Ensure that the body fill the en entiere view port (vh dynamic better for mobile) **/
+      min-height: 100dvh;
+      /** smooth font rendering **/
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+      /** Balance heading across multiple lines into an even block **/
+      text-wrap: balance;
+  }
+
+  p {
+      /** Prevent text orphans (single word on last line) **/
+      text-wrap: pretty;
+  }
+
+  dialog:modal {
+      /** modal has a default max width/height smaller than the page... fix it **/
+      max-width: 100vw;
+      max-height: 100dvh;
+  }

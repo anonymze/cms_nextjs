@@ -1,15 +1,60 @@
-import type { PropsWithChildren } from "react"
+"use client";
 
-type Props = PropsWithChildren & {
-    actionClick: () => void
+import React from "react";
+import { cn } from "@/utils/libs/tailwind/helper";
+import { SpinnerLoader } from "./loader/Loader";
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+	isLoading?: boolean;
+	className?: string;
+	fill?: boolean;
+	outline?: boolean;
+	large?: boolean;
+	secondary?: boolean;
 }
 
-const Button: React.FC<Props> = ({ children, actionClick }) => {
-  return (
-    <button onClick={actionClick} className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
-        {children}
-    </button>
-  )
-}
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+	(
+		{
+			children,
+			isLoading,
+			large,
+			secondary,
+			className,
+			disabled,
+			fill = true,
+			outline = true,
+			...props
+		},
+		ref,
+	) => {
+		return (
+			<button
+				type="button"
+				ref={ref}
+				className={cn(
+					"inline-flex items-center justify-center rounded-md",
+					"font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+					"disabled:pointer-events-none disabled:opacity-50 shadow",
+					large ? "px-6 py-4 text-base" : "px-4 py-2 text-sm",
+					fill
+						? "bg-primary text-primary-foreground hover:bg-muted-foreground"
+						: "bg-transparent text-secondary-foreground hover:bg-muted",
+					!fill && outline && "border-[2px]",
+					secondary ? "bg-secondary text-secondary-foreground hover:bg-muted-foreground" : "",
+					className,
+				)}
+				disabled={disabled}
+				aria-disabled={disabled}
+				{...props}
+			>
+				{isLoading && <SpinnerLoader className="mr-2" />}
+				{children}
+			</button>
+		);
+	},
+);
 
-export { Button }
+Button.displayName = "Button";
+
+export { Button };

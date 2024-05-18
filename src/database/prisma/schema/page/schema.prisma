@@ -1,0 +1,10 @@
+model Page {
+    id              Int         @id @default(autoincrement())
+    uuid            String      @unique @default(uuid())
+    tag             String?
+    i18n_id         Int?        @map("i18n") @ignore
+    i18n            Page_I18n[] @relation()
+    createdAt       DateTime    @default(now())
+
+    @@index(fields: [uuid])
+}

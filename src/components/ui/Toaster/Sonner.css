@@ -1,0 +1,12 @@
+/* TODO */
+[data-sonner-toast][data-type="success"] {
+  background-color: #4caf50 !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  background-color: rgb(176, 27, 27) !important;
+}
+
+[data-sonner-toast][data-type="info"] {
+  background-color: rgb(180, 180, 14) !important;
+}

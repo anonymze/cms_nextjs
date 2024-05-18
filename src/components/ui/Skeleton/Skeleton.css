@@ -1,0 +1,11 @@
+.background-skeleton {
+  width: auto;
+  height: 14rem;
+  background: linear-gradient(to top, rgba(234, 234, 239, 0) 0%, rgb(74, 74, 106) 100%);
+  opacity: 25%;
+  border-radius: 8px;
+}
+
+.background-skeleton.animated {
+  /* TODO */
+}

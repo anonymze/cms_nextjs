@@ -1,37 +1,30 @@
+"use client";
 
-"use client"
-
-import { ArrowLeft } from "lucide-react"
-import { useRouter } from 'next/navigation'
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "../../ui/Button";
-import { useThemeStore } from "@/contexts/StoreUIContext";
-import { Switch } from "../../ui/Switch";
+import { useThemeStore } from "@/contexts/store_ui_context";
 
-interface Props {}
+const TopNavbar: React.FC = () => {
+	const router = useRouter();
+	const setTheme = useThemeStore((theme) => theme.setTheme);
 
-const TopNavbar: React.FC<Props> = () => {
-  const setTheme = useThemeStore((theme) => theme.setTheme)
-    const router = useRouter();
+	const changeTheme = (checked: boolean) => {
+		if (checked) {
+			setTheme("light");
+			return;
+		}
 
-    const goBack = () => {
-        router.back();
-    }
+		setTheme("dark");
+		return;
+	};
+	return (
+		<nav className="flex justify-between items-center pb-8">
+			<Button onClick={() => router.back()}>
+				<ArrowLeft className="h-5 w-5 mr-1" /> Retour
+			</Button>
+		</nav>
+	);
+};
 
-    const changeTheme = (checked: boolean) => {
-        if (checked) {
-          setTheme('light');
-          return;
-        }
-
-        setTheme('dark');
-        return;
-    }
-  return (
-    <nav className="flex justify-between items-center pb-8">
-        <Button actionClick={goBack}><ArrowLeft className="h-5 w-5 mr-2" /> Retour</Button>
-        <Switch onCheckedChange={changeTheme} />
-    </nav>
-  )
-}
-
-export default TopNavbar
+export default TopNavbar;

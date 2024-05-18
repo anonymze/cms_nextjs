@@ -1,0 +1,12 @@
+model Article {
+    id              Int            @id @default(autoincrement())
+    uuid            String         @unique @default(uuid())
+    tag             String?
+    eventCreatedAt  DateTime?
+    eventFinishedAt DateTime?
+    i18n_id         Int?           @map("i18n") @ignore
+    i18n            Article_I18n[]
+    createdAt       DateTime       @default(now())
+
+    @@index(fields: [uuid])
+}
