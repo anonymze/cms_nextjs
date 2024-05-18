@@ -4,14 +4,12 @@ import {
 	PaginationContent,
 	PaginationPrevious,
 	PaginationLink,
-	PaginationEllipsis,
 	PaginationNext,
 } from "./Pagination";
 import { useMemo } from "react";
 
 export function PaginationComponent() {
 	// we do this because useSearchParams() is read-only
-	// @ts-expect-error because URLReadonlySearchParams is not compatible with URLSearchParams
 	const searchParams = new URLSearchParams(useSearchParams());
 	const currentUrl = usePathname();
 	let currentPage = parseInt(searchParams.get("page") || "1");

@@ -1,7 +1,7 @@
 import { api } from "@/api/_config";
 import { ENV_SERVER } from "@/env/server";
 import { NextRequest } from "next/server";
-import { handleClerkLoginAndReturnResponse } from "../route";
+import { handleClerkLoginAndReturnResponse } from "./clerk";
 
 export async function responseGoogleAuthLogic(req: NextRequest) {
 	const searchParams = req.nextUrl.searchParams;

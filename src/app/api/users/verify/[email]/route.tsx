@@ -3,7 +3,7 @@ import { jsonResponseNotFound, jsonResponseForbidden } from "@/utils/server_api/
 import { jsonResponseGet } from "@/utils/server_api/responses/successes";
 import type { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { email: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: { email: string } }) {
 	// we get the email from the URL params
 	const email = params.email;
 

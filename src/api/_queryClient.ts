@@ -34,7 +34,7 @@ export const queryClient = new QueryClient({
 			console.log({ err });
 			toast.error(i18n.en("SOMETHING_UNEXPECTED_HAPPENED"));
 		},
-		onSuccess: (data, variables, context, mutation) => {
+		onSuccess: (_data, _variables, _context, mutation) => {
 			if (mutation.options.mutationKey) {
 				queryClient.invalidateQueries({ queryKey: mutation.options.mutationKey });
 			}

@@ -1,7 +1,6 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
-import { useProgress } from "../progress-bar/ProgressBar";
+import { useSyncExternalStore } from "react";
 
 const register = () => () => {};
 
