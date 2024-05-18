@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/Button";
 import { cn } from "@/utils/libs/tailwind/helper";
 import { AlertCircleIcon, ArrowLeftIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { i18n } from "@/i18n/translations";
+import { ProgressLink } from "@/components/ui/progress-bar/ProgressBar";
 import type { PageParamsI18n } from "@/types/i18n";
 
 export default function Page({ params: { lang } }: PageParamsI18n) {
@@ -25,7 +25,7 @@ export default function Page({ params: { lang } }: PageParamsI18n) {
             {i18n[lang]("PAGE_NOT_EXIST")}
           </p>
           <div className="mt-6">
-            <Link
+            <ProgressLink
               className={cn(
                 "inline-flex items-center justify-center rounded-md",
                 "font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
@@ -36,7 +36,7 @@ export default function Page({ params: { lang } }: PageParamsI18n) {
               href={`/${lang}/dashboard`}
             >
               {i18n[lang]("RETURN_HOME")}
-            </Link>
+            </ProgressLink>
           </div>
         </main>
         <footer className="h-14 flex items-center justify-center text-sm text-gray-600 dark:text-gray-400">

@@ -31,12 +31,12 @@ import MediaOperation from "@/components/media-operation/MediaOperation";
 import Image from "next/image";
 import { useFilesStore } from "@/contexts/store_files_context";
 import { sleep } from "@/utils/helper";
-import Link from "next/link";
 import { createMediaDetailsQuery, updateMediaDetailsQuery } from "@/api/queries/mediaDetailsQueries";
-import { set, type z } from "zod";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/Popover";
 import { SpinnerLoader } from "@/components/ui/loader/Loader";
 import { updateMediaDetailsSchema } from "@/types/media_details";
+import { ProgressLink } from "@/components/ui/progress-bar/ProgressBar";
+import type { z } from "zod";
 
 interface Props {
 	langForm?: I18n;
@@ -378,9 +378,9 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 						{media?.length === 0 && (
 							<>
 								<p className="my-auto ml-auto">{i18n[langContext]("NO_MEDIA_DATA")}.</p>
-								<Link href={`/${langContext}/media`} className="btn my-auto mr-auto underline">
+								<ProgressLink href={`/${langContext}/media`} className="btn my-auto mr-auto underline">
 									{i18n[langContext]("MEDIA_LIBRARY")}
-								</Link>
+								</ProgressLink>
 							</>
 						)}
 					</div>
