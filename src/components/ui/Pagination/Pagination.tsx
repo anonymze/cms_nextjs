@@ -3,9 +3,9 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/utils/libs/tailwind/helper";
 import Link from "next/link";
-import type { ButtonProps } from "../Button";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
+import type { ButtonProps } from "../Button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
 	<nav
