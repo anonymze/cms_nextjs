@@ -8,8 +8,8 @@ import { createArticleQuery, updateArticleQuery } from "@/api/queries/articleQue
 import dynamic from "next/dynamic";
 import { Input } from "@/components/ui/form/Input";
 import { I18n } from "@/types/i18n";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useRef, type FormEvent, useState, type SyntheticEvent } from "react";
+import { useSearchParams } from "next/navigation";
+import { useContext, useRef, type FormEvent, type SyntheticEvent } from "react";
 import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import { toast } from "sonner";
@@ -35,7 +35,7 @@ import { createMediaDetailsQuery, updateMediaDetailsQuery } from "@/api/queries/
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/Popover";
 import { SpinnerLoader } from "@/components/ui/loader/Loader";
 import { updateMediaDetailsSchema } from "@/types/media_details";
-import { ProgressLink } from "@/components/ui/progress-bar/ProgressBar";
+import { ProgressLink, useProgressLinkProgrammaticly } from "@/components/ui/progress-bar/ProgressBar";
 import type { z } from "zod";
 
 interface Props {
@@ -58,8 +58,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const langContext = useContext(LangContext);
 	const langParam = useSearchParams().get("lang");
-	const router = useRouter();
 	const files = useFilesStore((state) => state.files);
+	const { routerPush } = useProgressLinkProgrammaticly();
 	const setFiles = useFilesStore((state) => state.setFiles);
 
 	const { data: media } = useQuery({
@@ -134,8 +134,8 @@ const FormArticle: React.FC<Props> = ({ langForm, article }) => {
 
 		// if article is created then we redirect to the form with the uuid (to be in an updating state)
 		if (articleCreated) {
-			router.push(
-				`/${langContext}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`,
+			routerPush(
+				`/${langContext}/creation-contenu/article/${articleCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`
 			);
 		}
 	};

@@ -3,17 +3,18 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Table from "../../../../../../components/ui/table/Table";
 import { flattenI18nEntities, getKeysTypedObject } from "@/utils/helper";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { deletePageQuery, getPagesQuery } from "@/api/queries/pageQueries";
 import { LangContext } from "@/utils/providers";
 import { useContext } from "react";
 import { i18n } from "@/i18n/translations";
+import { useProgressLinkProgrammaticly } from "@/components/ui/progress-bar/ProgressBar";
 import type { Page } from "@prisma/client";
 
 export default function Content() {
 	const lang = useContext(LangContext);
 	const searchParams = useSearchParams();
-	const router = useRouter();
+	const {routerPush} = useProgressLinkProgrammaticly();
 
 	const {
 		data: pages,
@@ -49,7 +50,7 @@ export default function Content() {
 				{
 					label: i18n[lang]("EDIT"),
 					action: (entity: Page) => {
-						router.push(`/${lang}/creation-contenu/page/${entity.uuid}`);
+						routerPush(`/${lang}/creation-contenu/page/${entity.uuid}`);
 					},
 				},
 

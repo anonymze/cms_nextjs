@@ -7,7 +7,7 @@ import nprogress from "nprogress";
 import type { ComponentProps } from "react";
 import "nprogress/nprogress.css";
 
-nprogress.configure({ minimum: 0.4, showSpinner: false });
+nprogress.configure({ minimum: 0.3, showSpinner: false, trickleSpeed: 800, trickleRate: 0.04 });
 
 export const ProgressLink = ({ href, className, children }: ComponentProps<typeof Link>) => {
 	const {routerPush} = useProgressLinkProgrammaticly();

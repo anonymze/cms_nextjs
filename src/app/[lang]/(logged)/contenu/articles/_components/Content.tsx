@@ -4,7 +4,7 @@ import { deleteArticleQuery, getArticlesQuery } from "@/api/queries/articleQueri
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Table from "../../../../../../components/ui/table/Table";
 import { flattenI18nEntities, getKeysTypedObject } from "@/utils/helper";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { LangContext } from "@/utils/providers";
 import { useContext } from "react";
 import { i18n } from "@/i18n/translations";

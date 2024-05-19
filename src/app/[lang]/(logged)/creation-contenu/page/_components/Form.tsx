@@ -17,12 +17,13 @@ import {
 } from "@/components/ui/form/Form";
 import { Textarea } from "@/components/ui/form/Textarea";
 import { Input } from "@/components/ui/form/Input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { i18n } from "@/i18n/translations";
 import { useContext } from "react";
 import { LangContext } from "@/utils/providers";
 import type { z } from "zod";
 import type { I18n } from "@/types/i18n";
+import { useProgressLinkProgrammaticly } from "@/components/ui/progress-bar/ProgressBar";
 
 interface Props {
 	langForm?: I18n;
@@ -32,7 +33,7 @@ interface Props {
 const FormPage: React.FC<Props> = ({ langForm, page }) => {
 	const langContext = useContext(LangContext);
 	const langParam = useSearchParams().get("lang");
-	const router = useRouter();
+	const { routerPush } = useProgressLinkProgrammaticly();
 
 	const createMutation = useMutation({
 		mutationFn: createPageQuery,
@@ -77,7 +78,7 @@ const FormPage: React.FC<Props> = ({ langForm, page }) => {
 		// if page is created then we redirect to the form with the uuid (to be in an updating state)
 
 		if (pageCreated)
-			router.push(`/${langContext}/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
+			routerPush(`/${langContext}/creation-contenu/page/${pageCreated.uuid}${langParam ? `?lang=${langParam}` : ""}`);
 	}
 
 	return (
