@@ -10,7 +10,7 @@ import { LangContext } from "@/utils/providers";
 import { i18n } from "@/i18n/translations";
 import type { ITable } from "./Table";
 
-export type OrderBy = "asc" | "desc" | "reset";
+type OrderBy = "asc" | "desc" | "reset";
 
 export interface THead {
 	columns: ITable["columns"];
