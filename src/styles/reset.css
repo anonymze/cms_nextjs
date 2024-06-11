@@ -1,4 +1,5 @@
-  /** CSS RESET **/
+  /** SIMPLE CSS RESET **/
+
   html {
       /* Include padding and border in size calculation */
       box-sizing: border-box;
@@ -8,7 +9,7 @@
   *,
   ::before,
   ::after {
-      /** inherit from parent (html) **/
+      /** Inherit from parent (html) **/
       box-sizing: inherit;
   }
 
@@ -18,11 +19,11 @@
   }
 
   body {
-      /* native margin removed */
+      /* Native margin from browser removed */
       margin: 0;
       /** Ensure that the body fill the en entiere view port (vh dynamic better for mobile) **/
       min-height: 100dvh;
-      /** smooth font rendering **/
+      /** Smooth font rendering **/
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
   }
@@ -40,8 +41,16 @@
       text-wrap: pretty;
   }
 
+  input,
+  button,
+  textarea,
+  select {
+      /** Inherit all the fonts caracteristics from his parent, prevent having default font-family, size, weight... from browser **/
+      font: inherit;
+  }
+
   dialog:modal {
-      /** modal has a default max width/height smaller than the page... fix it **/
+      /** Modal has a default max width/height smaller than the page... fix it **/
       max-width: 100vw;
       max-height: 100dvh;
   }
