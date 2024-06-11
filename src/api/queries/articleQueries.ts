@@ -5,7 +5,6 @@ import type {
   formCreateArticleSchema,
 } from "@/types/article";
 import type { z } from "zod";
-import type { QueryFunctionContext } from "@tanstack/react-query";
 
 
 export async function getArticlesQuery({ queryKey }) {

@@ -32,7 +32,7 @@ model Article_I18n {
     media_details    Media_Details[]
 
     @@index(fields: [lang])
-    @@unique([article_id, lang])
+    // @@unique([article_id, lang])
 }
 model Media {
     id               Int             @id @default(autoincrement())
@@ -82,7 +82,7 @@ model Page_I18n {
     media_details    Media_Details[]
 
     @@index(fields: [lang])
-    @@unique([page_id, lang])
+    // @@unique([page_id, lang])
 }
 model User {
     id        Int      @id @default(autoincrement())
