@@ -5,6 +5,10 @@ import prisma from "@/utils/libs/prisma/single_instance";
 import { clerkClient } from "@clerk/nextjs";
 import { LoginStateInfo } from "@/types/user";
 import { getUserWithEmail } from "@/utils/libs/prisma/server_helper";
+import { ENV_CLIENT } from "@/env/client";
+import { getPreferedLocale } from "@/utils/server_api/helper";
+import { getKeysTypedObject } from "@/utils/helper";
+import { i18n } from "@/i18n/translations";
 
 /**
  * @throws {Error}
@@ -14,6 +18,8 @@ export const handleClerkLoginAndReturnResponse =  async(
   email: string,
   name = ""
 ) => {
+  // TODO need to get the language before the redirect to github to have the correct local selected
+  const locale = getPreferedLocale(req.headers, getKeysTypedObject(i18n));
   const existingUserOurDb = await getUserWithEmail(email);
 
   // if user does not exists in our database at all, we create it, he will be inactive by default
@@ -45,16 +51,14 @@ export const handleClerkLoginAndReturnResponse =  async(
   // if not user
   if (!existingUserOurDb) {
     return NextResponse.redirect(
-      // TODO
-      `${req.nextUrl.origin}/login/?info=${LoginStateInfo.CREATED}}`
+      `${ENV_CLIENT.NEXT_PUBLIC_URL}/${locale}/login/?info=${LoginStateInfo.CREATED}}`
     );
   }
 
   // if not active
   if (!existingUserOurDb.isActive) {
     return NextResponse.redirect(
-      // TODO
-      `${req.nextUrl.origin}/login/?info=${LoginStateInfo.INACTIVE}`
+      `${ENV_CLIENT.NEXT_PUBLIC_URL}/${locale}/login/?info=${LoginStateInfo.INACTIVE}`
     );
   }
 
@@ -74,8 +78,7 @@ export const handleClerkLoginAndReturnResponse =  async(
 
   // external page will handle the magic link and log the user
   return NextResponse.redirect(
-    // TODO
-    `${req.nextUrl.origin}/en/login/external?token=${magicLink.token}`
+    `${ENV_CLIENT.NEXT_PUBLIC_URL}/${locale}/login/external?token=${magicLink.token}`
   );
 }
 

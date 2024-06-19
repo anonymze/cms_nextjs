@@ -68,8 +68,8 @@ const transformRequestToI18n = (req: NextRequest) => {
   // "/{locale}" redirect to dashboard
   if (localeRedirectToDashboard) {
     req.nextUrl.pathname = `/${localeRedirectToDashboard}/dashboard`;
-  } else {
     // redirect if there is no locale implicitly in the pathname
+  } else {
     const locale = getPreferedLocale(req.headers, getKeysTypedObject(i18n));
     
     // "/" redirect to dashboard

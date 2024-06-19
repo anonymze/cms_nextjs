@@ -49,6 +49,14 @@
       font: inherit;
   }
 
+  /* textarea {
+    field-sizing: content;
+    // fallback
+    min-height: calc(1.5rem * 4);
+    // height at least 4 lines
+    min-height: 4lh;
+  } */
+
   dialog:modal {
       /** Modal has a default max width/height smaller than the page... fix it **/
       max-width: 100vw;
