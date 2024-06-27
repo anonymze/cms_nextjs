@@ -16,7 +16,7 @@
     "db:studio": "prisma studio --schema=./src/database/prisma/schema.prisma",
     "db:admin-create": "bun run ./src/command/admin_create.js",
     "knip": "knip",
-    "ok": "git add . && git commit -m 'test' && git push && git restore package.json"
+    "ok": "git add . && echo 'Added files' && git commit -m 'Initial commit' && echo 'Committed' && git push origin main > /dev/null 2>&1 && echo 'Pushed'"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.10",
