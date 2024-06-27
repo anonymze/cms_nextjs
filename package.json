@@ -15,7 +15,8 @@
     "db:migrate": "prisma migrate dev --schema=./src/database/prisma/schema.prisma",
     "db:studio": "prisma studio --schema=./src/database/prisma/schema.prisma",
     "db:admin-create": "bun run ./src/command/admin_create.js",
-    "knip": "knip"
+    "knip": "knip",
+    "ok": "git add . && git commit -m 'test' && git push && git restore package.json"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.10",
